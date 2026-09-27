@@ -1169,9 +1169,14 @@ header {
 }
 
 .footer-logo-affilifest {
-  height: 28px;
-  width: 120px;
-  background: url('../design/affilifest-logo-transparent.webp') no-repeat center / contain;
+  height: clamp(24px, 3vh, 32px);
+  width: clamp(100px, 10vw, 130px);
+  background: linear-gradient(90deg, #298dda, #d73184, #f5333f, #fccc38);
+  background-size: 300% 100%;
+  animation: auroraShift 20s ease infinite;
+  -webkit-mask: url('../../design/Affilifest-2026-logo.png') no-repeat center / contain;
+  mask: url('../../design/Affilifest-2026-logo.png') no-repeat center / contain;
+  display: inline-block;
 }
 
 .footer-divider {
