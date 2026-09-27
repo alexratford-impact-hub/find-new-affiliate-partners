@@ -1200,3 +1200,385 @@ header {
   font-size: 11px;
   color: var(--color-text-muted);
 }
+
+/* ==========================================================================
+   Spatial Depth, Floating Island, and Kinematic Design System Specification
+   (per .agents/rules/design-guidelines.md)
+   ========================================================================== */
+
+/* 1. Base Viewport Container */
+.viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--neu-bg);
+  perspective: 1000px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 2. Background Scene Canvas: Full Bleed 2.5D Canvas */
+.scene-canvas {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  transform-style: preserve-3d;
+  transition: transform var(--duration-expand) var(--ease-fluid),
+              filter var(--duration-expand) var(--ease-fluid);
+  will-change: transform, filter;
+}
+
+/* Viewport Staging Depth States */
+.viewport[data-focal-plane="focus"] .scene-canvas {
+  transform: translateZ(var(--plane-focus-z));
+  filter: blur(0px);
+  pointer-events: auto;
+}
+
+.viewport[data-focal-plane="background"] .scene-canvas {
+  pointer-events: auto;
+}
+
+.viewport[data-focal-plane="background"] .scene-canvas .stage-card:not([data-expanded="true"]),
+.viewport[data-focal-plane="background"] .scene-canvas .zoom-card:not([data-expanded="true"]),
+.viewport[data-focal-plane="background"] .scene-canvas .slide-hero,
+.viewport[data-focal-plane="background"] header {
+  transform: translateZ(var(--plane-background-z)) scale(0.96);
+  filter: blur(var(--surface-blur-background)) brightness(0.5);
+  pointer-events: none;
+  transition: transform var(--duration-expand) var(--ease-fluid),
+              filter var(--duration-expand) var(--ease-fluid);
+}
+
+/* 3. Floating Navigation Island */
+.floating-dock {
+  position: fixed;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  pointer-events: auto;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dock-housing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background: rgba(17, 20, 24, 0.85);
+  backdrop-filter: blur(var(--surface-blur-dock));
+  -webkit-backdrop-filter: blur(var(--surface-blur-dock));
+  border: var(--surface-stroke);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.pill-group {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-pill);
+  padding: 2px;
+}
+
+.pill-node {
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--duration-contract) var(--ease-fluid),
+              color var(--duration-contract) var(--ease-fluid);
+}
+
+.pill-node:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pill-node[data-active="true"] {
+  background: var(--surface-island-active);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.action-circle-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-accent);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.action-circle-node:hover {
+  background: var(--color-accent-hover);
+  transform: scale(1.05);
+}
+
+.action-circle-node:active {
+  transform: scale(0.95);
+}
+
+/* 4. Dynamic Live Status Capsule */
+.live-capsule {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  background: rgba(17, 20, 24, 0.88);
+  backdrop-filter: blur(var(--surface-blur-dock));
+  -webkit-backdrop-filter: blur(var(--surface-blur-dock));
+  border: var(--surface-stroke);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: width var(--duration-expand) var(--ease-fluid),
+              height var(--duration-expand) var(--ease-fluid),
+              border-radius var(--duration-expand) var(--ease-fluid),
+              box-shadow var(--duration-expand) var(--ease-fluid);
+  will-change: width, height, border-radius;
+}
+
+.live-capsule[data-state="collapsed"] {
+  width: 140px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.live-capsule[data-state="collapsed"]:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+}
+
+.live-capsule[data-state="expanded"] {
+  width: 340px;
+  height: 190px;
+  border-radius: var(--radius-tray);
+  cursor: default;
+}
+
+.capsule-compact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #ffffff;
+  padding: 0 12px;
+  letter-spacing: 0.02em;
+}
+
+.live-capsule .status-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-success);
+  box-shadow: 0 0 8px var(--color-success);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.live-capsule[data-state="expanded"] .capsule-compact {
+  display: none;
+}
+
+.capsule-expanded-tray {
+  display: none;
+  padding: 18px 20px;
+  height: 100%;
+}
+
+.live-capsule[data-state="expanded"] .capsule-expanded-tray {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tray-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.tray-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.tray-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.tray-badge {
+  font-size: 10px;
+  font-weight: 800;
+  color: #38BDF8;
+  background: rgba(56, 189, 248, 0.15);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+}
+
+.tray-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.tray-stat-block {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tray-stat-val {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  font-family: var(--font-mono);
+}
+
+.tray-stat-lbl {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #94A3B8;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.tray-action-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tray-btn {
+  flex: 1;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.tray-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.tray-btn-primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.tray-btn-primary:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+/* 5. View Transition Styles (CSS) */
+::view-transition-old(active-spatial-target),
+::view-transition-new(active-spatial-target) {
+  animation-duration: var(--duration-expand);
+  animation-timing-function: var(--ease-fluid);
+  transform-origin: var(--origin-x) var(--origin-y);
+}
+
+/* 6. Zoom Card & Expanded Kinematic State */
+.zoom-card {
+  cursor: zoom-in;
+  transition: border-color var(--duration-contract) var(--ease-fluid),
+              box-shadow var(--duration-contract) var(--ease-fluid);
+  outline: none;
+}
+
+.zoom-card:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.zoom-card[data-expanded="true"] {
+  position: fixed;
+  inset: 5vh 5vw;
+  width: 90vw;
+  height: 90vh;
+  z-index: 500;
+  border-radius: var(--radius-tray);
+  background: #14171f;
+  color: #F8FAFC;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translateZ(var(--plane-focus-z));
+  filter: blur(0px);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  overflow-y: auto;
+  padding: clamp(24px, 3.5vw, 48px);
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Close action inside expanded card */
+.zoom-card[data-expanded="true"]::before {
+  content: 'ESC / Click backdrop to collapse';
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #94A3B8;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+
+.zoom-card[data-expanded="true"] .card-headline,
+.zoom-card[data-expanded="true"] h3,
+.zoom-card[data-expanded="true"] h4 {
+  color: #FFFFFF !important;
+}
+
+.zoom-card[data-expanded="true"] p,
+.zoom-card[data-expanded="true"] li,
+.zoom-card[data-expanded="true"] span {
+  color: #E2E8F0;
+}
+

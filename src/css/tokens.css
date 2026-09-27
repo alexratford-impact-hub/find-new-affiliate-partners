@@ -66,8 +66,22 @@
   --duration-expand: 420ms;
   --duration-contract: 320ms;
 
-  /* Spatial Coordinate Planes */
+  /* Spatial Coordinate Planes & Surface Diffusion */
+  --surface-island-base: rgba(255, 255, 255, 0.08);
+  --surface-island-hover: rgba(255, 255, 255, 0.12);
+  --surface-island-active: rgba(255, 255, 255, 0.2);
+  --surface-stroke: 0.5px solid rgba(255, 255, 255, 0.18);
+  --surface-blur-dock: 24px;
+  --surface-blur-background: 14px;
+  --surface-blur-foreground: 20px;
+
+  --radius-button: 20px;
+
   --plane-background-z: -250px;
   --plane-focus-z: 0px;
   --plane-foreground-z: 220px;
+
+  /* Dynamic Touch Anchors (Populated by JavaScript runtime) */
+  --origin-x: 50%;
+  --origin-y: 50%;
 }

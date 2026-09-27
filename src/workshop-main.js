@@ -8,6 +8,7 @@ import { brandProfiles, brandPresets } from './data/presets.js';
 import { claudeStepData } from './data/quips.js';
 import { WorkshopSync } from './lib/sync.js';
 import { TypewriterStreamer, ThinkingLoop, escapeHtml } from './lib/typewriter.js';
+import { SpatialZoomEngine } from './lib/spatial-zoom.js';
 
 // Application State
 let activeKey = 'setup';
@@ -37,6 +38,11 @@ const sync = new WorkshopSync({
     if (box) box.classList.toggle('connected', connected);
     if (label) {
       label.innerText = connected ? 'Instructor Console: Connected' : 'Instructor Console: Listening';
+    }
+    const traySync = document.getElementById('tray-sync-val');
+    if (traySync) traySync.innerText = connected ? 'Active' : 'Listening';
+    if (typeof spatialZoom !== 'undefined') {
+      spatialZoom.updateLiveCapsuleStatus(connected ? 'Console Sync' : 'Sync Listening', connected);
     }
   }
 });
@@ -86,10 +92,16 @@ sync.on('CODING_SPRINT', (data) => {
 
 function updateTimerVisibility() {
   const timerBox = document.getElementById('timer-box');
+  const traySprint = document.getElementById('tray-sprint-val');
+  if (traySprint) traySprint.innerText = codingSprintTimeStr;
+
   if (!timerBox) return;
   if (isCodingSprintActive && activeViewMode === 'code') {
     timerBox.style.display = 'inline-flex';
     timerBox.innerHTML = `⏱️ Coding Sprint: ${codingSprintTimeStr}`;
+    if (typeof spatialZoom !== 'undefined') {
+      spatialZoom.updateLiveCapsuleStatus(`⏱️ ${codingSprintTimeStr}`, true);
+    }
   } else {
     timerBox.style.display = 'none';
   }
@@ -120,6 +132,16 @@ export function setViewMode(mode) {
     }
     setTimeout(scrollToActiveChunk, 50);
   }
+
+  // Update floating dock pill states
+  const dockSlide = document.getElementById('dock-btn-slide');
+  const dockCode = document.getElementById('dock-btn-code');
+  if (dockSlide) dockSlide.setAttribute('data-active', mode === 'slide' ? 'true' : 'false');
+  if (dockCode) dockCode.setAttribute('data-active', mode === 'code' ? 'true' : 'false');
+
+  const trayMode = document.getElementById('tray-mode-badge');
+  if (trayMode) trayMode.innerText = mode === 'slide' ? 'Slide Mode' : 'Code Mode';
+
   updateTimerVisibility();
 }
 
@@ -141,6 +163,14 @@ export function loadStep(key, forceSlide = false) {
   if (codeFilePill) codeFilePill.innerText = item.path;
 
   renderSlide(key);
+
+  const trayStep = document.getElementById('tray-step-val');
+  if (trayStep) trayStep.innerText = `Step ${item.stepNum}`;
+  const trayPreset = document.getElementById('tray-preset-val');
+  if (trayPreset) {
+    const p = brandProfiles[activePreset] || brandProfiles.boots;
+    trayPreset.innerText = p.name || p.brand || 'Boots UK';
+  }
 
   const codeTitle = document.getElementById('code-intro-title');
   if (codeTitle) codeTitle.innerText = item.name;
@@ -1414,5 +1444,38 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
+// Spatial Zoom Engine Instance
+const spatialZoom = new SpatialZoomEngine(document.getElementById('workshop-viewport'));
+
+// Global Floating Dock & Telemetry Actions
+window.setWorkshopMode = (mode) => {
+  setViewMode(mode);
+  sync.broadcast('SET_MODE', { mode });
+};
+
+window.toggleSlideCodeMode = () => {
+  const nextMode = activeViewMode === 'slide' ? 'code' : 'slide';
+  window.setWorkshopMode(nextMode);
+};
+
+window.advanceSlideOrChunk = () => {
+  if (activeViewMode === 'slide') {
+    nextSlideStage();
+  } else {
+    const chunks = fileSections[activeKey] || [];
+    if (typeof activeSectionIndex === 'number' && activeSectionIndex < chunks.length - 1) {
+      setSection(activeSectionIndex + 1);
+    } else if (activeSectionIndex !== 'all') {
+      setSection('all');
+    } else {
+      const curStepIdx = stepKeys.indexOf(activeKey);
+      if (curStepIdx >= 0 && curStepIdx < stepKeys.length - 1) {
+        loadStep(stepKeys[curStepIdx + 1], true);
+      }
+    }
+  }
+};
+
 // Initialise
 loadStep('setup', true);
+

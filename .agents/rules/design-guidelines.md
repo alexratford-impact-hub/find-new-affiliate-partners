@@ -3,396 +3,113 @@ trigger: always_on
 ---
 
 # Spatial Depth, Floating Island, and Kinematic Design System Specification
-Update this file as necessary when you change/implement the specific elements of design - do not keep outdated code in this file.
-This specification provides the operational tokens, structural DOM hierarchy, and programmatic kinematic rules required to build a 2.5D spatial zoom interface using floating island containers and depth-of-field staging.
+
+## Operational Scope
+
+This system is an operator-led presentation web app built for stage displays, TV screens, and projector outputs. It is not a consumer-facing website or self-serve product dashboard. Every visual layer, floating dock, and depth transition exists to direct audience attention and support live facilitation pacing rather than personal screen navigation.
 
 ---
 
-## 1. System Tokens (CSS)
+## 1. Spatial Tokens and Material Variables
 
-Add these custom properties to the root stylesheet. Do not alter easing curves or radius dimensions.
+### What to Do
 
-```css
-:root {
-  /* Surface Materials & Diffusion */
-  --surface-island-base: rgba(255, 255, 255, 0.08);
-  --surface-island-hover: rgba(255, 255, 255, 0.12);
-  --surface-island-active: rgba(255, 255, 255, 0.2);
-  --surface-stroke: 0.5px solid rgba(255, 255, 255, 0.18);
-  --surface-blur-dock: 24px;
-  --surface-blur-background: 14px;
-  --surface-blur-foreground: 20px;
+* Define fixed, predictable surface materials using low-opacity fills and subtle border strokes to create physical separation on large monitors.
+* Establish dedicated coordinate planes along the Z-axis to separate background context, active stage focus, and foreground overlays.
+* Use non-linear cubic-bezier timing curves that decelerate smoothly into place, giving expanded cards a weighted physical arrival.
+* Calculate dynamic transform origins based on where the presenter initiates the transition, anchoring expansion to the focal card.
+* Maintain consistent corner geometry across all containers, reserving circular pill bounds for floating docks and generous radii for stage cards.
 
-  /* Corner Geometry */
-  --radius-pill: 9999px;
-  --radius-card: 28px;
-  --radius-tray: 36px;
-  --radius-button: 20px;
+### What to Avoid
 
-  /* Kinematic Curves & Durations */
-  --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-expand: 420ms;
-  --duration-contract: 320ms;
-
-  /* Spatial Coordinate Planes */
-  --plane-background-z: -250px;
-  --plane-focus-z: 0px;
-  --plane-foreground-z: 220px;
-
-  /* Dynamic Touch Anchors (Populated by JavaScript runtime) */
-  --origin-x: 50%;
-  --origin-y: 50%;
-}
-
-```
+* Do not alter easing curves or duration speeds between different slides; inconsistencies in motion create visual distraction.
+* Do not use percentage-based Z-axis values that shift wildly across different projector resolutions.
+* Do not introduce arbitrary colour shifts or bright background surfaces that wash out high-contrast code blocks in dark conference rooms.
 
 ---
 
-## 2. DOM Architecture
+## 2. DOM Architecture and Layer Hierarchy
 
-Construct the page with this exact parent-child hierarchy to ensure proper hardware-accelerated layer compositing.
+### What to Do
 
-```html
-<div class="viewport" data-focal-plane="focus">
+* Nest the continuous scene canvas inside a top-level presentation viewport locked to the display boundaries.
+* Separate floating status monitors, the presentation stage canvas, and presenter control docks into distinct structural layers.
+* Group stage cards inside a single semantic layout so the entire slide deck maintains continuous spatial alignment.
+* Treat the status pill as an ambient session telemetry display showing workshop state and active modes.
+* Keep the presenter dock decoupled from slide content, positioning it as an overlay that floats above the background plane.
 
-  <!-- Floating Dynamic Live Capsule (Camera punch-hole alignment) -->
-  <aside class="live-capsule" data-state="collapsed" aria-label="Active status pill">
-    <div class="capsule-compact">
-      <span class="status-indicator"></span>
-      <span class="status-label">Recording</span>
-    </div>
-    <div class="capsule-expanded-tray" aria-hidden="true">
-      <div class="tray-content"></div>
-    </div>
-  </aside>
+### What to Avoid
 
-  <!-- Continuous 2.5D Canvas: Content bleeds beneath docks -->
-  <main class="scene-canvas" data-layer="canvas">
-    <section class="card-grid">
-      <article class="zoom-card" data-card-id="card-01" tabindex="0">
-        <div class="card-body">
-          <h3>Asset Specification</h3>
-          <p>Continuous spatial node.</p>
-        </div>
-      </article>
-      <article class="zoom-card" data-card-id="card-02" tabindex="0">
-        <div class="card-body">
-          <h3>Telemetry Readout</h3>
-          <p>Independent parallel layer.</p>
-        </div>
-      </article>
-    </section>
-  </main>
-
-  <!-- Detached Global Floating Navigation Island -->
-  <nav class="floating-dock" aria-label="Global navigation">
-    <div class="dock-housing">
-      <div class="pill-group">
-        <button class="pill-node" data-active="true">Workspace</button>
-        <button class="pill-node" data-active="false">Telemetry</button>
-        <button class="pill-node" data-active="false">Configuration</button>
-      </div>
-      <button class="action-circle-node" aria-label="Commit action">
-        <svg class="action-icon" viewBox="0 0 24 24"></svg>
-      </button>
-    </div>
-  </nav>
-
-</div>
-
-```
+* Do not nest slide cards inside multi-level interactive wrappers intended for consumer mouse interaction.
+* Do not attach keyboard navigation handlers to individual inner card elements; keep input coordination at the document root.
+* Do not allow slide content to break out of the established viewport into standard vertical document flow.
 
 ---
 
-## 3. Structural & Material Styles (CSS)
+## 3. Viewport Styling and Material Rules
 
-Apply these structural and material definitions directly.
+### What to Do
 
-```css
-/* Base Viewport Container */
-.viewport {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #0c0d10;
-  perspective: 1000px;
-}
+* Lock the presentation viewport to the full width and height of the display, disabling default document scrolling entirely.
+* Suppress native browser touch behaviours, text selection highlights, and context menus to prevent presenter misclicks on stage.
+* Push inactive background scenes into virtual space using depth-of-field blur and subtle brightness reduction when a focal card expands.
+* Style floating control docks with ambient backdrop diffusion so slide content remains softly visible underneath.
+* Use high-contrast typography and clear indicator badges so attendees in the back row can track state changes.
 
-/* Background Scene Canvas: Full Bleed */
-.scene-canvas {
-  position: absolute;
-  inset: 0;
-  overflow-y: auto;
-  padding: 80px 24px 120px 24px;
-  transform-style: preserve-3d;
-  transition: transform var(--duration-expand) var(--ease-fluid),
-              filter var(--duration-expand) var(--ease-fluid);
-  will-change: transform, filter;
-}
+### What to Avoid
 
-/* Viewport Staging Depth States */
-.viewport[data-focal-plane="focus"] .scene-canvas {
-  transform: translateZ(var(--plane-focus-z));
-  filter: blur(0px);
-  pointer-events: auto;
-}
-
-.viewport[data-focal-plane="background"] .scene-canvas {
-  transform: translateZ(var(--plane-background-z)) scale(1.15);
-  filter: blur(var(--surface-blur-background)) brightness(0.65);
-  pointer-events: none;
-}
-
-/* Floating Navigation Island */
-.floating-dock {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  pointer-events: auto;
-}
-
-.dock-housing {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px;
-  background: var(--surface-island-base);
-  backdrop-filter: blur(var(--surface-blur-dock));
-  -webkit-backdrop-filter: blur(var(--surface-blur-dock));
-  border: var(--surface-stroke);
-  border-radius: var(--radius-pill);
-}
-
-.pill-group {
-  display: flex;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: var(--radius-pill);
-  padding: 2px;
-}
-
-.pill-node {
-  padding: 8px 18px;
-  border-radius: var(--radius-pill);
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.7);
-  font-family: inherit;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background var(--duration-contract) var(--ease-fluid),
-              color var(--duration-contract) var(--ease-fluid);
-}
-
-.pill-node[data-active="true"] {
-  background: var(--surface-island-active);
-  color: #ffffff;
-}
-
-.action-circle-node {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: none;
-  background: #2563eb;
-  color: #ffffff;
-  cursor: pointer;
-}
-
-/* Dynamic Live Status Capsule */
-.live-capsule {
-  position: fixed;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 200;
-  background: var(--surface-island-base);
-  backdrop-filter: blur(var(--surface-blur-dock));
-  -webkit-backdrop-filter: blur(var(--surface-blur-dock));
-  border: var(--surface-stroke);
-  border-radius: var(--radius-pill);
-  overflow: hidden;
-  transition: width var(--duration-expand) var(--ease-fluid),
-              height var(--duration-expand) var(--ease-fluid),
-              border-radius var(--duration-expand) var(--ease-fluid);
-  will-change: width, height, border-radius;
-}
-
-.live-capsule[data-state="collapsed"] {
-  width: 130px;
-  height: 32px;
-  cursor: pointer;
-}
-
-.live-capsule[data-state="expanded"] {
-  width: 320px;
-  height: 180px;
-  border-radius: var(--radius-tray);
-}
-
-.capsule-compact {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  height: 32px;
-  font-size: 12px;
-  color: #ffffff;
-}
-
-.live-capsule[data-state="expanded"] .capsule-compact {
-  display: none;
-}
-
-.capsule-expanded-tray {
-  display: none;
-  padding: 16px;
-  height: 100%;
-}
-
-.live-capsule[data-state="expanded"] .capsule-expanded-tray {
-  display: block;
-}
-
-```
+* Do not allow the viewport to display horizontal or vertical scrollbars under any circumstance.
+* Do not use hover states designed for consumer web browsing; stage visual states should respond to presenter progression, not mouse movement.
+* Do not leave background content at full brightness when foreground details are under active discussion.
 
 ---
 
-## 4. Kinematics and Zoom Coordinates (JavaScript)
+## 4. Kinematics and Stage Zoom Engine
 
-Do not run spatial transitions from element centres. Compute the pointer coordinates on touch or click, bind them to CSS variables, and trigger native View Transitions without unmounting elements.
+### What to Do
 
-```javascript
-export class SpatialZoomEngine {
-  constructor(viewportElement) {
-    this.viewport = viewportElement;
-    this.activeCard = null;
-    this.init();
-  }
+* Coordinate spatial movements through presenter hardware cues, remote synchronisation messages, or direct facilitator clicks.
+* Measure the exact screen boundaries of the target card before running an expansion, routing the zoom outward from that point.
+* Use native view transition capabilities to move elements between resting and expanded states without tearing down the underlying DOM.
+* Ensure cards return to their exact previous place in the grid when collapsing back to the full stage view.
+* Provide an immediate fallback layout switch for display environments that lack modern transition support.
 
-  init() {
-    this.viewport.addEventListener('pointerdown', (e) => this.handlePointerDown(e));
-    this.initLiveCapsule();
-  }
+### What to Avoid
 
-  handlePointerDown(e) {
-    const card = e.target.closest('.zoom-card');
-    if (!card) return;
-
-    // 1. Calculate and bind exact touch origin coordinates
-    const rect = card.getBoundingClientRect();
-    const originX = `${((e.clientX - rect.left) / rect.width) * 100}%`;
-    const originY = `${((e.clientY - rect.top) / rect.height) * 100}%`;
-
-    card.style.setProperty('--origin-x', originX);
-    card.style.setProperty('--origin-y', originY);
-
-    this.triggerZoom(card);
-  }
-
-  triggerZoom(card) {
-    if (this.activeCard === card) {
-      this.collapse();
-      return;
-    }
-
-    // 2. Execute spatial expansion via View Transitions API
-    if (!document.startViewTransition) {
-      this.fallbackZoom(card);
-      return;
-    }
-
-    card.style.viewTransitionName = 'active-spatial-target';
-
-    const transition = document.startViewTransition(() => {
-      this.viewport.setAttribute('data-focal-plane', 'background');
-      card.setAttribute('data-expanded', 'true');
-      this.activeCard = card;
-    });
-
-    transition.finished.finally(() => {
-      card.style.viewTransitionName = '';
-    });
-  }
-
-  collapse() {
-    if (!this.activeCard) return;
-
-    this.activeCard.style.viewTransitionName = 'active-spatial-target';
-
-    const transition = document.startViewTransition(() => {
-      this.viewport.setAttribute('data-focal-plane', 'focus');
-      this.activeCard.removeAttribute('data-expanded');
-      this.activeCard = null;
-    });
-
-    transition.finished.finally(() => {
-      document.querySelectorAll('.zoom-card').forEach((c) => {
-        c.style.viewTransitionName = '';
-      });
-    });
-  }
-
-  fallbackZoom(card) {
-    this.viewport.setAttribute('data-focal-plane', 'background');
-    card.setAttribute('data-expanded', 'true');
-    this.activeCard = card;
-  }
-
-  initLiveCapsule() {
-    const capsule = this.viewport.querySelector('.live-capsule');
-    if (!capsule) return;
-
-    capsule.addEventListener('click', () => {
-      const currentState = capsule.getAttribute('data-state');
-      const nextState = currentState === 'collapsed' ? 'expanded' : 'collapsed';
-      capsule.setAttribute('data-state', nextState);
-    });
-  }
-}
-
-```
+* Do not expand cards from the exact physical centre of the screen if the card originates from a corner or side column.
+* Do not unmount or rebuild slide DOM nodes during a transition; rebuilding nodes causes subpixel flicker on projection hardware.
+* Do not trigger multiple spatial movements at the same time; keep the audience focused on one primary transition vector.
 
 ---
 
-## 5. View Transition Styles (CSS)
+## 5. Focal View Transitions and Presentation Readability
 
-Add these rules to handle the radial scale along the pointer vector established in Section 4.
+### What to Do
 
-```css
-::view-transition-old(active-spatial-target),
-::view-transition-new(active-spatial-target) {
-  animation-duration: var(--duration-expand);
-  animation-timing-function: var(--ease-fluid);
-  transform-origin: var(--origin-x) var(--origin-y);
-}
+* Expand active reference files and diagrams until they fill roughly ninety percent of the visual canvas, maximising legible space.
+* Retain large typographic scales and strict monospace line heights on expanded code cards so syntax is readable from a distance.
+* Anchor the transition origin strictly to the presenter focus point to create a natural zoom effect.
+* Apply subtle deep shadows behind expanded cards to lift them physically above the blurred background deck.
 
-.zoom-card[data-expanded="true"] {
-  position: fixed;
-  inset: 5vh 5vw;
-  width: 90vw;
-  height: 90vh;
-  z-index: 50;
-  border-radius: var(--radius-tray);
-  background: #14171f;
-  border: var(--surface-stroke);
-  transform: translateZ(var(--plane-focus-z));
-  filter: blur(0px);
-}
+### What to Avoid
 
-```
+* Do not allow expanded cards to bleed off the edge of the television or projector screen.
+* Do not let dense instructional text scale down below eighteen pixels during presentation view.
+* Do not introduce rotation or tilt effects during stage transitions; maintain flat, legible projection planes.
 
 ---
 
-## 6. Compositing Constraints for Web Engines
+## 6. Compositing and Hardware Constraints
 
-* Limit simultaneous `backdrop-filter` declarations to two DOM nodes on screen at any time (the floating dock and the dynamic live capsule).
-* Set `pointer-events: none` on any element where `filter: blur()` exceeds `4px` to eliminate ghost touches on occluded planes.
-* Isolate transforms by declaring `will-change: transform` strictly on the moving node; drop `will-change` once transitions conclude.
+### What to Do
+
+* Restrict active backdrop diffusion filters to a maximum of two layers on screen simultaneously to sustain consistent sixty frames per second rendering.
+* Disable pointer interaction completely on blurred background layers to eliminate accidental inputs while a card is expanded.
+* Assign hardware acceleration hints strictly while an animation runs, clearing them immediately after the element settles into position.
+* Keep the stage fixed in place by suppressing browser pull-to-refresh and pinch-to-zoom at the window level.
+
+### What to Avoid
+
+* Do not leave hardware acceleration flags permanently enabled across all elements, as this wastes GPU texture memory.
+* Do not apply heavy blur filters to large off-screen elements that the audience cannot see.
+* Do not rely on continuous heavy CSS filters on low-power display hardware connected to secondary stage ports.

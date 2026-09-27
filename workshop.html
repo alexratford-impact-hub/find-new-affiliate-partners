@@ -13,34 +13,69 @@
 </head>
 
 <body>
-  <!-- Top Aurora Animated Accent Line -->
-  <div class="aurora-bar"></div>
+  <div class="viewport" id="workshop-viewport" data-focal-plane="focus">
+    <!-- Top Aurora Animated Accent Line -->
+    <div class="aurora-bar"></div>
 
-  <!-- Minimalist Projector Header -->
-  <header>
-    <div class="header-left">
-      <div class="brand-mark">
-        <img src="./design/Affilifest-2026-logo.png" alt="Affilifest" class="header-affilifest-logo">
-        <span class="header-affilifest-name">Affilifest</span>
-        <span class="header-badge-tag">Brand Huddle</span>
+    <!-- Floating Dynamic Live Status Capsule (Punch-hole aligned at top center) -->
+    <aside class="live-capsule" id="live-capsule" data-state="collapsed" aria-label="Active status pill">
+      <div class="capsule-compact">
+        <span class="status-indicator"></span>
+        <span class="status-label" id="capsule-label">Live Sync: Active</span>
       </div>
-      <div class="header-separator"></div>
-      <div class="step-pill" id="step-counter-pill">Step 0 of 5</div>
-      <div class="file-pill" id="file-path-pill">partner-discovery/</div>
-    </div>
-
-    <div class="header-right">
-      <div class="mode-pill slide-mode" id="mode-badge">Presentation Slide</div>
-      <div class="timer-pill" id="timer-box">⏱️ Coding Sprint: 00:00</div>
-      <div class="sync-status" id="sync-status-box">
-        <span class="sync-dot"></span>
-        <span id="sync-label">Instructor Console: Listening</span>
+      <div class="capsule-expanded-tray" aria-hidden="true" id="capsule-tray">
+        <div class="tray-content">
+          <div class="tray-header">
+            <span class="tray-title">Session Telemetry</span>
+            <span class="tray-badge" id="tray-mode-badge">Slide Mode</span>
+          </div>
+          <div class="tray-stats-row">
+            <div class="tray-stat-block">
+              <span class="tray-stat-val" id="tray-step-val">Step 0</span>
+              <span class="tray-stat-lbl">Active Stage</span>
+            </div>
+            <div class="tray-stat-block">
+              <span class="tray-stat-val" id="tray-preset-val">Boots UK</span>
+              <span class="tray-stat-lbl">Brand</span>
+            </div>
+            <div class="tray-stat-block">
+              <span class="tray-stat-val" id="tray-sync-val">Active</span>
+              <span class="tray-stat-lbl">Sync</span>
+            </div>
+          </div>
+          <div class="tray-action-row">
+            <button class="tray-btn" id="tray-btn-toggle-view" onclick="window.toggleSlideCodeMode()">Toggle View [S/C]</button>
+            <button class="tray-btn tray-btn-primary" onclick="window.advanceSlideOrChunk()">Next ➔</button>
+          </div>
+        </div>
       </div>
-    </div>
-  </header>
+    </aside>
 
-  <!-- Main Viewport: Slide Mode or Split Code Console -->
-  <main class="main-viewport">
+    <!-- Minimalist Projector Header -->
+    <header>
+      <div class="header-left">
+        <div class="brand-mark">
+          <img src="./design/Affilifest-2026-logo.png" alt="Affilifest" class="header-affilifest-logo">
+          <span class="header-affilifest-name">Affilifest</span>
+          <span class="header-badge-tag">Brand Huddle</span>
+        </div>
+        <div class="header-separator"></div>
+        <div class="step-pill" id="step-counter-pill">Step 0 of 5</div>
+        <div class="file-pill" id="file-path-pill">partner-discovery/</div>
+      </div>
+
+      <div class="header-right">
+        <div class="mode-pill slide-mode" id="mode-badge">Presentation Slide</div>
+        <div class="timer-pill" id="timer-box">⏱️ Coding Sprint: 00:00</div>
+        <div class="sync-status" id="sync-status-box">
+          <span class="sync-dot"></span>
+          <span id="sync-label">Instructor Console: Listening</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Continuous 2.5D Canvas: Content bleeds beneath docks -->
+    <main class="scene-canvas main-viewport" data-layer="canvas">
     <!-- View 1: 16:9 Slide Presentation Area (Depth-of-Field Staged) -->
     <div class="view-mode-container active" id="slide-view">
       <div class="slide-content-area" id="slide-content-area">
@@ -112,23 +147,39 @@
         </div>
       </div>
     </div>
-  </main>
+    </main>
 
-  <!-- Persistent Co-Branded Presentation Footer (72px) -->
-  <footer class="presentation-footer">
-    <div class="footer-impact-group">
-      <span class="footer-credit-text">Content supported by</span>
-      <img src="./design/impactcomlogo.webp" alt="impact.com" class="footer-logo-impact">
-    </div>
-    <div class="footer-affilifest-group">
-      <div class="footer-logo-affilifest" role="img" aria-label="Affilifest 2026"></div>
-      <div class="footer-divider"></div>
-      <div class="footer-affilifest-info">
-        <span class="footer-event-title">Brand Huddle</span>
-        <span class="footer-event-date">September 2026</span>
+    <!-- Detached Global Floating Navigation Island -->
+    <nav class="floating-dock" aria-label="Global navigation" id="floating-dock">
+      <div class="dock-housing">
+        <div class="pill-group">
+          <button class="pill-node" id="dock-btn-slide" data-active="true" onclick="window.setWorkshopMode('slide')">📊 Slide</button>
+          <button class="pill-node" id="dock-btn-code" data-active="false" onclick="window.setWorkshopMode('code')">💻 Code</button>
+        </div>
+        <button class="action-circle-node" id="dock-action-circle" aria-label="Advance step or code chunk" onclick="window.advanceSlideOrChunk()" title="Next (Space / →)">
+          <svg class="action-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
       </div>
-    </div>
-  </footer>
+    </nav>
+
+    <!-- Persistent Co-Branded Presentation Footer (72px) -->
+    <footer class="presentation-footer">
+      <div class="footer-impact-group">
+        <span class="footer-credit-text">Content supported by</span>
+        <img src="./design/impactcomlogo.webp" alt="impact.com" class="footer-logo-impact">
+      </div>
+      <div class="footer-affilifest-group">
+        <div class="footer-logo-affilifest" role="img" aria-label="Affilifest 2026"></div>
+        <div class="footer-divider"></div>
+        <div class="footer-affilifest-info">
+          <span class="footer-event-title">Brand Huddle</span>
+          <span class="footer-event-date">September 2026</span>
+        </div>
+      </div>
+    </footer>
+  </div>
 
   <!-- Modular Entry Script -->
   <script type="module" src="./src/workshop-main.js"></script>
