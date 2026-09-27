@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Backups and temporary files
+*.bak
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+
+# Tool-specific caches & local artifacts
+.playwright-mcp/
+.gemini/

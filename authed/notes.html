@@ -1,0 +1,2477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop Facilitator Console | notes.html</title>
+  <style>
+    :root {
+      --color-primary: #F5333F;
+      --color-accent: #298DDA;
+      --color-bg: #111418;
+      --color-surface: #1E232B;
+      --color-surface-high: #2A313C;
+      --color-border: #3A4452;
+      --color-text-main: #FFFFFF;
+      --color-text-dim: #94A3B8;
+      --color-warn: #F59E0B;
+      --color-success: #10B981;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, "Cascadia Code", Menlo, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text-main);
+      font-family: var(--font-sans);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Laptop Top Control Bar */
+    .top-bar {
+      background: var(--color-surface);
+      border-bottom: 2px solid var(--color-border);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sync-indicator {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-warn);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      padding: 3px 8px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .sync-indicator.connected {
+      color: var(--color-success);
+      background: rgba(16, 185, 129, 0.15);
+    }
+
+    .sync-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-warn);
+      transition: background 0.2s ease;
+    }
+
+    .sync-indicator.connected .sync-pulse {
+      background: var(--color-success);
+      box-shadow: 0 0 6px var(--color-success);
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Dual Timer Modules */
+    .timer-module {
+      display: flex;
+      flex-direction: column;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      gap: 2px;
+    }
+
+    .timer-meta-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: var(--color-text-dim);
+      text-transform: uppercase;
+    }
+
+    .timer-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .timer-readout {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.03em;
+    }
+
+    .timer-readout.master-clock {
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .timer-readout.sprint-clock {
+      color: #F59E0B;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .pacing-badge {
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .pacing-badge.pacing-ok {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+    }
+
+    .pacing-badge.pacing-behind {
+      background: rgba(239, 68, 68, 0.2);
+      color: #EF4444;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      animation: alertPulse 1.5s infinite;
+    }
+
+    .sprint-badge {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .sprint-badge.idle {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94A3B8;
+    }
+
+    .sprint-badge.running {
+      background: rgba(245, 158, 11, 0.2);
+      color: #F59E0B;
+    }
+
+    .btn-sprint {
+      background: #D97706;
+      border: 1px solid #F59E0B;
+      color: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-sprint:hover {
+      background: #B45309;
+    }
+
+    .btn-sprint.active {
+      background: #EF4444;
+      border-color: #F87171;
+      animation: sprintBtnPulse 1.5s infinite;
+    }
+
+    @keyframes sprintBtnPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 rgba(239, 68, 68, 0);
+      }
+
+      50% {
+        box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+      }
+    }
+
+    @keyframes alertPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    .btn-speedrun {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-dim);
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      font-weight: 700;
+    }
+
+    .btn-speedrun:hover {
+      border-color: #F59E0B;
+      color: #F59E0B;
+    }
+
+    .btn-speedrun.speedrun-active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #F59E0B;
+      color: #F59E0B;
+      font-weight: 800;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.25);
+    }
+
+    .btn-ctrl {
+      background: var(--color-surface-high);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-main);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-ctrl:hover {
+      border-color: var(--color-text-main);
+    }
+
+    .btn-ctrl.btn-icon {
+      padding: 3px 6px;
+      font-weight: 900;
+    }
+
+    .timer-readout.master-clock.amber-alert {
+      color: #F59E0B !important;
+      background: rgba(245, 158, 11, 0.15) !important;
+      border-color: #F59E0B !important;
+    }
+
+    .timer-readout.master-clock.red-alert {
+      color: #EF4444 !important;
+      background: rgba(239, 68, 68, 0.2) !important;
+      border-color: #EF4444 !important;
+      animation: alertPulse 1.5s infinite;
+    }
+
+    .preset-btn-group {
+      display: flex;
+      align-items: center;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 2px 6px;
+      gap: 4px;
+    }
+
+    .btn-preset {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--color-text-dim);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-preset:hover {
+      color: var(--color-text-main);
+      border-color: var(--color-border);
+    }
+
+    .btn-preset.active {
+      background: var(--color-accent);
+      color: #FFFFFF;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 8px rgba(41, 141, 218, 0.4);
+    }
+
+    .mode-toggle-group {
+      display: flex;
+      align-items: center;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .btn-mode {
+      background: transparent;
+      border: none;
+      color: var(--color-text-dim);
+      padding: 5px 11px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-mode:hover {
+      color: var(--color-text-main);
+    }
+
+    .btn-mode.active {
+      background: var(--color-accent);
+      color: #FFFFFF;
+      box-shadow: 0 0 8px rgba(41, 141, 218, 0.4);
+    }
+
+    .btn-reveal-next {
+      background: var(--color-primary);
+      border: 1px solid var(--color-primary);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.12s ease;
+      box-shadow: 0 0 10px rgba(245, 51, 63, 0.35);
+    }
+
+    .btn-reveal-next:hover {
+      background: var(--color-primary-hover);
+      box-shadow: 0 0 14px rgba(245, 51, 63, 0.55);
+    }
+
+    /* Split Dashboard */
+    .console-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Steps Panel (Left of Laptop) */
+    .steps-pane {
+      background: var(--color-surface);
+      border-right: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 10px;
+      gap: 6px;
+    }
+
+    .step-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.12s ease;
+    }
+
+    .step-card:hover {
+      border-color: var(--color-accent);
+    }
+
+    .step-card.active {
+      border-color: var(--color-primary);
+      border-left: 5px solid var(--color-primary);
+      background: #181C22;
+    }
+
+    .step-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .step-num {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--color-text-main);
+    }
+
+    .step-card.active .step-num {
+      color: var(--color-primary);
+    }
+
+    .step-meta {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--color-text-dim);
+    }
+
+    /* Live Prompt Cards (Right of Laptop) */
+    .prompts-pane {
+      padding: 16px 22px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .live-target-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .target-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--color-text-main);
+    }
+
+    .preset-selector-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .select-preset {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-main);
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    /* Facilitator Talk Track Cue Card (Full Visibility, No Scrollbars) */
+    .note-card {
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+    }
+
+    .note-cue {
+      background: rgba(41, 141, 218, 0.08);
+      border-left: 5px solid var(--color-accent);
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      transition: all 0.25s ease;
+    }
+
+    .note-cue .note-title {
+      color: var(--color-accent);
+    }
+
+    .note-cue.speedrun-active {
+      background: rgba(245, 158, 11, 0.12) !important;
+      border-left: 5px solid #F59E0B !important;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.15);
+    }
+
+    .note-cue.speedrun-active .note-title {
+      color: #F59E0B !important;
+    }
+
+    .note-title {
+      font-size: 11.5px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+    }
+
+    .note-body {
+      font-size: clamp(14.5px, 1.22vw, 17.5px);
+      line-height: 1.58;
+      color: #F8FAFC;
+      overflow-y: auto;
+      flex: 1;
+      scrollbar-width: thin;
+    }
+
+    .check-toggle-bar {
+      margin-top: 10px;
+      padding: 10px;
+      background: var(--color-surface);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Facilitator Stepper Bar */
+    .facilitator-stepper-bar {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .facilitator-stepper-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .substep-tabs-list {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+    }
+
+    .substep-tab {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-dim);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .substep-tab:hover {
+      border-color: var(--color-accent);
+      color: var(--color-text-main);
+    }
+
+    .substep-tab.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #FFFFFF;
+    }
+
+    .substep-tab.full-file.active {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: #FFFFFF;
+    }
+
+    .substep-nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .btn-substep-nav {
+      background: var(--color-surface-high);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-main);
+      font-size: 11.5px;
+      font-weight: 750;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.12s ease;
+    }
+
+    .btn-substep-nav:hover:not(:disabled) {
+      border-color: var(--color-text-main);
+      background: var(--color-border);
+    }
+
+    .btn-substep-nav:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .substep-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--color-surface-high);
+      padding-top: 8px;
+    }
+
+    .substep-title-badge {
+      font-size: 13px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .substep-sync-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-success);
+    }
+
+    .substep-code-preview {
+      background: #0D1014;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #7DD3FC;
+      line-height: 1.45;
+      max-height: 90px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    /* ==========================================================================
+       Hook-Chunk-Do-Commit (HCDC) & COM-B Architecture Tokens
+       ========================================================================== */
+    .btn-ledger {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38BDF8;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      font-weight: 750;
+    }
+
+    .btn-ledger:hover {
+      background: rgba(56, 189, 248, 0.22);
+      border-color: #38BDF8;
+      color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
+    /* COM-B Milestone Context Strip */
+    .milestone-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 11.5px;
+      flex-wrap: wrap;
+    }
+
+    .milestone-tag {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .milestone-goal {
+      color: #E2E8F0;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .milestone-goal strong {
+      color: #94A3B8;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .milestone-artifact {
+      margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #F59E0B;
+      background: rgba(245, 158, 11, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    /* HCDC 4-Phase Micro-Cycle Tab Switcher */
+    .hcdc-tabs-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 6px;
+    }
+
+    .hcdc-tab {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+
+    .hcdc-tab:hover {
+      border-color: var(--color-accent);
+      background: rgba(41, 141, 218, 0.08);
+    }
+
+    .hcdc-tab.active {
+      border-color: var(--color-accent);
+      background: rgba(41, 141, 218, 0.18);
+      box-shadow: 0 0 12px rgba(41, 141, 218, 0.25);
+    }
+
+    .hcdc-tab-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .hcdc-tab-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .hcdc-tab.active .hcdc-tab-title {
+      color: #38BDF8;
+    }
+
+    .hcdc-tab-duration {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: #94A3B8;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    .hcdc-tab-sub {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #94A3B8;
+      letter-spacing: 0.02em;
+    }
+
+    .hcdc-tab.active .hcdc-tab-sub {
+      color: #CBD5E1;
+    }
+
+    /* Stage Action High-Visibility Card */
+    .stage-action-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 51, 63, 0.08) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-left: 5px solid #F59E0B;
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .stage-action-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #F59E0B;
+    }
+
+    .stage-action-text {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #FEF3C7;
+      font-weight: 500;
+    }
+
+    .stage-action-btn-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 2px;
+      flex-wrap: wrap;
+    }
+
+    .stage-quick-btn {
+      background: var(--color-bg);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #FDE68A;
+      font-size: 11px;
+      font-weight: 750;
+      padding: 3px 9px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .stage-quick-btn:hover {
+      background: #F59E0B;
+      color: #000000;
+      border-color: #F59E0B;
+    }
+
+    /* 60M Masterclass Execution Ledger Modal */
+    .ledger-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    .ledger-modal-backdrop.open {
+      display: flex;
+    }
+
+    .ledger-modal {
+      background: #181D24;
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 980px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ledger-modal-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--color-surface);
+    }
+
+    .ledger-modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ledger-modal-close {
+      background: var(--color-surface-high);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-dim);
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ledger-modal-close:hover {
+      color: #FFFFFF;
+      border-color: #FFFFFF;
+    }
+
+    .ledger-modal-body {
+      padding: 20px 22px;
+    }
+
+    .ledger-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      margin-bottom: 18px;
+    }
+
+    .ledger-table th {
+      background: #0F1318;
+      color: #94A3B8;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      padding: 10px 12px;
+      border: 1px solid var(--color-border);
+      text-align: left;
+    }
+
+    .ledger-table td {
+      padding: 10px 12px;
+      border: 1px solid var(--color-border);
+      color: #F1F5F9;
+      line-height: 1.45;
+    }
+
+    .ledger-table tr:hover td {
+      background: rgba(56, 189, 248, 0.05);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 70-Minute Masterclass Execution Ledger Modal -->
+  <div class="ledger-modal-backdrop" id="ledger-modal-backdrop" onclick="if(event.target===this) toggleLedgerModal()">
+    <div class="ledger-modal">
+      <div class="ledger-modal-header">
+        <div class="ledger-modal-title">
+          <span>📋 70-Minute Masterclass Execution Ledger</span>
+          <span style="font-size:11px; font-weight:700; color:#38BDF8; background:rgba(56,189,248,0.12); padding:3px 8px; border-radius:4px;">COM-B Architecture</span>
+        </div>
+        <button class="ledger-modal-close" onclick="toggleLedgerModal()">&times;</button>
+      </div>
+      <div class="ledger-modal-body">
+        <div style="font-size:13px; color:#94A3B8; line-height:1.5; margin-bottom:14px;">
+          Each micro-cycle follows an identical cadence: a <strong>90-second operational hook</strong> exposing a failure mode (Motivation), a <strong>3-minute code demonstration</strong> (Capability), a <strong>4-to-5-minute local build sprint</strong> (Opportunity), and an <strong>intentional error-recovery drill</strong>.
+        </div>
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th style="width:115px;">Window</th>
+              <th>Milestone</th>
+              <th>Behavioural Goal (COM-B)</th>
+              <th style="width:90px;">Sprint</th>
+              <th>Core Artifact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="milestone-tag">00:00 - 05:00</span></td>
+              <td><strong>Room Settling &amp; AV Sync</strong></td>
+              <td>Seating, screen calibration, and BroadcastChannel sync check</td>
+              <td><span style="color:#94A3B8; font-weight:700;">-</span></td>
+              <td><code>Display &amp; Network Checks</code></td>
+            </tr>
+            <tr>
+              <td><span class="milestone-tag">05:00 - 13:00</span></td>
+              <td><strong>Step 0: AI Blind Spot &amp; Setup</strong></td>
+              <td>Overcome status quo bias; 4-question icebreaker &amp; scaffolding</td>
+              <td><span style="color:#F59E0B; font-weight:700;">3.5 mins</span></td>
+              <td><code>Desktop directories &amp; unhidden extensions</code></td>
+            </tr>
+            <tr>
+              <td><span class="milestone-tag">13:00 - 22:00</span></td>
+              <td><strong>Step 1: Commercial Guardrails &amp; Shield</strong></td>
+              <td>Loss aversion; eliminate low-intent voucher leakage</td>
+              <td><span style="color:#F59E0B; font-weight:700;">4 mins</span></td>
+              <td><code>references/brand.md</code></td>
+            </tr>
+            <tr>
+              <td><span class="milestone-tag">22:00 - 31:00</span></td>
+              <td><strong>Step 2: Deterministic EV Scoring</strong></td>
+              <td>Psychological capability; replace subjective ratings with geometric mean</td>
+              <td><span style="color:#F59E0B; font-weight:700;">4 mins</span></td>
+              <td><code>references/estimated_value.md</code></td>
+            </tr>
+            <tr>
+              <td><span class="milestone-tag">31:00 - 45:00</span></td>
+              <td><strong>Step 3: Dual-Engine Search Zoom Sequence</strong></td>
+              <td>Friction reduction; map genuine search behaviour (NeedScope + Heuristics)</td>
+              <td><span style="color:#F59E0B; font-weight:700;">5 mins</span></td>
+              <td><code>references/discovery.md</code></td>
+            </tr>
+            <tr>
+              <td><span class="milestone-tag">45:00 - 53:00</span></td>
+              <td><strong>Step 4: Master Controller &amp; HALT Gate</strong></td>
+              <td>Choice architecture; enforce mandatory governance breakpoint</td>
+              <td><span style="color:#F59E0B; font-weight:700;">4 mins</span></td>
+              <td><code>SKILL.md</code></td>
+            </tr>
+            <tr>
+              <td><span class="milestone-tag">53:00 - 60:00</span></td>
+              <td><strong>Step 5: Live Execution &amp; CRM Persistence</strong></td>
+              <td>Implementation intentions; form CRM ingestion habits</td>
+              <td><span style="color:#F59E0B; font-weight:700;">3 mins</span></td>
+              <td><code>run.md &amp; impact.com CSV</code></td>
+            </tr>
+            <tr>
+              <td><span class="milestone-tag">60:00 - 70:00</span></td>
+              <td><strong>Technical Q&amp;A &amp; Pipeline Audit</strong></td>
+              <td>Open floor; review CRM integration and partner recruitment workflows</td>
+              <td><span style="color:#94A3B8; font-weight:700;">-</span></td>
+              <td><code>Partner outreach pipeline</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="display:flex; justify-content:flex-end;">
+          <button class="btn-ctrl" onclick="toggleLedgerModal()">Close Ledger</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="top-bar">
+    <div class="brand-title">
+      <span style="color:var(--color-primary); font-weight:800;">Affilifest</span>
+      <span style="color:var(--color-text-dim);">/ Brand Huddle &bull; Facilitator Console</span>
+    </div>
+
+    <div class="controls-group">
+      <div class="sync-indicator" id="sync-box">
+        <div class="sync-pulse" id="sync-pulse"></div>
+        <span id="sync-label">Connecting...</span>
+      </div>
+
+      <!-- Dedicated Brand Preset Buttons -->
+      <div class="preset-btn-group">
+        <span style="font-size:10px; font-weight:800; color:var(--color-text-dim); text-transform:uppercase;">PRESET:</span>
+        <button class="btn-preset active" id="btn-preset-boots" onclick="selectBrandPreset('boots')">Boots UK</button>
+        <button class="btn-preset" id="btn-preset-argos" onclick="selectBrandPreset('argos')">Argos UK</button>
+        <button class="btn-preset" id="btn-preset-loveholidays" onclick="selectBrandPreset('loveholidays')">loveholidays</button>
+      </div>
+
+      <!-- Mode Toggle for Projector Screen -->
+      <div class="mode-toggle-group">
+        <button class="btn-mode active" id="btn-mode-slide" onclick="setFacilitatorMode('slide')"
+          title="Show Recap & Preview Slide (Key: S)">📊 Slide [S]</button>
+        <button class="btn-mode" id="btn-mode-code" onclick="setFacilitatorMode('code')"
+          title="Show Live Code Reveal (Key: C)">💻 Code [C]</button>
+      </div>
+
+      <!-- Timer 1: 70-Minute Master Session Clock with Pacing -->
+      <div class="timer-module master-module">
+        <div class="timer-meta-label">
+          <span>70M MASTERCLASS</span>
+          <span id="pacing-badge" class="pacing-badge pacing-ok">● ON TRACK</span>
+        </div>
+        <div class="timer-row">
+          <span class="timer-readout master-clock" id="master-timer-display">70:00</span>
+          <button class="btn-ctrl" onclick="toggleMasterClock()" id="master-clock-btn">Start</button>
+          <button class="btn-ctrl btn-icon" onclick="resetMasterClock()" title="Reset 70m Clock">↺</button>
+        </div>
+      </div>
+
+      <!-- Timer 2: Current Section Countdown Clock -->
+      <div class="timer-module section-module">
+        <div class="timer-meta-label">
+          <span id="section-timer-label">SECTION (SETUP)</span>
+          <span id="section-timer-badge" class="pacing-badge pacing-ok">REMAINING</span>
+        </div>
+        <div class="timer-row">
+          <span class="timer-readout section-clock" id="section-timer-display" style="color:#38BDF8;">08:00</span>
+          <button class="btn-ctrl btn-icon" onclick="resetSectionClock()" title="Reset Section Timer">↺</button>
+        </div>
+      </div>
+
+      <!-- Timer 3: Task Coding Sprint Timer with Start/Broadcast -->
+      <div class="timer-module sprint-module">
+        <div class="timer-meta-label">
+          <span>TASK SPRINT</span>
+          <span id="sprint-status-badge" class="sprint-badge idle">READY</span>
+        </div>
+        <div class="timer-row">
+          <span class="timer-readout sprint-clock" id="task-timer-display">03:30</span>
+          <button class="btn-sprint" onclick="toggleTaskSprint()" id="task-sprint-btn"
+            title="Start student coding sprint (broadcasts timer to code screen)">🚀 Start Coding</button>
+          <button class="btn-ctrl" onclick="addTaskSprintMinute()" title="Add 1 minute">+1m</button>
+          <button class="btn-ctrl btn-icon" onclick="resetTaskSprint()" title="Reset Sprint">↺</button>
+        </div>
+      </div>
+
+      <!-- 70M Masterclass Execution Ledger Button -->
+      <button class="btn-ledger" onclick="toggleLedgerModal()" title="View 70-Minute Masterclass Execution Ledger">
+        <span>📋 70M Ledger</span>
+      </button>
+
+      <!-- Speed-Run Script Toggle -->
+      <button class="btn-speedrun" id="btn-speedrun-toggle" onclick="toggleSpeedRunMode()"
+        title="Toggle condensed 15-second speaking script">
+        <span>⚡ Speed-Run:</span>
+        <strong id="speedrun-mode-label">AUTO</strong>
+      </button>
+    </div>
+  </div>
+
+  <div class="console-grid">
+    <!-- Steps Navigation on Laptop -->
+    <div class="steps-pane">
+      <div class="step-card active" id="card-setup" onclick="broadcastStep('setup')">
+        <div class="step-card-header">
+          <span class="step-num">0. Kickoff &amp; Setup</span>
+          <span class="step-meta">05:00 - 13:00 &bull; 3.5m Sprint</span>
+        </div>
+        <span class="step-meta">AI Blind Spot &amp; Scaffolding</span>
+      </div>
+
+      <div class="step-card" id="card-brand" onclick="broadcastStep('brand')">
+        <div class="step-card-header">
+          <span class="step-num">1. Commercial Guardrails</span>
+          <span class="step-meta">13:00 - 22:00 &bull; 4m Sprint</span>
+        </div>
+        <span class="step-meta">references/brand.md (Shield)</span>
+      </div>
+
+      <div class="step-card" id="card-math" onclick="broadcastStep('math')">
+        <div class="step-card-header">
+          <span class="step-num">2. Deterministic Scoring</span>
+          <span class="step-meta">22:00 - 31:00 &bull; 4m Sprint</span>
+        </div>
+        <span class="step-meta">references/estimated_value.md (EV)</span>
+      </div>
+
+      <div class="step-card" id="card-discovery" onclick="broadcastStep('discovery')">
+        <div class="step-card-header">
+          <span class="step-num">3. Dual-Engine Search</span>
+          <span class="step-meta">31:00 - 45:00 &bull; 5m Sprint</span>
+        </div>
+        <span class="step-meta">references/discovery.md (Zoom)</span>
+      </div>
+
+      <div class="step-card" id="card-skill" onclick="broadcastStep('skill')">
+        <div class="step-card-header">
+          <span class="step-num">4. Controller &amp; Pause Gate</span>
+          <span class="step-meta">45:00 - 53:00 &bull; 4m Sprint</span>
+        </div>
+        <span class="step-meta">SKILL.md (HALT Gate)</span>
+      </div>
+
+      <div class="step-card" id="card-run" onclick="broadcastStep('run')">
+        <div class="step-card-header">
+          <span class="step-num">5. Live Run &amp; Commit</span>
+          <span class="step-meta">53:00 - 60:00 &bull; 3m Sprint</span>
+        </div>
+        <span class="step-meta">run.md &amp; impact.com CSV</span>
+      </div>
+    </div>
+
+    <!-- Private Facilitator Prompts & Scripting -->
+    <div class="prompts-pane">
+      <div class="live-target-badge">
+        <div>
+          <span
+            style="font-size: 11px; font-weight: 800; color: var(--color-primary); text-transform: uppercase;">Active
+            Projection Target</span>
+          <div class="target-title" id="active-step-title">0. Kickoff &amp; Scaffold (00:00 - 10:00)</div>
+        </div>
+
+        <div class="preset-selector-box">
+          <span style="font-size: 12px; color: var(--color-text-dim);">Projector Preset:</span>
+          <select class="select-preset" onchange="broadcastPreset(this.value)">
+            <option value="boots">Boots UK</option>
+            <option value="argos">Argos</option>
+            <option value="loveholidays">loveholidays</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- COM-B Milestone Context Strip -->
+      <div class="milestone-strip" id="milestone-strip">
+        <span class="milestone-tag" id="milestone-window">00:00 - 10:00</span>
+        <span class="milestone-goal" id="milestone-goal"><strong>Goal:</strong> Overcome status quo bias; build local capability</span>
+        <span class="milestone-artifact" id="milestone-artifact">📦 Desktop directories &amp; unhidden extensions</span>
+      </div>
+
+      <!-- HCDC 4-Phase Micro-Cycle Tab Switcher -->
+      <div class="hcdc-tabs-bar" id="hcdc-tabs-bar">
+        <button class="hcdc-tab active" id="tab-phase-hook" onclick="setHcdcPhase('hook')">
+          <div class="hcdc-tab-top">
+            <span class="hcdc-tab-title">🪝 The Hook</span>
+            <span class="hcdc-tab-duration" id="badge-phase-hook">90s</span>
+          </div>
+          <span class="hcdc-tab-sub">Motivation &bull; Failure Mode</span>
+        </button>
+
+        <button class="hcdc-tab" id="tab-phase-chunk" onclick="setHcdcPhase('chunk')">
+          <div class="hcdc-tab-top">
+            <span class="hcdc-tab-title">🧩 The Chunk</span>
+            <span class="hcdc-tab-duration" id="badge-phase-chunk">3m</span>
+          </div>
+          <span class="hcdc-tab-sub">Capability &bull; Code Demo</span>
+        </button>
+
+        <button class="hcdc-tab" id="tab-phase-do" onclick="setHcdcPhase('do')">
+          <div class="hcdc-tab-top">
+            <span class="hcdc-tab-title">🛠️ The Do</span>
+            <span class="hcdc-tab-duration" id="badge-phase-do">3m Sprint</span>
+          </div>
+          <span class="hcdc-tab-sub">Opportunity &bull; Build</span>
+        </button>
+
+        <button class="hcdc-tab" id="tab-phase-error" onclick="setHcdcPhase('error')">
+          <div class="hcdc-tab-top">
+            <span class="hcdc-tab-title" id="title-phase-error">🛡️ Error Embrace</span>
+            <span class="hcdc-tab-duration" id="badge-phase-error">90s</span>
+          </div>
+          <span class="hcdc-tab-sub" id="sub-phase-error">Recovery Drill</span>
+        </button>
+      </div>
+
+      <!-- Stage Action High-Visibility Card -->
+      <div class="stage-action-card" id="stage-action-box">
+        <div class="stage-action-header">
+          <span>🎬 Facilitator Stage Action</span>
+          <span id="stage-action-phase-label" style="font-size:10px; color:#F59E0B;">THE HOOK</span>
+        </div>
+        <div class="stage-action-text" id="stage-action-text">
+          Project Slide Mode using [S]. Run the 4-Question Icebreaker, tallying hands as each question reveals on screen. Emphasise: Customers search to resolve uncertainty, not brand names.
+        </div>
+        <div class="stage-action-btn-row">
+          <button class="stage-quick-btn" onclick="setFacilitatorMode('slide')">📊 Project Slide [S]</button>
+          <button class="stage-quick-btn" onclick="setFacilitatorMode('code')">💻 Project Code [C]</button>
+          <button class="stage-quick-btn" onclick="toggleTaskSprint()">🚀 Start/Pause Sprint</button>
+        </div>
+      </div>
+
+      <!-- Sub-Step / Chunk Navigation Console (Active in Chunk phase) -->
+      <div class="facilitator-stepper-bar" id="chunk-stepper-container" style="display:none;">
+        <div class="facilitator-stepper-top">
+          <div class="substep-tabs-list" id="substep-tabs-list"></div>
+          <div class="substep-nav-buttons">
+            <button class="btn-substep-nav" id="btn-substep-prev" onclick="prevSpeakerSection()"
+              title="Previous Chunk (Key: [ or ←)">◀ Prev</button>
+            <button class="btn-reveal-next" id="btn-reveal-next" onclick="facilitatorRevealNext()"
+              title="Reveal Next Chunk (Key: Space or →)">⏩ Reveal Next Part [Space / →]</button>
+            <button class="btn-substep-nav" id="btn-substep-next" onclick="nextSpeakerSection()"
+              title="Next Chunk (Key: ])">Next ▶</button>
+          </div>
+        </div>
+
+        <div class="substep-header-row">
+          <div class="substep-title-badge" id="substep-title-badge">
+            <span>Part 1: Target Parameters</span>
+          </div>
+          <div class="substep-sync-label" id="substep-sync-label">
+            ● Projecting live to room
+          </div>
+        </div>
+
+        <div class="substep-code-preview" id="substep-code-preview"></div>
+      </div>
+
+      <!-- What to Say -->
+      <div class="note-card note-cue" id="note-cue-card">
+        <div class="note-title" style="display:flex; justify-content:space-between; align-items:center;">
+          <span id="note-say-heading">Say This to the Room (Verbal Script)</span>
+          <span id="say-mode-pill"
+            style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; background:rgba(41,141,218,0.2); color:var(--color-accent); transition:all 0.2s ease;">STANDARD
+            SCRIPT</span>
+        </div>
+        <div class="note-body" id="note-say">
+          "Let's take a quick pulse of the room. Look at the display. Question 1: Who uses AI tools weekly in their everyday workflow?..."
+        </div>
+      </div>
+
+      <!-- Toggle Complete on TV -->
+      <div class="check-toggle-bar">
+        <input type="checkbox" id="step-done-check" onchange="broadcastCheck(this.checked)"
+          style="width:18px; height:18px; cursor:pointer;">
+        <label for="step-done-check" style="font-size: 13px; font-weight: 700; cursor:pointer;">
+          Mark Step Completed on Main Projector Display
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       60-MINUTE MASTERCLASS EXECUTION LEDGER & HCDC DATA STRUCTURES
+       ========================================================================== */
+    const speakerData = {
+      setup: {
+        title: "0. Kickoff & Setup (05:00 - 13:00)",
+        window: "05:00 - 13:00",
+        milestone: "Step 0: AI Blind Spot & Setup",
+        goal: "Overcome status quo bias; 4-question icebreaker & scaffolding",
+        sprintTarget: "3.5 mins",
+        artifact: "Desktop directories & unhidden extensions",
+        hcdc: {
+          hook: {
+            time: "05:00 - 07:00",
+            duration: "90s",
+            tag: "The Operational Hook (Motivation)",
+            script: "Let's take a quick pulse of the room. Look at the display. Question 1: Who uses AI tools weekly in their everyday workflow? Hands up. Nearly the whole room raises their hand — about 90%. Question 2: Who has asked an AI tool to find affiliate partners or creators? About 60% of hands stay up. Question 3: Who actually recruited a top-performing partner from that search? Every single hand drops — 0%. Default prompts fail because they scrape search results brand-out. That surfaces voucher aggregators and coupon toolbars that already rank for your brand name plus 'discount'. Today we flip the architecture. Customers search to resolve uncertainty long before they select a retailer. We will build an autonomous skill on your machines that intercepts consumers where purchase decisions actually happen.",
+            speedScript: "1. Audience Pulse: ~90% use AI weekly, ~60% asked AI for partners, 0% recruited a winner.\n2. Brand-Out Trap: Default prompts scrape brand terms and surface coupon scrapers.\n3. Consumer-In Interception: High-intent buyers search to resolve uncertainty in the Messy Middle.\n4. Today: Build an autonomous skill on your laptop that intercepts high-margin purchase decisions.",
+            action: "Project Slide Mode using [S]. Advance through the 4-Question Icebreaker on keystroke [Space]. Tally audience hands as questions reveal, demonstrating that 0% recruit winners via default prompts."
+          },
+          chunk: {
+            time: "07:00 - 09:30",
+            duration: "2.5m",
+            tag: "Code Demonstration (Capability)",
+            script: "Watch my screen. Switch to Code Mode with [C]. We do not dump prompts into a single chat window. We ground the model in five local Markdown files. Look at the directory tree: partner-discovery on Desktop, a references subfolder, then brand.md, estimated_value.md, and discovery.md. In the root, SKILL.md and run.md. This local file structure gives the model deterministic boundaries.",
+            speedScript: "1. Switch to Code Mode with [C].\n2. Never dump prompts into a bare chat window; ground Claude in five local Markdown files.\n3. Directory tree: partner-discovery/ on Desktop, references/ (brand.md, estimated_value.md, discovery.md), and root (SKILL.md, run.md).\n4. Local file architecture enforces deterministic execution boundaries.",
+            action: "Press [C] to switch the projector to Code Mode. Stream Step 0.1 and 0.2 at 35 characters per second."
+          },
+          do: {
+            time: "09:30 - 12:00",
+            duration: "2.5m",
+            sprintSeconds: 210,
+            tag: "Local Build Sprint (Opportunity)",
+            script: "Three and a half minutes on the clock. Open your laptop. Create partner-discovery on your Desktop. Add the references subfolder. Create the five blank Markdown files. Start now.",
+            speedScript: "1. 3.5 minutes on the clock. Open laptops.\n2. Create partner-discovery on Desktop with references/ subfolder.\n3. Initialise 5 empty Markdown files: brand.md, estimated_value.md, discovery.md, SKILL.md, run.md.\n4. Build now.",
+            action: "Trigger the 3.5-minute sprint timer in the console. Walk the room to check that everyone creates the five files."
+          },
+          error: {
+            time: "12:00 - 13:00",
+            duration: "60s",
+            isCommit: false,
+            title: "The Error Embrace",
+            tag: "Intentional Error-Recovery Drill",
+            script: "Stop typing and look at my display. Windows and macOS hide file extensions by default. If your laptop hid them, you just created brand.md.txt. An AI model reading directory paths fails silently on mismatched extensions. Open File Explorer, select View, Show, and tick File name extensions. On macOS, open Finder Settings, Advanced, and tick Show all filename extensions. Open your terminal, change into references, and type dir or ls. Delete every hidden .txt suffix immediately.",
+            speedScript: "1. Extension Trap: Hidden extensions secretly create brand.md.txt, breaking LLM file reads.\n2. Windows: View -> Show -> File name extensions.\n3. macOS: Finder Settings -> Advanced -> Show all filename extensions.\n4. Terminal: run dir or ls inside references/ and delete any hidden .txt suffixes.",
+            action: "Project the extension verification commands on screen. Verify that attendees remove .txt before advancing to Step 1."
+          }
+        },
+        fullFileCode: `Desktop/partner-discovery/\n├── SKILL.md\n├── run.md\n└── references/\n    ├── brand.md\n    ├── estimated_value.md\n    └── discovery.md`,
+        parts: [
+          {
+            title: "Part 1: Create Root Directories",
+            say: "Create a folder named partner-discovery on your Desktop. Inside it, create a subfolder named references.",
+            speedSay: "1. Create partner-discovery on Desktop.\n2. Add references/ subfolder.",
+            code: `Desktop/\n└── partner-discovery/\n    └── references/`
+          },
+          {
+            title: "Part 2: Initialise Core Files",
+            say: "Create the five Markdown files: SKILL.md and run.md in the root; brand.md, estimated_value.md, and discovery.md inside references/.",
+            speedSay: "1. Root: SKILL.md, run.md.\n2. references/: brand.md, estimated_value.md, discovery.md.",
+            code: `Desktop/partner-discovery/\n├── SKILL.md\n├── run.md\n└── references/\n    ├── brand.md\n    ├── estimated_value.md\n    └── discovery.md`
+          }
+        ]
+      },
+
+      brand: {
+        title: "1. Commercial Guardrails (13:00 - 22:00)",
+        window: "13:00 - 22:00",
+        milestone: "Step 1: Commercial Guardrails & Shield",
+        goal: "Loss aversion; eliminate low-intent voucher leakage",
+        sprintTarget: "4 mins",
+        artifact: "references/brand.md",
+        hcdc: {
+          hook: {
+            time: "13:00 - 14:30",
+            duration: "90s",
+            tag: "The Operational Hook (Motivation)",
+            script: "Here is how affiliate budgets bleed margin: coupon toolbars intercept shoppers who are already in the checkout funnel, claiming commission on sales they did not create. When you run an unconstrained web search prompt, the model follows the path of least resistance and fills your list with those exact coupon scrapers. We stop that by building a Negative Shield in brand.md.",
+            speedScript: "1. Budget leakage: Coupon extensions hijack shoppers already at checkout, siphoning commission on non-incremental sales.\n2. AI failure: Unconstrained search prompts default to scraping coupon portals.\n3. Solution: Build an explicit Negative Shield in brand.md to disqualify voucher aggregators.",
+            action: "Project Step 1 in Slide Mode using [S]. Advance to Stage 1 to focus the Negative Shield card on the digital display. Emphasise that voucher scrapers and non-UK traffic are disqualified immediately."
+          },
+          chunk: {
+            time: "14:30 - 17:30",
+            duration: "3m",
+            tag: "Code Demonstration (Capability)",
+            script: "Look at the active brand preset on my display. Three blocks protect our commercial model. First, we lock the focus category to one vertical. If you write multiple categories, the model defaults to broad media portals. Second, we list direct competitor domains so the agent maps where rival shoppers compare products. Third, the Disqualifications block explicitly bans voucher aggregators, coupon extensions, cashback sites, and non-UK traffic.",
+            speedScript: "1. Three protective blocks in brand.md:\n2. Target Parameters: Lock to one single focus category (avoids media portal dilution).\n3. Competitor Baselines: Direct rivals to reverse-engineer discovery.\n4. Disqualifications: Hard negative shield banning voucher aggregators, extensions, cashback, non-UK traffic.",
+            action: "Switch to Code Mode using [C]. Stream the three code chunks of references/brand.md on the projector."
+          },
+          do: {
+            time: "17:30 - 21:00",
+            duration: "3.5m",
+            sprintSeconds: 240,
+            tag: "Local Build Sprint (Opportunity)",
+            script: "Four minutes on the clock. Open references/brand.md. Populate your target parameters, competitor benchmarks, and the disqualifications block for your active brand. Go.",
+            speedScript: "1. 4 minutes on the clock. Open references/brand.md.\n2. Populate target parameters, competitor baselines, and the negative disqualifications block.\n3. Lock focus to a single vertical.\n4. Build now.",
+            action: "Start the 4-minute sprint timer. Walk the room to inspect disqualification blocks."
+          },
+          error: {
+            time: "21:00 - 22:00",
+            duration: "60s",
+            isCommit: false,
+            title: "The Error Embrace",
+            tag: "Intentional Error-Recovery Drill",
+            script: "Check your category line. If you listed more than one vertical, delete the extras right now. When an agent searches across multiple categories simultaneously, its relevance scoring breaks down. Keep your scope locked to one vertical per run.",
+            speedScript: "1. Multi-Category Dilution Trap: Listing multiple verticals ruins relevance scoring.\n2. Command room: Delete extra categories immediately.\n3. Rule: Exactly one sharp vertical per discovery cycle.",
+            action: "Check attendees' screens for category dilution. Have two attendees state their single vertical."
+          }
+        },
+        fullFileCode: `# Target Parameters\n- Brand: Boots UK\n- Focus Category: Consumer Electronics & Personal Care\n- Commercial Model: CPA\n- Target AOV: £45\n- Target Territory: UK (Strict ASA compliance)\n\n# Competitor Baselines\n- currys.co.uk\n- lookfantastic.com\n\n# Disqualifications\n- Exclude voucher-code aggregator directories, coupon browser extensions, and cash-back scraping portals.\n- Exclude non-UK traffic sources.\n- Exclude direct retail brand competitors.`,
+        parts: [
+          {
+            title: "Part 1: Target Parameters",
+            say: "Write your brand parameters: Brand, Focus Category, Commercial Model, Target AOV, and Target Territory. Keep the category narrow.",
+            speedSay: "1. Define Brand, Focus Category, Commercial Model (CPA), Target AOV, and Territory.\n2. Lock scope to one category.",
+            code: `# Target Parameters\n- Brand: Boots UK\n- Focus Category: Consumer Electronics & Personal Care\n- Commercial Model: CPA\n- Target AOV: £45\n- Target Territory: UK (Strict ASA compliance)`
+          },
+          {
+            title: "Part 2: Competitor Baselines",
+            say: "Add two direct competitor domains. For Boots Electrical, use Currys and LOOKFANTASTIC. Do not list marketplaces like Amazon or eBay.",
+            speedSay: "1. Add two direct competitor domains.\n2. Avoid marketplaces like Amazon.",
+            code: `# Competitor Baselines\n- currys.co.uk\n- lookfantastic.com`
+          },
+          {
+            title: "Part 3: Negative Shield (Disqualifications)",
+            say: "The Disqualifications block protects your budget. Explicitly command the agent to exclude voucher aggregators, coupon extensions, cashback portals, and retail rivals.",
+            speedSay: "1. Explicitly ban voucher scrapers, coupon toolbars, and cashback portals.\n2. Prevents zero-incrementality candidates.",
+            code: `# Disqualifications\n- Exclude voucher-code aggregator directories, coupon browser extensions, and cash-back scraping portals.\n- Exclude non-UK traffic sources.\n- Exclude direct retail brand competitors.`
+          }
+        ]
+      },
+
+      math: {
+        title: "2. Deterministic Scoring (22:00 - 31:00)",
+        window: "22:00 - 31:00",
+        milestone: "Step 2: Deterministic EV Scoring",
+        goal: "Psychological capability; replace subjective ratings with geometric mean",
+        sprintTarget: "4 mins",
+        artifact: "references/estimated_value.md",
+        hcdc: {
+          hook: {
+            time: "22:00 - 23:30",
+            duration: "90s",
+            tag: "The Operational Hook (Motivation)",
+            script: "Most partnership teams use gut feel or simple addition to score affiliates. Simple addition fails. Think of this scoring engine as 'The Electronic Bouncer' enforcing 'The Zero Rule'. If a discount scraper has zero relevance, huge traffic, and affiliate links, an additive score gives it 0 plus 5 plus 5, approving it as a top partner. But under The Zero Rule, zero relevance collapses the entire score to exactly 0.00. Traffic without fit equals zero commission. We don't care how many millions of visitors a site has — if they aren't answering the customer's problem in your vertical, the electronic bouncer rejects them at the door.",
+            speedScript: "1. The Electronic Bouncer: Replaces gut feel with automated commercial gating.\n2. The Zero Rule: Traffic without fit equals zero commission. R(0) × S(5) × C(5) = 0.00.\n3. Additive math approves coupon scrapers; The Zero Rule knocks them out instantly.",
+            action: "Project Step 2 in Slide Mode using [S]. Demonstrate live slider normalisation on screen and explain how The Zero Rule collapses coupon scrapers to 0.00."
+          },
+          chunk: {
+            time: "23:30 - 26:30",
+            duration: "3m",
+            tag: "Code Demonstration (Capability)",
+            script: "Open references/estimated_value.md on screen. We assign raw weights: 0.4 for Relevance, 0.3 for Scale, and 0.3 for Commercial Fit. The file auto-normalises them to sum to 1.0. Then look at the scoring anchors from 0 to 5. Relevance requires solving customer need states. Scale checks real traffic. Commercial Fit checks for active monetisation. If a site is run by the NHS, a university, or a charity, Commercial Fit is 0. That rejects the domain with an auditable score of 0.00.",
+            speedScript: "1. Raw weights: Relevance (0.40), Scale (0.30), Commercial Fit (0.30) -> auto-normalised sum = 1.00.\n2. 0 to 5 scoring anchors: R answers NeedScope; S measures organic search authority; C measures active affiliate links.\n3. Automatic Knockout: NHS / Gov / Charities receive C = 0, collapsing score to 0.00.",
+            action: "Stream the weights, scoring anchors, and formula in Code Mode."
+          },
+          do: {
+            time: "26:30 - 30:00",
+            duration: "3.5m",
+            sprintSeconds: 240,
+            tag: "Local Build Sprint (Opportunity)",
+            script: "Four minutes on the clock. Open references/estimated_value.md. Add the weights, the normalisation equations, the 0-to-5 rubric, and the geometric mean formula. Build it now.",
+            speedScript: "1. 4 minutes on the clock. Open references/estimated_value.md.\n2. Configure raw weights, normalisation formula, 0-to-5 anchors, and EV geometric formula.\n3. Build now.",
+            action: "Start the 4-minute sprint timer. Verify that attendees do not hardcode broken decimal fractions."
+          },
+          error: {
+            time: "30:00 - 31:00",
+            duration: "60s",
+            isCommit: false,
+            title: "The Error Embrace",
+            tag: "Intentional Error-Recovery Drill",
+            script: "Look at your Commercial Fit rubric. What happens if the NHS or a government portal writes the best guide on eczema? Their Scale is 5. Their Relevance is 5. But they cannot accept commercial affiliate links. Their Commercial score is 0. If you give them a 1, you waste hours emailing public sector press offices. Ensure your rule scores public sector domains at C equals 0.",
+            speedScript: "1. The Non-Profit False Positive: NHS has Scale 5 and Relevance 5, but cannot run affiliate links.\n2. Set Commercial score to 0 -> instant 0.00 knockout.\n3. Eliminates wasted outreach to public sector press desks.",
+            action: "Confirm with the room that public sector and non-profit domains yield an immediate knockout."
+          }
+        },
+        fullFileCode: `# Metric Weights\n- raw_wR: 0.4\n- raw_wS: 0.3\n- raw_wC: 0.3\n\n# Normalisation\ntotal_W = raw_wR + raw_wS + raw_wC\n- wR = raw_wR / total_W\n- wS = raw_wS / total_W\n- wC = raw_wC / total_W\n\n# Scoring Rules (0 to 5)\nRelevance (R): 5 = Direct match answering NeedScope states; 3 = Adjacent category; 0 = Wrong vertical\nScale (S): 5 = Major national authority; 3 = Niche community forum; 0 = Dead domain\nCommercial Fit (C): 5 = Active affiliate links and buyer guides; 0 = NHS, government, or charity site\n\n# Final Score Formula\nEV = (R^wR) * (S^wS) * (C^wC)`,
+        parts: [
+          {
+            title: "Part 1: Weights & Auto-Normalisation",
+            say: "We set raw weights for Relevance (0.4), Scale (0.3), and Commercial Fit (0.3), then normalise them to sum to 1.0.",
+            speedSay: "1. Define raw weights: 0.4, 0.3, 0.3.\n2. Normalise: sum equals 1.0.",
+            code: `# Metric Weights\n- raw_wR: 0.4\n- raw_wS: 0.3\n- raw_wC: 0.3\n\n# Normalisation\ntotal_W = raw_wR + raw_wS + raw_wC\n- wR = raw_wR / total_W\n- wS = raw_wS / total_W\n- wC = raw_wC / total_W`
+          },
+          {
+            title: "Part 2: 0 to 5 Scoring Anchors",
+            say: "Define strict 0 to 5 anchors. Relevance requires problem-solving. Scale requires traffic authority. Commercial Fit requires active affiliate monetisation. Non-profits receive 0.",
+            speedSay: "1. R (0-5): Solves need states.\n2. S (0-5): Real authority.\n3. C (0-5): Active affiliate links; NHS/gov = 0.",
+            code: `# Scoring Rules (0 to 5)\nRelevance (R): 5 = Direct match answering NeedScope; 0 = Wrong vertical\nScale (S): 5 = National search authority; 0 = Inactive\nCommercial Fit (C): 5 = Active affiliate links; 0 = NHS / charity site`
+          },
+          {
+            title: "Part 3: Multiplicative EV Formula",
+            say: "Calculate score: EV = (R^wR) * (S^wS) * (C^wC). Any zero knocks the total score to 0.00 instantly.",
+            speedSay: "1. Formula: EV = (R^wR) * (S^wS) * (C^wC).\n2. Multiplicative zero-knockout eliminates false positives.",
+            code: `# Final Score Formula\nEV = (R^wR) * (S^wS) * (C^wC)`
+          }
+        ]
+      },
+
+      discovery: {
+        title: "3. Dual-Engine Search (31:00 - 45:00)",
+        window: "31:00 - 45:00",
+        milestone: "Step 3: Dual-Engine Query Loops",
+        goal: "Friction reduction; map genuine search behaviour (NeedScope + Heuristics)",
+        sprintTarget: "5 mins",
+        artifact: "references/discovery.md",
+        hcdc: {
+          hook: {
+            time: "31:00 - 33:00",
+            duration: "90s",
+            tag: "The Operational Hook (Motivation)",
+            script: "Look at the animated infinity loop on screen. This is Google's Messy Middle research. One in three buyers abandon a purchase because they get stuck in uncertainty between exploration and evaluation. They do not search for brand names during this loop; they search to resolve specific doubts. Our discovery file intercepts buyers at the exact moment they compare alternatives.",
+            speedScript: "1. The Confidence Gap: 1 in 3 shoppers abandon purchases because they get trapped in the Messy Middle.\n2. Shoppers search to resolve doubts, not for merchant brand names.\n3. Dual-engine search intercepts buyers at the moment of evaluation.",
+            action: "Display the animated Lemniscate SVG in Slide Mode using [S]. Point to the exploration and evaluation loops on the digital display."
+          },
+          chunk: {
+            time: "33:00 - 37:00",
+            duration: "4m",
+            tag: "Code Demonstration (Capability)",
+            script: "Open references/discovery.md. We build two query loops. Loop 1 uses Kantar's NeedScope model to capture exploratory searches using unbranded questions like 'what is the difference between [CAT_A] and [CAT_B]' and 'how do I choose between [SUB_CAT] for [CONTEXT]'. Loop 2 uses Google's Messy Middle cognitive heuristics to capture evaluation searches like 'what is the best rated reviews reddit' and 'who is the top recommended authority'. Then we set search rules commanding the model to ignore Reddit, YouTube, TikTok, and news sites so it extracts independent review desks.",
+            speedScript: "1. Loop 1 (Kantar NeedScope): Unbranded exploratory questions ('difference between X and Y').\n2. Loop 2 (Google Messy Middle): Evaluative cognitive heuristics ('best rated reviews', 'lab test').\n3. Guardrails: Filter out Reddit, YouTube, TikTok, news sites; extract independent review desks.",
+            action: "Switch to Code Mode using [C]. Stream the NeedScope stems, Messy Middle heuristics, and search instructions."
+          },
+          do: {
+            time: "37:00 - 42:30",
+            duration: "5.5m",
+            sprintSeconds: 300,
+            tag: "Local Build Sprint (Opportunity)",
+            script: "Five minutes on the clock. Open references/discovery.md. Choose three NeedScope exploratory queries and three Messy Middle evaluative queries for your vertical. Add the instruction to exclude social networks and broadsheet newspapers. Build it now.",
+            speedScript: "1. 5 minutes on the clock. Open references/discovery.md.\n2. Select 3 NeedScope exploratory queries and 3 Messy Middle evaluative queries for your vertical.\n3. Add negative exclusion for social platforms and news portals.\n4. Build now.",
+            action: "Trigger the 5-minute sprint clock. Walk the room to check that no queries contain brand names."
+          },
+          error: {
+            time: "42:30 - 45:00",
+            duration: "2.5m",
+            isCommit: false,
+            title: "The Error Embrace",
+            tag: "Intentional Error-Recovery Drill",
+            script: "Check your search queries. Did anyone write their brand name into a query stem? If your query says 'best Boots electric shaver', delete Boots. Searching for your own brand only finds partners you already have. We want unbranded searches that reveal independent testing labs and creator hubs.",
+            speedScript: "1. Brand Bias Trap: Including brand names only finds existing partners.\n2. Fix: Delete brand names immediately from query stems.\n3. Unbranded queries surface net-new creator hubs and specialist testing desks.",
+            action: "Have one attendee read out an unbranded NeedScope query to verify proper formatting."
+          }
+        },
+        fullFileCode: `# Buyer Search Steps\n\n## 1. Loop 1: Expansive Foraging (Kantar NeedScope)\n- Educate Me: "what is the difference between [CAT_A] and [CAT_B]"\n- Help Me: "how do I choose between [SUB_CAT] for [CONTEXT]"\n- Reassure Me: "how can I tell if [CAT] is good quality"\n\n## 2. Loop 2: Reductive Evaluation (Google Messy Middle)\n- Authority Bias: "who is the top recommended [CAT] [AUTHORITY]"\n- Social Proof: "what's the best rated [CAT] reviews reddit"\n- Category Heuristics: "who has the best [HEURISTIC] [CAT]"\n\n## 3. Search Rules for the AI\n1. Pick 3 NeedScope and 3 Messy Middle queries.\n2. Ignore Reddit, YouTube, TikTok, and national news sites.\n3. Pass candidate domains to SKILL.md.`,
+        parts: [
+          {
+            title: "Part 1: Loop 1: Kantar NeedScope Stems",
+            say: "Configure Loop 1 using Kantar NeedScope states. Consumers explore problems before selecting products. Write unbranded question stems.",
+            speedSay: "1. Loop 1: NeedScope emotional states (Educate, Help, Reassure).\n2. Write unbranded query stems.",
+            code: `## 1. Loop 1: Expansive Foraging (Kantar NeedScope)\n- Educate Me: "what is the difference between [CAT_A] and [CAT_B]"\n- Help Me: "how do I choose between [SUB_CAT] for [CONTEXT]"\n- Reassure Me: "how can I tell if [CAT] is good quality"`
+          },
+          {
+            title: "Part 2: Loop 2: Behavioural Decision Heuristics",
+            say: "Configure Loop 2 using Google's Messy Middle cognitive heuristics: Authority Bias, Social Proof, and Category Heuristics.",
+            speedSay: "1. Loop 2: Cognitive heuristics (Authority, Social proof, Category heuristics).\n2. Locates independent testing desks.",
+            code: `## 2. Loop 2: Reductive Evaluation (Google Messy Middle)\n- Authority Bias: "who is the top recommended [CAT] [AUTHORITY]"\n- Social Proof: "what's the best rated [CAT] reviews reddit"\n- Category Heuristics: "who has the best [HEURISTIC] [CAT]"`
+          },
+          {
+            title: "Part 3: Search Exclusion Rules",
+            say: "Add instructions commanding the model to execute 3 exploratory and 3 evaluative queries, and skip Reddit, YouTube, and news portals.",
+            speedSay: "1. Command model to run 3 of each query loop.\n2. Disqualify Reddit, YouTube, TikTok, and general news.\n3. Pass candidate domains to SKILL.md.",
+            code: `## 3. Search Rules for the AI\n1. Run 3 NeedScope queries and 3 Messy Middle queries.\n2. Identify independent websites ranking on page one of Google.\n3. Exclude social networks and general news publications.\n4. Pass candidate domains to SKILL.md.`
+          }
+        ]
+      },
+
+      skill: {
+        title: "4. Master Controller (45:00 - 53:00)",
+        window: "45:00 - 53:00",
+        milestone: "Step 4: Master Controller & Pause Gate",
+        goal: "Choice architecture; enforce governance breakpoint",
+        sprintTarget: "4 mins",
+        artifact: "SKILL.md",
+        hcdc: {
+          hook: {
+            time: "45:00 - 46:30",
+            duration: "90s",
+            tag: "The Operational Hook (Motivation)",
+            script: "An autonomous agent without a pause gate is a commercial liability. If you tell an AI model to find partners without stopping it, it searches Google immediately and builds an outreach list full of affiliates you already work with. You end up emailing current partners to pitch them on joining your programme. We prevent that with a hard breakpoint in Step 1.",
+            speedScript: "1. The Cannibalisation Threat: An unconstrained agent immediately pitches publishers already under active contract.\n2. Governance Gate: Step 1 HALT breakpoint stops autonomous search before it executes.\n3. Client protection: 100% net-new partner recruitment.",
+            action: "Display Slide Mode using [S]. Highlight the Step 1 HALT gate card and system directive on the digital display."
+          },
+          chunk: {
+            time: "46:30 - 49:00",
+            duration: "2.5m",
+            tag: "Code Demonstration (Capability)",
+            script: "Look at SKILL.md on my display. The YAML frontmatter names the skill and binds our three reference files. Step 1 commands the model to ingest the references, calculate the metric weights, and halt immediately. It must ask for your current partner domains before firing a single search query. Step 2 searches, screens against disqualifications, and calculates EV. Step 3 outputs an auditable Markdown table showing the full formula. Step 4 formats a clean CSV export.",
+            speedScript: "1. YAML header: binds brand.md, estimated_value.md, and discovery.md.\n2. Step 1 HALT Gate: Calculate weights and STOP immediately until human submits exclusions.\n3. Step 2: Screen disqualifications and calculate geometric mean EV.\n4. Step 3 & 4: Auditable Markdown table and CRM CSV export block.",
+            action: "Switch to Code Mode using [C]. Stream the four parts of SKILL.md."
+          },
+          do: {
+            time: "49:00 - 52:00",
+            duration: "3m",
+            sprintSeconds: 240,
+            tag: "Local Build Sprint (Opportunity)",
+            script: "Four minutes on the clock. Create SKILL.md in your root folder. Paste the YAML frontmatter, the Step 1 HALT gate, the screening pipeline, the Markdown table layout, and the CSV schema. Go.",
+            speedScript: "1. 4 minutes on the clock. Open SKILL.md in root folder.\n2. Configure YAML header, Step 1 HALT gate, screening pipeline, table layout, and CSV schema.\n3. Build now.",
+            action: "Trigger the 4-minute sprint clock. Verify that attendees place SKILL.md in the root folder, not inside references/."
+          },
+          error: {
+            time: "52:00 - 53:00",
+            duration: "60s",
+            isCommit: false,
+            title: "The Error Embrace",
+            tag: "Intentional Error-Recovery Drill",
+            script: "When you run this skill, if your model begins searching without pausing for exclusions, your prompt failed. Stop the model immediately and reply: 'Follow Step 1: stop and request my exclusion list first.' Never accept an agent that skips its governance gates.",
+            speedScript: "1. The Runaway Agent: If LLM searches without halting, your prompt failed.\n2. Intervention: Reply 'Follow Step 1: stop and request my exclusion list first.'\n3. Never accept an agent that bypasses governance gates.",
+            action: "Highlight the yellow Claude protocol box on the projector display. Command attendees to enforce the HALT gate before web searches execute."
+          }
+        },
+        fullFileCode: `---\nname: affiliate-partner-discovery\ndescription: Discovers, screens, and ranks prospective affiliate partners using deterministic Expected Value scoring and root-domain exclusion.\n---\n\n# Reference Files\n- references/brand.md\n- references/estimated_value.md\n- references/discovery.md\n\n# Instructions for the AI\n## Step 1: Read the Rules and Stop\n1. Read all files in the /references/ folder.\n2. Calculate the normalised metric weights from references/estimated_value.md.\n3. STOP immediately. Do not search.\n4. Output: "Rules loaded for [Brand Name]. Paste existing partner domains to exclude, or type NONE."\n5. Wait for the user response before continuing.\n\n## Step 2: Search, Screen, and Score\n1. Target: Identify 5 qualifying partners.\n2. Execute the search queries defined in references/discovery.md.\n3. Check candidate domains against exclusions and brand disqualifications.\n4. Score Relevance, Scale, and Commercial Fit from 0 to 5.\n5. Calculate EV = (R^wR) * (S^wS) * (C^wC).\n6. Continue until you have 5 clean partners scoring EV > 0.00.\n\n## Step 3: Show the Results Table\nDisplay a Markdown table showing Partner Name, Domain, R, S, C, Calculation Breakdown, and Final EV Score.\n\n## Step 4: Export for Tracking\nExport a CSV code block using this schema:\ndomain,date_added`,
+        parts: [
+          {
+            title: "Part 1: Frontmatter & References",
+            say: "Write the YAML frontmatter and reference paths at the top of SKILL.md. This binds the local rule files.",
+            speedSay: "1. Write YAML header: name: affiliate-partner-discovery.\n2. Bind relative paths to the 3 reference files.",
+            code: `---\nname: affiliate-partner-discovery\ndescription: Discovers, screens, and ranks prospective affiliate partners.\n---\n\n# Reference Files\n- references/brand.md\n- references/estimated_value.md\n- references/discovery.md`
+          },
+          {
+            title: "Part 2: Step 1: Mandatory HALT Gate",
+            say: "Write Step 1: Read the Rules and Stop. The model must ingest references, calculate weights, and stop execution until human provides exclusions.",
+            speedSay: "1. Step 1 HALT Gate: Ingest rules, calculate weights, STOP.\n2. Demand partner exclusion list before searching.",
+            code: `## Step 1: Read the Rules and Stop\n1. Read all files inside the /references/ folder.\n2. Calculate normalised metric weights.\n3. STOP immediately. Do not search.\n4. Output: "Rules loaded for [Brand Name]. Paste existing partner domains to exclude, or type NONE."\n5. Wait for user input.`
+          },
+          {
+            title: "Part 3: Step 2: Search, Screen, Score",
+            say: "Configure Step 2: Search, filter exclusions, check disqualifications, score R, S, C, and compute multiplicative EV.",
+            speedSay: "1. Execute searches from discovery.md.\n2. Screen out exclusions and disqualifications.\n3. Compute multiplicative EV; iterate until 5 clean partners score > 0.00.",
+            code: `## Step 2: Search, Screen, and Score\n1. Target: 5 qualifying partners.\n2. Run queries from references/discovery.md.\n3. Screen exclusions & brand disqualifications.\n4. Score R, S, C (0 to 5); compute EV = (R^wR)*(S^wS)*(C^wC).\n5. Iterate until 5 valid partners score EV > 0.00.`
+          },
+          {
+            title: "Part 4: Steps 3 & 4: Table and CSV Export",
+            say: "Configure Steps 3 and 4: Markdown results table showing formula breakdown, followed by a clean CSV block for CRM ingestion.",
+            speedSay: "1. Auditable Markdown table with full formula calculation.\n2. CSV export block (domain,date_added) for impact.com ingestion.",
+            code: `## Step 3: Show the Results Table\n| Partner Name | Domain | R | S | C | Formula Calculation | Final EV | Search Angle |\n\n## Step 4: Export for Tracking\n\`\`\`csv\ndomain,date_added\n\`\`\``
+          }
+        ]
+      },
+
+      run: {
+        title: "5. Live Run & Commit (53:00 - 60:00)",
+        window: "53:00 - 60:00",
+        milestone: "Step 5: Live Execution & CRM Persistence",
+        goal: "Implementation intentions; form CRM habits",
+        sprintTarget: "3 mins",
+        artifact: "run.md & impact.com CSV",
+        hcdc: {
+          hook: {
+            time: "53:00 - 54:00",
+            duration: "60s",
+            tag: "The Operational Hook (Motivation)",
+            script: "Now we deploy the skill. Notice how simple run.md is: two lines commanding the model to execute affiliate-partner-discovery and start at Step 1. In Stage 1, we inspect the live candidate ledger and verify the zero-knockout. In Stage 2, we review the Commercial Impact Scorecard: replacing 20 hours a month of manual brand-out scraping with under 90 seconds of autonomous consumer-in discovery.",
+            speedScript: "1. Runtime Trigger: 2 lines commanding the model to execute affiliate-partner-discovery starting at Step 1.\n2. Stage 1: Verified Candidate Ledger and 1-click CRM export.\n3. Stage 2: Commercial Impact Scorecard: 20 hours of manual work collapsed into <90 seconds of high-margin discovery.",
+            action: "Advance through Slide Mode with [Space]. Show the Runtime Trigger (Stage 0), Audited Recruitment Ledger (Stage 1), and Commercial Impact Scorecard & Next Steps (Stage 2)."
+          },
+          chunk: {
+            time: "54:00 - 55:00",
+            duration: "60s",
+            tag: "Code Demonstration (Capability)",
+            script: "Open run.md. Copy the two lines. Paste them into Claude, Gemini Enterprise, or ChatGPT. Watch the model read the references, calculate the weights, and halt to ask for your exclusion list.",
+            speedScript: "1. Open run.md and copy the trigger prompt.\n2. Paste into Claude, Gemini Enterprise, or ChatGPT.\n3. Watch model ingest rules and pause at Step 1.",
+            action: "Switch to Code Mode using [C]. Stream run.md on screen."
+          },
+          do: {
+            time: "55:00 - 58:00",
+            duration: "3m",
+            sprintSeconds: 180,
+            tag: "Local Build Sprint (Opportunity)",
+            script: "Three minutes on the clock. Paste the prompt from run.md into your AI workspace. Confirm the model halts at Step 1. Type 'NONE' or paste sample domains. Let it run and examine your scored candidate table. Go.",
+            speedScript: "1. 3 minutes on the clock.\n2. Paste prompt from run.md into AI workspace.\n3. Verify model halts at Step 1. Type NONE or paste sample domains.\n4. Review scored candidate table and CSV block.",
+            action: "Trigger the 3-minute sprint clock. Walk the room to check that every model stopped at Step 1 and produced the Markdown table."
+          },
+          error: {
+            time: "58:00 - 60:00",
+            duration: "2m",
+            isCommit: true,
+            title: "The Commit & Commercial Finale",
+            tag: "Commercial Payoff & Operational Next Steps",
+            script: "Look at your final Commercial Impact Scorecard on screen. You have shifted from 15–20 hours a month of manual Google searching that surfaces margin-diluting coupon toolbars, to under 90 seconds of autonomous execution that intercepts buyers during active evaluation. Your operational next steps are simple: 1) One-click CSV export directly into your impact.com recruitment tracking; 2) Load this directory into Claude Projects as a permanent team asset; 3) Run weekly vertical sprints to discover fresh creators whenever new product categories launch.",
+            speedScript: "1. The Payoff: 15-20 hours of manual scraping collapsed into <90 seconds of high-margin discovery.\n2. Next Step 1: 1-click CSV export into impact.com CRM tracking.\n3. Next Step 2: Persist partner-discovery/ in Claude Projects as a permanent asset.\n4. Next Step 3: Run weekly sprints for fresh category launches.",
+            action: "Have attendees copy their CSV block into a local file. Close the session on the final Commercial Impact Scorecard."
+          }
+        },
+        fullFileCode: `# Execution Trigger\nExecute skill affiliate-partner-discovery from SKILL.md using the /references/ folder.\nStart with Step 1 (Read the Rules and Stop).`,
+        parts: [
+          {
+            title: "Part 1: Runtime Trigger",
+            say: "Open run.md. This is your runtime prompt. Keep it short. It tells the model to execute SKILL.md and enforces the Step 1 pause.",
+            speedSay: "1. Copy trigger prompt from run.md.\n2. Paste into LLM interface directly.",
+            code: `# Execution Trigger\nExecute skill affiliate-partner-discovery from SKILL.md using the /references/ folder.\nStart with Step 1 (Read the Rules and Stop).`
+          },
+          {
+            title: "Part 2: Gate Verification & Export",
+            say: "Check your screen: Confirm model stopped at Step 1 requesting exclusions. Type 'NONE' or enter domains. Examine scored table and CSV block.",
+            speedSay: "1. Confirm Step 1 halt.\n2. Submit exclusions or 'NONE'.\n3. Review scored table & CSV.",
+            code: `Expected Output:\n"Rules loaded for Boots UK. Paste existing partner domains to exclude (one per line) or type NONE to proceed."`
+          }
+        ]
+      }
+    };
+
+    let activeKey = 'setup';
+    let activeHcdcPhase = 'hook'; // 'hook' | 'chunk' | 'do' | 'error'
+    let activeSectionIndex = 0; // 0..N-1 for chunks, or 'all' for full file
+    let isRemoteCsvOpen = false;
+
+    /* MODAL HANDLER: 60M Masterclass Execution Ledger */
+    function toggleLedgerModal() {
+      const modal = document.getElementById('ledger-modal-backdrop');
+      if (modal) {
+        modal.classList.toggle('open');
+      }
+    }
+
+    /* RESILIENT DUAL-CHANNEL BROADCASTER */
+    let channel = null;
+    try {
+      channel = new BroadcastChannel('workshop_sync');
+      channel.onmessage = (event) => handleRemoteCommand(event.data);
+    } catch (e) {
+      console.warn('BroadcastChannel unavailable; relying on localStorage sync:', e);
+    }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'workshop_remote_sync' && e.newValue) {
+        try {
+          const data = JSON.parse(e.newValue);
+          handleRemoteCommand(data);
+        } catch (err) { }
+      }
+    });
+
+    const processedMsgIds = new Set();
+    function handleRemoteCommand(data) {
+      if (!data || !data.action) return;
+
+      if (data.msgId) {
+        if (processedMsgIds.has(data.msgId)) return;
+        processedMsgIds.add(data.msgId);
+        if (processedMsgIds.size > 200) {
+          const first = processedMsgIds.values().next().value;
+          processedMsgIds.delete(first);
+        }
+      }
+
+      if (data.action === 'HEARTBEAT_PONG') {
+        markConnected();
+      }
+    }
+
+    let heartbeatWatchdog = null;
+    function markConnected() {
+      const box = document.getElementById('sync-box');
+      const label = document.getElementById('sync-label');
+      if (box) box.classList.add('connected');
+      if (label) label.innerText = 'Connected to workshop.html';
+
+      if (heartbeatWatchdog) clearTimeout(heartbeatWatchdog);
+      heartbeatWatchdog = setTimeout(() => {
+        if (box) box.classList.remove('connected');
+        if (label) label.innerText = 'Searching for workshop.html...';
+      }, 6500);
+    }
+
+    function broadcast(data) {
+      const payload = {
+        ...data,
+        msgId: Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        timestamp: Date.now()
+      };
+      if (channel) {
+        try { channel.postMessage(payload); } catch (e) { }
+      }
+      try {
+        localStorage.setItem('workshop_remote_sync', JSON.stringify(payload));
+      } catch (e) { }
+    }
+
+    // Send heartbeat ping every 2.5 seconds
+    setInterval(() => {
+      broadcast({ action: 'HEARTBEAT_PING', sender: 'notes' });
+    }, 2500);
+
+    /* HCDC MICRO-CYCLE PHASE SWITCHER */
+    function setHcdcPhase(phase, syncProjector = true) {
+      activeHcdcPhase = phase;
+      const step = speakerData[activeKey] || speakerData.setup;
+      const hcdc = step.hcdc || {};
+      const current = hcdc[phase] || hcdc.hook;
+
+      // Update Phase Tab Buttons
+      ['hook', 'chunk', 'do', 'error'].forEach(p => {
+        const btn = document.getElementById(`tab-phase-${p}`);
+        if (btn) btn.classList.toggle('active', p === phase);
+      });
+
+      // Update Stage Action Card
+      const actionTextEl = document.getElementById('stage-action-text');
+      const actionLabelEl = document.getElementById('stage-action-phase-label');
+      if (actionTextEl) actionTextEl.innerText = current.action || "";
+      if (actionLabelEl) actionLabelEl.innerText = (current.title || phase).toUpperCase();
+
+      // Show / Hide Chunk Subparts Stepper
+      const chunkStepper = document.getElementById('chunk-stepper-container');
+      if (chunkStepper) {
+        chunkStepper.style.display = (phase === 'chunk') ? 'flex' : 'none';
+      }
+
+      // Update Verbal Script Box
+      const sayHeading = document.getElementById('note-say-heading');
+      const sayEl = document.getElementById('note-say');
+      const speedRunActive = isEffectiveSpeedRun();
+
+      if (sayHeading) {
+        const phaseName = (phase === 'error') ? (current.title || 'The Error Embrace') : (phase === 'hook' ? 'The Hook' : (phase === 'chunk' ? 'The Chunk' : 'The Do'));
+        sayHeading.innerText = `Say This to the Room (${phaseName} Script)`;
+      }
+
+      const scriptContent = (speedRunActive && current.speedScript) ? current.speedScript : current.script;
+      if (sayEl) sayEl.innerHTML = formatSayContent(scriptContent);
+
+      // Synchronize Projector Screen Mode
+      if (syncProjector) {
+        if (phase === 'hook') {
+          setFacilitatorMode('slide');
+        } else if (phase === 'chunk') {
+          setFacilitatorMode('code');
+          renderSpeakerStepper();
+        } else if (phase === 'do') {
+          setFacilitatorMode('code');
+        }
+      }
+    }
+
+    /* FACILITATOR CHUNK STEPPER CONTROLLER */
+    function renderSpeakerStepper() {
+      const step = speakerData[activeKey];
+      if (!step) return;
+
+      const parts = step.parts || [];
+      const tabsList = document.getElementById('substep-tabs-list');
+      if (!tabsList) return;
+
+      let html = '';
+      parts.forEach((p, idx) => {
+        const isActive = activeSectionIndex === idx;
+        html += `
+          <button class="substep-tab ${isActive ? 'active' : ''}" onclick="setSpeakerSection(${idx})">
+            <span>Part ${idx + 1}</span>
+          </button>
+        `;
+      });
+
+      const isAllActive = activeSectionIndex === 'all';
+      html += `
+        <button class="substep-tab full-file ${isAllActive ? 'active' : ''}" onclick="setSpeakerSection('all')">
+          <span>📄 Full File</span>
+        </button>
+      `;
+
+      tabsList.innerHTML = html;
+
+      // Update Nav Buttons
+      const prevBtn = document.getElementById('btn-substep-prev');
+      const nextBtn = document.getElementById('btn-substep-next');
+      if (prevBtn) prevBtn.disabled = activeSectionIndex === 0;
+      if (nextBtn) nextBtn.disabled = activeSectionIndex === 'all';
+
+      // Update Badge & Code Preview
+      const badgeEl = document.getElementById('substep-title-badge');
+      const syncLabelEl = document.getElementById('substep-sync-label');
+      const previewEl = document.getElementById('substep-code-preview');
+
+      if (previewEl) previewEl.style.display = (activeHcdcPhase === 'chunk') ? 'block' : 'none';
+
+      if (activeSectionIndex === 'all') {
+        if (badgeEl) badgeEl.innerHTML = `<span>📄 Complete Assembled File</span>`;
+        if (syncLabelEl) syncLabelEl.innerText = `● Projecting complete file`;
+        if (previewEl) previewEl.innerText = step.fullFileCode || "";
+      } else {
+        const currentPart = parts[activeSectionIndex] || parts[0];
+        if (badgeEl) badgeEl.innerHTML = `<span>${currentPart.title}</span>`;
+        if (syncLabelEl) syncLabelEl.innerText = `● Projecting Part ${activeSectionIndex + 1} of ${parts.length}`;
+        if (previewEl) previewEl.innerText = currentPart.code || "";
+      }
+    }
+
+    let facilitatorMode = 'slide';
+
+    function setFacilitatorMode(mode) {
+      facilitatorMode = mode;
+      const slideBtn = document.getElementById('btn-mode-slide');
+      const codeBtn = document.getElementById('btn-mode-code');
+      if (slideBtn) slideBtn.classList.toggle('active', mode === 'slide');
+      if (codeBtn) codeBtn.classList.toggle('active', mode === 'code');
+
+      broadcast({ action: 'SET_MODE', mode: mode });
+    }
+
+    let activeSlideStage = 0;
+    const stepSlideStageCounts = {
+      setup: 3,
+      brand: 2,
+      math: 3,
+      discovery: 3,
+      skill: 3,
+      run: 3
+    };
+
+    function facilitatorRevealNext() {
+      // Step through HCDC phases
+      if (activeHcdcPhase === 'hook') {
+        const totalStages = stepSlideStageCounts[activeKey] || 4;
+        if (activeSlideStage < totalStages - 1) {
+          activeSlideStage++;
+          broadcast({ action: 'SET_SLIDE_STAGE', stage: activeSlideStage, key: activeKey });
+        } else {
+          setHcdcPhase('chunk');
+          setSpeakerSection(0);
+        }
+      } else if (activeHcdcPhase === 'chunk') {
+        const step = speakerData[activeKey];
+        const parts = step ? (step.parts || []) : [];
+        if (activeSectionIndex < parts.length - 1) {
+          setSpeakerSection(activeSectionIndex + 1);
+        } else if (activeSectionIndex === parts.length - 1) {
+          setSpeakerSection('all');
+        } else {
+          setHcdcPhase('do');
+        }
+      } else if (activeHcdcPhase === 'do') {
+        setHcdcPhase('error');
+      } else if (activeHcdcPhase === 'error') {
+        // Advance to next step in curriculum
+        const stepKeys = ['setup', 'brand', 'math', 'discovery', 'skill', 'run'];
+        const curIdx = stepKeys.indexOf(activeKey);
+        if (curIdx < stepKeys.length - 1) {
+          broadcastStep(stepKeys[curIdx + 1]);
+        }
+      }
+    }
+
+    function setSpeakerSection(idx) {
+      activeSectionIndex = idx;
+      facilitatorMode = 'code';
+      const slideBtn = document.getElementById('btn-mode-slide');
+      const codeBtn = document.getElementById('btn-mode-code');
+      if (slideBtn) slideBtn.classList.remove('active');
+      if (codeBtn) codeBtn.classList.add('active');
+
+      renderSpeakerStepper();
+      broadcast({ action: 'SET_MODE', mode: 'code' });
+      broadcast({ action: 'SET_SECTION', index: idx, key: activeKey });
+    }
+
+    function nextSpeakerSection() {
+      const step = speakerData[activeKey];
+      if (!step) return;
+      const parts = step.parts || [];
+      if (activeSectionIndex === 'all') return;
+      if (activeSectionIndex < parts.length - 1) {
+        setSpeakerSection(activeSectionIndex + 1);
+      } else {
+        setSpeakerSection('all');
+      }
+    }
+
+    function prevSpeakerSection() {
+      const step = speakerData[activeKey];
+      if (!step) return;
+      const parts = step.parts || [];
+      if (activeSectionIndex === 'all') {
+        setSpeakerSection(parts.length - 1);
+      } else if (activeSectionIndex > 0) {
+        setSpeakerSection(activeSectionIndex - 1);
+      } else {
+        setHcdcPhase('hook');
+        const totalStages = stepSlideStageCounts[activeKey] || 4;
+        activeSlideStage = totalStages - 1;
+        broadcast({ action: 'SET_SLIDE_STAGE', stage: activeSlideStage, key: activeKey });
+      }
+    }
+
+    function broadcastStep(key) {
+      activeKey = key;
+      activeSectionIndex = 0;
+      activeSlideStage = 0;
+      activeHcdcPhase = 'hook';
+      facilitatorMode = 'slide';
+
+      const slideBtn = document.getElementById('btn-mode-slide');
+      const codeBtn = document.getElementById('btn-mode-code');
+      if (slideBtn) slideBtn.classList.add('active');
+      if (codeBtn) codeBtn.classList.remove('active');
+
+      // Update local laptop UI cards
+      document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+      const activeCard = document.getElementById('card-' + key);
+      if (activeCard) activeCard.classList.add('active');
+
+      const step = speakerData[key] || speakerData.setup;
+      document.getElementById('active-step-title').innerText = step.title;
+
+      // Update Milestone Strip
+      const winEl = document.getElementById('milestone-window');
+      const goalEl = document.getElementById('milestone-goal');
+      const artEl = document.getElementById('milestone-artifact');
+      if (winEl) winEl.innerText = step.window;
+      if (goalEl) goalEl.innerHTML = `<strong>Goal:</strong> ${step.goal}`;
+      if (artEl) artEl.innerText = `📦 ${step.artifact}`;
+
+      // Update HCDC Phase 4 Label (Error Embrace for 0-4, The Commit for 5)
+      const phase4Title = document.getElementById('title-phase-error');
+      const phase4Sub = document.getElementById('sub-phase-error');
+      const isCommit = (key === 'run');
+      if (phase4Title) phase4Title.innerText = isCommit ? '🎯 The Commit' : '🛡️ Error Embrace';
+      if (phase4Sub) phase4Sub.innerText = isCommit ? 'CRM Habits' : 'Recovery Drill';
+
+      // Update duration pills in HCDC tabs
+      const hcdc = step.hcdc || {};
+      const hookDur = document.getElementById('badge-phase-hook');
+      const chunkDur = document.getElementById('badge-phase-chunk');
+      const doDur = document.getElementById('badge-phase-do');
+      const errDur = document.getElementById('badge-phase-error');
+      if (hookDur && hcdc.hook) hookDur.innerText = hcdc.hook.duration;
+      if (chunkDur && hcdc.chunk) chunkDur.innerText = hcdc.chunk.duration;
+      if (doDur && hcdc.do) doDur.innerText = `${Math.round(hcdc.do.sprintSeconds / 60)}m Sprint`;
+      if (errDur && hcdc.error) errDur.innerText = hcdc.error.duration;
+
+      const checkEl = document.getElementById('step-done-check');
+      checkEl.checked = !!stepCompletionState[key];
+
+      initTaskSprintForStep(key);
+      initSectionClock(key);
+      calculatePacing();
+      setHcdcPhase('hook', false);
+
+      // Broadcast to Projector (loads step and enters Slide Mode)
+      broadcast({ action: 'LOAD_STEP', key: key });
+      broadcast({ action: 'SET_MODE', mode: 'slide' });
+    }
+
+    function selectBrandPreset(preset) {
+      document.querySelectorAll('.btn-preset').forEach(btn => {
+        btn.classList.toggle('active', btn.id === `btn-preset-${preset}`);
+      });
+      const sel = document.querySelector('.select-preset');
+      if (sel) sel.value = preset;
+      broadcast({ action: 'APPLY_PRESET', preset: preset });
+    }
+
+    function broadcastPreset(presetKey) {
+      selectBrandPreset(presetKey);
+    }
+
+    const stepCompletionState = {};
+    function broadcastCheck(isChecked) {
+      stepCompletionState[activeKey] = isChecked;
+      broadcast({ action: 'TOGGLE_CHECK', key: activeKey, checked: isChecked });
+    }
+
+    /* STEP SCHEDULE MILESTONES & PACING TARGETS (Exact 70-Minute Masterclass Ledger) */
+    const stepMilestones = {
+      setup: { targetElapsed: 780, sprintDuration: 210, label: "05:00 - 13:00" },
+      brand: { targetElapsed: 1320, sprintDuration: 240, label: "13:00 - 22:00" },
+      math: { targetElapsed: 1860, sprintDuration: 240, label: "22:00 - 31:00" },
+      discovery: { targetElapsed: 2700, sprintDuration: 300, label: "31:00 - 45:00" },
+      skill: { targetElapsed: 3180, sprintDuration: 240, label: "45:00 - 53:00" },
+      run: { targetElapsed: 3600, sprintDuration: 180, label: "53:00 - 60:00" }
+    };
+
+    /* SPEED-RUN SPEAKING SCRIPT ENGINE (Dynamic script condensation) */
+    let speedRunSetting = 'AUTO'; // 'AUTO' | 'FORCE_ON' | 'FORCE_OFF'
+    let isAutoOvertime = false;
+
+    function isEffectiveSpeedRun() {
+      if (speedRunSetting === 'FORCE_ON') return true;
+      if (speedRunSetting === 'FORCE_OFF') return false;
+      return isAutoOvertime;
+    }
+
+    function toggleSpeedRunMode() {
+      if (speedRunSetting === 'AUTO') {
+        speedRunSetting = 'FORCE_ON';
+      } else if (speedRunSetting === 'FORCE_ON') {
+        speedRunSetting = 'FORCE_OFF';
+      } else {
+        speedRunSetting = 'AUTO';
+      }
+      updateSpeedRunUI();
+      renderSpeakerStepper();
+    }
+
+    function updateSpeedRunUI() {
+      const btn = document.getElementById('btn-speedrun-toggle');
+      const label = document.getElementById('speedrun-mode-label');
+      const cueCard = document.getElementById('note-cue-card');
+      const sayPill = document.getElementById('say-mode-pill');
+      const active = isEffectiveSpeedRun();
+
+      if (btn) btn.classList.toggle('speedrun-active', active);
+      if (cueCard) cueCard.classList.toggle('speedrun-active', active);
+
+      if (label) {
+        if (speedRunSetting === 'FORCE_ON') {
+          label.innerHTML = `<span style="color:#F59E0B;">ON (15s)</span>`;
+        } else if (speedRunSetting === 'FORCE_OFF') {
+          label.innerText = `OFF (45s)`;
+        } else {
+          label.innerHTML = active
+            ? `<span style="color:#EF4444;">AUTO: BEHIND (+15s)</span>`
+            : `AUTO: ON TRACK`;
+        }
+      }
+
+      if (sayPill) {
+        if (active) {
+          sayPill.style.background = 'rgba(245, 158, 11, 0.2)';
+          sayPill.style.color = '#F59E0B';
+          sayPill.innerText = '⚡ SPEED-RUN (15s PUNCHY POINTS)';
+        } else {
+          sayPill.style.background = 'rgba(41, 141, 218, 0.2)';
+          sayPill.style.color = 'var(--color-accent)';
+          sayPill.innerText = 'STANDARD SCRIPT (45s)';
+        }
+      }
+    }
+
+    function formatSayContent(text) {
+      if (!text) return "";
+      if (text.includes('•') || text.includes('\n- ') || text.includes('\n• ')) {
+        const lines = text.split('\n');
+        return lines.map(line => {
+          const trimmed = line.trim();
+          if (trimmed.startsWith('•') || trimmed.startsWith('-')) {
+            const clean = trimmed.replace(/^[•\-]\s*/, '');
+            const formatted = clean.replace(/^([^:]+):/, '<strong style="color:#FFFFFF;">$1:</strong>');
+            return `<div style="display:flex; align-items:flex-start; gap:8px; margin-bottom:6px;">
+              <span style="color:#F59E0B; font-weight:800; line-height:1.4;">•</span>
+              <span style="line-height:1.45;">${formatted}</span>
+            </div>`;
+          }
+          return `<p style="margin-bottom:6px; line-height:1.45;">${line}</p>`;
+        }).join('');
+      }
+      return text;
+    }
+
+    /* TIMER 1: 70-MINUTE MASTER CLOCK (Ensures facilitator sticks strictly within 70m) */
+    let masterClockSeconds = 4200;
+    let masterClockHandle = null;
+
+    function renderMasterClock() {
+      const m = Math.floor(masterClockSeconds / 60);
+      const s = masterClockSeconds % 60;
+      const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      const disp = document.getElementById('master-timer-display');
+      if (disp) {
+        disp.innerText = timeStr;
+        disp.classList.remove('amber-alert', 'red-alert');
+        if (masterClockSeconds <= 300) {
+          disp.classList.add('red-alert');
+        } else if (masterClockSeconds <= 900) {
+          disp.classList.add('amber-alert');
+        }
+      }
+      calculatePacing();
+    }
+
+    /* TIMER 2: CURRENT SECTION COUNTDOWN (Counts down allocated time for active step) */
+    const sectionDurations = {
+      setup: 480,     // 8m (05:00 - 13:00)
+      brand: 540,     // 9m (13:00 - 22:00)
+      math: 540,      // 9m (22:00 - 31:00)
+      discovery: 840,  // 14m (31:00 - 45:00)
+      skill: 480,     // 8m (45:00 - 53:00)
+      run: 420        // 7m (53:00 - 60:00)
+    };
+
+    let sectionClockSeconds = 480;
+
+    function initSectionClock(key) {
+      sectionClockSeconds = sectionDurations[key] || 480;
+      renderSectionClock();
+    }
+
+    function renderSectionClock() {
+      const isOver = sectionClockSeconds < 0;
+      const abs = Math.abs(sectionClockSeconds);
+      const m = Math.floor(abs / 60);
+      const s = abs % 60;
+      const timeStr = `${isOver ? '+' : ''}${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+      const disp = document.getElementById('section-timer-display');
+      const label = document.getElementById('section-timer-label');
+      const badge = document.getElementById('section-timer-badge');
+
+      if (label) label.innerText = `SECTION (${(activeKey || 'SETUP').toUpperCase()})`;
+      if (disp) {
+        disp.innerText = timeStr;
+        disp.style.color = isOver ? '#EF4444' : '#38BDF8';
+      }
+      if (badge) {
+        if (isOver) {
+          badge.className = 'pacing-badge pacing-behind';
+          badge.innerText = 'OVERTIME';
+        } else {
+          badge.className = 'pacing-badge pacing-ok';
+          badge.innerText = 'REMAINING';
+        }
+      }
+    }
+
+    function resetSectionClock() {
+      initSectionClock(activeKey);
+    }
+
+    function toggleMasterClock() {
+      const btn = document.getElementById('master-clock-btn');
+      if (masterClockHandle) {
+        clearInterval(masterClockHandle);
+        masterClockHandle = null;
+        if (btn) btn.innerText = 'Start';
+      } else {
+        masterClockHandle = setInterval(() => {
+          if (masterClockSeconds > 0) {
+            masterClockSeconds--;
+            renderMasterClock();
+            sectionClockSeconds--;
+            renderSectionClock();
+          } else {
+            clearInterval(masterClockHandle);
+            masterClockHandle = null;
+            if (btn) btn.innerText = 'Done';
+          }
+        }, 1000);
+        if (btn) btn.innerText = 'Pause';
+      }
+    }
+
+    function resetMasterClock() {
+      if (masterClockHandle) {
+        clearInterval(masterClockHandle);
+        masterClockHandle = null;
+        const btn = document.getElementById('master-clock-btn');
+        if (btn) btn.innerText = 'Start';
+      }
+      masterClockSeconds = 4200;
+      renderMasterClock();
+      initSectionClock(activeKey);
+    }
+
+    function calculatePacing() {
+      const elapsed = 4200 - masterClockSeconds;
+      const target = stepMilestones[activeKey] ? stepMilestones[activeKey].targetElapsed : 4200;
+      const diff = elapsed - target;
+
+      const badge = document.getElementById('pacing-badge');
+      const wasOvertime = isAutoOvertime;
+
+      if (diff > 0) {
+        const overMin = Math.ceil(diff / 60);
+        if (badge) {
+          badge.className = 'pacing-badge pacing-behind';
+          badge.innerText = `⚠️ Behind (+${overMin}m)`;
+        }
+        isAutoOvertime = true;
+      } else {
+        const bufferMin = Math.floor(Math.abs(diff) / 60);
+        if (badge) {
+          badge.className = 'pacing-badge pacing-ok';
+          badge.innerText = `● On Track (${bufferMin}m buf)`;
+        }
+        isAutoOvertime = false;
+      }
+
+      updateSpeedRunUI();
+      // If overtime state changed dynamically, re-render teleprompter so talking points cut down immediately
+      if (wasOvertime !== isAutoOvertime && speedRunSetting === 'AUTO') {
+        renderSpeakerStepper();
+      }
+    }
+
+    /* TIMER 2: TASK CODING SPRINT TIMER (Broadcasts to Code Screen) */
+    let taskSprintSeconds = 210;
+    let taskSprintHandle = null;
+    let taskSprintRunning = false;
+
+    function initTaskSprintForStep(key) {
+      if (taskSprintRunning) return; // preserve active sprint across step peek
+      const duration = stepMilestones[key] ? stepMilestones[key].sprintDuration : 210;
+      taskSprintSeconds = duration;
+      renderTaskSprint();
+    }
+
+    function renderTaskSprint() {
+      const m = Math.floor(taskSprintSeconds / 60);
+      const s = taskSprintSeconds % 60;
+      const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      const disp = document.getElementById('task-timer-display');
+      if (disp) disp.innerText = timeStr;
+
+      if (taskSprintRunning) {
+        broadcast({ action: 'CODING_SPRINT', active: true, timeStr: timeStr, seconds: taskSprintSeconds });
+      }
+    }
+
+    function toggleTaskSprint() {
+      const btn = document.getElementById('task-sprint-btn');
+      const badge = document.getElementById('sprint-status-badge');
+
+      if (taskSprintRunning) {
+        // Pause sprint
+        taskSprintRunning = false;
+        clearInterval(taskSprintHandle);
+        taskSprintHandle = null;
+        if (btn) {
+          btn.innerText = '▶ Resume Sprint';
+          btn.classList.remove('active');
+        }
+        if (badge) {
+          badge.className = 'sprint-badge idle';
+          badge.innerText = 'PAUSED';
+        }
+        broadcast({ action: 'CODING_SPRINT', active: false });
+      } else {
+        // Start sprint: automatically switch projector to Code Mode so students see the task code!
+        setFacilitatorMode('code');
+
+        taskSprintRunning = true;
+        if (btn) {
+          btn.innerText = '⏸️ Pause Sprint';
+          btn.classList.add('active');
+        }
+        if (badge) {
+          badge.className = 'sprint-badge running';
+          badge.innerText = '● CODING';
+        }
+        renderTaskSprint();
+
+        taskSprintHandle = setInterval(() => {
+          if (taskSprintSeconds > 0) {
+            taskSprintSeconds--;
+            renderTaskSprint();
+          } else {
+            clearInterval(taskSprintHandle);
+            taskSprintHandle = null;
+            taskSprintRunning = false;
+            if (btn) {
+              btn.innerText = '🏁 Time Up!';
+              btn.classList.remove('active');
+            }
+            if (badge) {
+              badge.className = 'sprint-badge idle';
+              badge.innerText = 'FINISHED';
+            }
+            broadcast({ action: 'CODING_SPRINT', active: false });
+          }
+        }, 1000);
+      }
+    }
+
+    function addTaskSprintMinute() {
+      taskSprintSeconds += 60;
+      renderTaskSprint();
+    }
+
+    function resetTaskSprint() {
+      if (taskSprintHandle) {
+        clearInterval(taskSprintHandle);
+        taskSprintHandle = null;
+      }
+      taskSprintRunning = false;
+      const btn = document.getElementById('task-sprint-btn');
+      const badge = document.getElementById('sprint-status-badge');
+      if (btn) {
+        btn.innerText = '🚀 Start Coding';
+        btn.classList.remove('active');
+      }
+      if (badge) {
+        badge.className = 'sprint-badge idle';
+        badge.innerText = 'READY';
+      }
+      const duration = stepMilestones[activeKey] ? stepMilestones[activeKey].sprintDuration : 210;
+      taskSprintSeconds = duration;
+      renderTaskSprint();
+      broadcast({ action: 'CODING_SPRINT', active: false });
+    }
+
+    function playChime() {
+      // Presentation audio invariant: Strictly silent across all modes
+    }
+
+    // Keyboard Shortcuts for Facilitator Navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+        return;
+      }
+      if (e.key === 's' || e.key === 'S') {
+        setFacilitatorMode(facilitatorMode === 'slide' ? 'code' : 'slide');
+      } else if (e.key === 'c' || e.key === 'C') {
+        setFacilitatorMode('code');
+      } else if (e.key === ' ' || e.key === 'ArrowRight' || e.key === ']') {
+        e.preventDefault();
+        facilitatorRevealNext();
+      } else if (e.key === '[' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSpeakerSection();
+      } else if (['1', '2', '3', '4', '5', '6'].includes(e.key)) {
+        const stepKeys = ['setup', 'brand', 'math', 'discovery', 'skill', 'run'];
+        const num = parseInt(e.key, 10);
+        if (num >= 1 && num <= 6) {
+          e.preventDefault();
+          broadcastStep(stepKeys[num - 1]);
+        }
+      }
+    });
+
+    // Initialize default view and announce
+    renderMasterClock();
+    broadcastStep('setup');
+  </script>
+</body>
+
+</html>
