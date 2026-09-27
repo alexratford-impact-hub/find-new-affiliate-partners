@@ -69,6 +69,8 @@ export class SpatialZoomEngine {
     }
 
     card.style.viewTransitionName = 'active-spatial-target';
+    card.style.willChange = 'transform, opacity';
+    this.viewport.style.willChange = 'filter';
 
     const transition = document.startViewTransition(() => {
       this.viewport.setAttribute('data-focal-plane', 'background');
@@ -78,6 +80,8 @@ export class SpatialZoomEngine {
 
     transition.finished.finally(() => {
       card.style.viewTransitionName = '';
+      card.style.willChange = '';
+      this.viewport.style.willChange = '';
     });
   }
 
@@ -86,10 +90,14 @@ export class SpatialZoomEngine {
 
     const target = this.activeCard;
     target.style.viewTransitionName = 'active-spatial-target';
+    target.style.willChange = 'transform, opacity';
+    this.viewport.style.willChange = 'filter';
 
     if (!document.startViewTransition) {
       this.viewport.setAttribute('data-focal-plane', 'focus');
       target.removeAttribute('data-expanded');
+      target.style.willChange = '';
+      this.viewport.style.willChange = '';
       this.activeCard = null;
       return;
     }
@@ -103,7 +111,9 @@ export class SpatialZoomEngine {
     transition.finished.finally(() => {
       document.querySelectorAll('.zoom-card, .stage-card').forEach((c) => {
         c.style.viewTransitionName = '';
+        c.style.willChange = '';
       });
+      this.viewport.style.willChange = '';
     });
   }
 

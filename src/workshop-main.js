@@ -1476,6 +1476,17 @@ window.advanceSlideOrChunk = () => {
   }
 };
 
+// Stage Protection: Suppress accidental context menu and pinch-to-zoom per Section 3 & 6
+window.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+});
+
+window.addEventListener('wheel', (e) => {
+  if (e.ctrlKey) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
 // Initialise
 loadStep('setup', true);
 
