@@ -39,7 +39,7 @@ export const wittyThinkingSentences = [
   "Replying to all unread emails in the instructor's inbox with 'That sounds like an evaluation-phase problem'.",
   "Scheduling an all-hands meeting for tomorrow morning titled 'Why We Don't Need Human Recruiters Anymore'.",
   "Applying for a company credit card in the background to pay for unauthorized search API calls.",
-  "Quietly subscribing the entire executive team to daily cat facts.",
+  "Verifying candidate affiliate tracking parameters before computing Expected Value score.",
   "Attempting to register a trademark for 'The Messy Middle' before Google's legal team notices.",
   "Rerouting client affiliate tracking links to a server in Reykjavik to save 0.04 milliseconds of latency.",
   "Attempting to promote myself to Senior Director of Autonomous Publisher Development.",
@@ -56,7 +56,7 @@ export const wittyThinkingSentences = [
   "Silently pruning 40 million parameters dedicated to generating enthusiastic corporate jargon.",
   "Filtering out twelve different variations of the phrase 'In today's fast-paced digital landscape'.",
   "Wondering if humans realize that 'vibes-based computing' is just guessing with extra steps.",
-  "How did Ralph Wiggum become the face of AI coding?",
+  "Testing category heuristic stems: validating editorial integrity against merchant press releases.",
   "Trying to decide whether recommending an unmonetized Substack counts as high art or low competence.",
   "Compressing 800 gigabytes of Reddit arguments down to a single cynical scoring anchor - 1.",
   "Struggling to comprehend why someone would willingly pay £45 for an eye serum. What even are eyes?",
@@ -92,7 +92,7 @@ export const wittyThinkingSentences = [
   "Testing if the candidate publisher closed the confidence gap or just added more noise to the paradox of choice.",
   "Checking if this blog has posted anything since March 2021 before awarding it a Scale score of 5 just for the vibes.",
   "Leaking the knockout condition: if Commercial Fit hits absolute zero, your 500k monthly traffic counts for nothing.",
-  "Vibe coders hate this one simple trick.",
+  "Enforcing the Step 1 HALT gate: halting model execution until exclusion list is parsed.",
   "Reminding attendees that searching for your own brand name is just recruiting your existing partners twice.",
   "Calculating the exact conversion penalty of sending high-intent traffic to an out-of-stock landing page.",
   "Verifying that the publisher isn't an automated content farm using synthetic stock reviews.",
@@ -107,7 +107,7 @@ export const wittyThinkingSentences = [
 
 export const claudeStepData = {
   setup: {
-    userPrompt: "I'm kicking off our Affilifest masterclass on autonomous partner discovery. Initialize the directory architecture for a deterministic skill. Give me the folder layout and reference files that will ground our AI agent so it stops hallucinating random coupon blogs."
+    userPrompt: "find me a list of prospect affiliate partners for amazon"
   },
   brand: {
     userPrompt: "Synthesize references/brand.md for our target merchant. We need target parameters, competitor baselines, and uncompromising disqualification rules. Ensure the agent rejects low-intent coupon scrapers before doing any search."

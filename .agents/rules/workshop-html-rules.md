@@ -8,18 +8,18 @@ trigger: always_on
 
 The display runs at a minimum resolution of 1920x1080 across a widescreen 16:9 ratio[cite: 5]. All interface elements render natively in modern browser runtimes without horizontal overflow or window scrolling[cite: 5]. 
 
-* Viewport Budgeting: Anchor main slide stage containers to `min-height: 84vh` and clamp card widths to `1200px` to fill the visual space cleanly.
-* Top Accent: The top viewport maintains a 4px animated aurora accent bar (`linear-gradient(90deg, #298dda, #d73184, #f5333f, #fccc38)`)[cite: 1, 5].
-* Permanent Footer: The lower viewport pins a permanent 72px co-branded footer featuring impact.com and Affilifest marks[cite: 1, 5].
+* Viewport Budgeting: Anchor main slide stage containers to `min-height: 84vh` and clamp card widths to `1200` to fill the visual space cleanly.
+* Top Accent: The top viewport maintains a 4 animated aurora accent bar (`linear-gradient(90deg, #298dda, #d73184, #f5333f, #fccc38)`)[cite: 1, 5].
+* Permanent Footer: The lower viewport pins a permanent 72 co-branded footer featuring impact.com and Affilifest marks[cite: 1, 5].
 * Affilifest Logo Visual Integration: Align the bottom-left Affilifest mark with the animated top aurora bar using CSS gradient masking (`-webkit-mask`) on transparent assets, or wrap the mark in a neumorphic pill badge with a matching gradient border line.
 
 ## 2. Slide Mode Standards & Depth-of-Field Staging
 
 Slide Mode isolates attention without stripping spatial context. Eliminate the "white void" by keeping structural cards mounted while shifting visual focus.
 
-* Depth-of-Field Blur Staging: Do not use `display: none` on inactive cards during multi-stage slides. Inactive or upcoming cards sit in place blurred (`filter: blur(4px); opacity: 0.25;`). The active card renders in sharp focus (`filter: blur(0); opacity: 1.0; border: 2px solid var(--color-accent);`). Completed cards sit in neutral focus (`opacity: 0.65; border: 1px solid var(--color-success);`).
+* Depth-of-Field Blur Staging: Do not use `display: none` on inactive cards during multi-stage slides. Inactive or upcoming cards sit in place blurred (`filter: blur(4); opacity: 0.25;`). The active card renders in sharp focus (`filter: blur(0); opacity: 1.0; border: 2 solid var(--color-accent);`). Completed cards sit in neutral focus (`opacity: 0.65; border: 1 solid var(--color-success);`).
 * No Static Takeaway Banners: Prohibit static `.slide-takeaway-banner` elements at the bottom of slides[cite: 1]. Takeaways are delivered verbally by the speaker; visual space is reserved for system diagrams and data cards.
-* Typographic Scale: Main headlines scale between 44px and 60px[cite: 5]. Subheadings scale between 19px and 24px[cite: 5]. Body bullets sit at a minimum of 16px to guarantee legibility from the back row[cite: 5].
+* Typographic Scale: Main headlines scale between 44 and 60[cite: 5]. Subheadings scale between 19 and 24[cite: 5]. Body bullets sit at a minimum of 16 to guarantee legibility from the back row[cite: 5].
 * Content Density: Limit cards to a maximum of four concise bullet points describing concrete commercial mechanisms rather than abstract theory[cite: 5].
 * Signalling Palette: Positive criteria use green `#10B981`[cite: 5]. Negative disqualifications and zero-knockouts use red `#F5333F`[cite: 5]. Exploratory queries and active timers use amber `#F59E0B`[cite: 5]. Primary actions use accent blue `#298DDA`[cite: 5].
 * Subpixel Stability: Never use CSS `transform: scale()` on containers holding typography during hover, breathing, or pulse animations[cite: 1]. High-lumen digital projectors magnify subpixel font rasterisation, causing severe text shimmering. Focus animations must rely exclusively on CSS `box-shadow` depth and `border-color` transitions[cite: 1].
@@ -35,7 +35,7 @@ The presentation enforces 100% curriculum preservation across the six locked ste
   * Stage 1: Macro Lemniscate SVG loop explaining the Confidence Gap and Decision Paralysis[cite: 1].
   * Stage 2: Loop 1 Kantar NeedScope Matrix detailing the Assertive-Receptive and Individual-Social axes with the 6 emotional mindsets and canonical queries[cite: 1].
   * Stage 3: Loop 2 6 Behavioural Heuristics explaining System 1 decision shortcuts with canonical queries[cite: 1].
-  * Viewport Budgeting: Set `.kantar-chip { min-height: 0; height: 100%; }` and use a 2x3 grid with `clamp(11px, 0.8vw, 13px)` body copy to guarantee zero vertical scrolling on 1080p displays[cite: 1].
+  * Viewport Budgeting: Set `.kantar-chip { min-height: 0; height: 100%; }` and use a 2x3 grid with `clamp(11, 0.8vw, 13)` body copy to guarantee zero vertical scrolling on 1080p displays[cite: 1].
 * Step 4 (Skill): Display the 4-phase architecture pipeline, the mandatory Step 1 HALT gate directive, and the auditable Markdown schema[cite: 1].
 * Step 5 (Run): Display the single-prompt execution command and the scored candidate recruitment ledger[cite: 1].
 
@@ -44,7 +44,7 @@ The presentation enforces 100% curriculum preservation across the six locked ste
 Code Mode splits the screen into a dual-pane engineering console[cite: 5].
 
 * Left Pane (Chat Stream): Restricted to 25% viewport width[cite: 5]. Displays the facilitator prompt, an animated thinking loop, and artifact build notifications[cite: 5]. The thinking status cycles through a non-repeating Fisher-Yates shuffled deck of technical quips with pixel-shattering dissolve transitions[cite: 1].
-* Right Pane (Artifact Window): Occupies 75% viewport width[cite: 5]. Displays active code blocks with monospace syntax formatting at 22px to 24px font size[cite: 1, 5].
+* Right Pane (Artifact Window): Occupies 75% viewport width[cite: 5]. Displays active code blocks with monospace syntax formatting at 22 to 24 font size[cite: 1, 5].
 * Header Meta: Displays the exact filepath, target language tag, and active part index[cite: 5].
 * Footer Rationale: Every revealed chunk must include a pinned tactical rationale explaining the commercial outcome of the block[cite: 1, 5].
 * DOM Preservation: Never wipe `container.innerHTML = ''` when advancing code chunks[cite: 1]. Prior chunks ease over 0.55s into `.completed` cards (opacity 0.65, green border, reduced font) while the incoming chunk mounts with active typewriter streaming[cite: 1, 5].

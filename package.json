@@ -1,0 +1,19 @@
+{
+  "name": "affilifest-masterclass",
+  "version": "1.0.0",
+  "description": "Affilifest Brand Huddle - Autonomous Partner Discovery Masterclass Display & Operator Engine",
+  "scripts": {
+    "dev": "serve .",
+    "test": "playwright test",
+    "test:1080p": "playwright test --project=1080p-fhd-slide --project=1080p-fhd-code",
+    "test:4k": "playwright test --project=4k-uhd-slide --project=4k-uhd-code",
+    "test:8k": "playwright test --project=8k-wall-slide --project=8k-wall-code",
+    "test:console": "playwright test --project=notes-console-1080p",
+    "test:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  },
+  "license": "FSL-1.1-MIT",
+  "type": "module"
+}

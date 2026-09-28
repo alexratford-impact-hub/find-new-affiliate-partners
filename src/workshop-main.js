@@ -28,6 +28,8 @@ for (const k in curriculum) {
 // Engines
 const typewriter = new TypewriterStreamer();
 const thinkingLoop = new ThinkingLoop('claude-thinking-text');
+const spatialZoom = new SpatialZoomEngine(document.getElementById('workshop-viewport'));
+window.spatialZoom = spatialZoom;
 
 // Cross-Window Sync Bus
 const sync = new WorkshopSync({
@@ -145,6 +147,14 @@ export function setViewMode(mode) {
   updateTimerVisibility();
 }
 
+// View Transition Helper for Presenter Navigation
+export function executeTransition(callback) {
+  if (typeof document !== 'undefined' && document.startViewTransition) {
+    return document.startViewTransition(callback);
+  }
+  callback();
+}
+
 // Step Loader
 export function loadStep(key, forceSlide = false) {
   if (!curriculum[key]) return;
@@ -162,7 +172,9 @@ export function loadStep(key, forceSlide = false) {
   const codeFilePill = document.getElementById('code-file-pill');
   if (codeFilePill) codeFilePill.innerText = item.path;
 
-  renderSlide(key);
+  executeTransition(() => {
+    renderSlide(key);
+  });
 
   const trayStep = document.getElementById('tray-step-val');
   if (trayStep) trayStep.innerText = `Step ${item.stepNum}`;
@@ -219,24 +231,9 @@ export function applyBrandPreset(preset) {
   }, 300);
 }
 
-// Step 0: Icebreaker Controller
+// Step 0: Prompt Reality Controller (No-op placeholder for backwards compatibility)
 function renderIcebreakerUI() {
-  const container = document.getElementById('icebreaker-container');
-  if (!container) return;
-
-  const q1Badge = document.getElementById('ib-badge-1');
-  const row2 = document.getElementById('ib-row-2');
-  const q2Badge = document.getElementById('ib-badge-2');
-  const row3 = document.getElementById('ib-row-3');
-  const q3Badge = document.getElementById('ib-badge-3');
-  const callout = document.getElementById('ib-callout');
-
-  if (q1Badge) q1Badge.style.display = (icebreakerStep >= 1) ? 'inline-flex' : 'none';
-  if (row2) row2.style.display = (icebreakerStep >= 1) ? 'flex' : 'none';
-  if (q2Badge) q2Badge.style.display = (icebreakerStep >= 2) ? 'inline-flex' : 'none';
-  if (row3) row3.style.display = (icebreakerStep >= 2) ? 'flex' : 'none';
-  if (q3Badge) q3Badge.style.display = (icebreakerStep >= 3) ? 'inline-flex' : 'none';
-  if (callout) callout.style.display = (icebreakerStep >= 3) ? 'block' : 'none';
+  // Grounded directly in prompt reality; no manual hands-guessing sub-steps needed
 }
 
 // Step 2: Scoring Engine Weight Normalisation Dials
@@ -272,21 +269,21 @@ export function handleWeightChange(dialKey, newVal) {
 }
 
 function updateSliderDialsUI() {
-  const sliderR = document.getElementById('weight-slider-r');
-  const sliderS = document.getElementById('weight-slider-s');
-  const sliderC = document.getElementById('weight-slider-c');
-
   const tagR = document.getElementById('weight-val-r');
   const tagS = document.getElementById('weight-val-s');
   const tagC = document.getElementById('weight-val-c');
 
-  if (sliderR) sliderR.value = scoringWeights.r.toFixed(2);
-  if (sliderS) sliderS.value = scoringWeights.s.toFixed(2);
-  if (sliderC) sliderC.value = scoringWeights.c.toFixed(2);
+  const fillR = document.getElementById('weight-fill-r');
+  const fillS = document.getElementById('weight-fill-s');
+  const fillC = document.getElementById('weight-fill-c');
 
   if (tagR) tagR.innerText = scoringWeights.r.toFixed(2);
   if (tagS) tagS.innerText = scoringWeights.s.toFixed(2);
   if (tagC) tagC.innerText = scoringWeights.c.toFixed(2);
+
+  if (fillR) fillR.style.width = `${(scoringWeights.r * 100).toFixed(0)}%`;
+  if (fillS) fillS.style.width = `${(scoringWeights.s * 100).toFixed(0)}%`;
+  if (fillC) fillC.style.width = `${(scoringWeights.c * 100).toFixed(0)}%`;
 
   const formulaReadout = document.getElementById('formula-live-math');
   if (formulaReadout) {
@@ -331,32 +328,100 @@ function renderSlide(key) {
         </p>
       </div>
 
-      <div class="icebreaker-card stage-card" id="icebreaker-container">
-        <div class="icebreaker-header">
-          <span class="card-badge" style="background:#EBF4FC; color:#298DDA;">Audience Pulse &bull; The AI Blind Spot</span>
-          <h2 class="icebreaker-title">Why Default AI Partner Discovery Fails</h2>
-        </div>
-        
-        <div class="icebreaker-row" id="ib-row-1">
-          <span class="icebreaker-q-num">1</span>
-          <span class="icebreaker-q-text">"Who uses AI tools weekly in their everyday workflow?"</span>
-          <span class="tally-pill tally-high" id="ib-badge-1" style="display:none;">~90% Hands Raised</span>
+      <div class="prompt-reality-card" id="prompt-reality-container">
+        <div class="prompt-reality-header">
+          <div class="prompt-badge-group">
+            <span class="card-badge" style="background:#EBF4FC; color:#298DDA;">Audience Reality Check</span>
+            <span class="prompt-query-badge">💬 "find me a list of prospect affiliate partners for amazon"</span>
+          </div>
+          <h2 class="prompt-reality-title">What Happens When You Ask AI for Partners: 3 Acute Failure Modes</h2>
         </div>
 
-        <div class="icebreaker-row" id="ib-row-2" style="display:none;">
-          <span class="icebreaker-q-num">2</span>
-          <span class="icebreaker-q-text">"Who has asked an AI tool to find affiliate partners or creators?"</span>
-          <span class="tally-pill tally-mid" id="ib-badge-2" style="display:none;">~60% Hands Raised</span>
+        <div class="prompt-reality-list">
+          <div class="prompt-reality-row" id="pr-row-1">
+            <div class="prompt-failure-num">1</div>
+            <div class="prompt-row-body">
+              <div class="prompt-row-header-line">
+                <span class="prompt-row-heading">Mass Media Giants (The Retainer Trap)</span>
+                <span class="prompt-tag prompt-tag-red">$20k–$50k Retainer Trap</span>
+              </div>
+              <div class="prompt-visual-chips">
+                <span class="prompt-chip chip-domain">wirecutter.com</span>
+                <span class="prompt-chip chip-domain">nerdwallet.com</span>
+                <span class="prompt-chip chip-domain">packhacker.com</span>
+                <span class="prompt-chip chip-domain">pcpartpicker.com</span>
+              </div>
+              <div class="prompt-metric-pills">
+                <span class="prompt-metric-pill metric-red">🛑 $20k–$50k/mo Retainers</span>
+                <span class="prompt-metric-pill metric-red">🛑 3–6 Month Agency Reviews</span>
+                <span class="prompt-metric-pill metric-red">🛑 0% Incremental Reach</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="prompt-reality-row" id="pr-row-2">
+            <div class="prompt-failure-num">2</div>
+            <div class="prompt-row-body">
+              <div class="prompt-row-header-line">
+                <span class="prompt-row-heading">Abstract Category Fluff (The Actionability Gap)</span>
+                <span class="prompt-tag prompt-tag-amber">Zero Actionable Data</span>
+              </div>
+              <div class="prompt-visual-chips">
+                <span class="prompt-chip chip-fluff">"Niche Blogs"</span>
+                <span class="prompt-chip chip-fluff">"Parenting Sites"</span>
+                <span class="prompt-chip chip-fluff">"Lifestyle Hubs"</span>
+                <span class="prompt-chip chip-fluff">"Fitness Reviewers"</span>
+              </div>
+              <div class="prompt-metric-pills">
+                <span class="prompt-metric-pill metric-amber">⚠️ 0 Website URLs</span>
+                <span class="prompt-metric-pill metric-amber">⚠️ No Traffic Data</span>
+                <span class="prompt-metric-pill metric-amber">⚠️ Zero Publisher Contacts</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="prompt-reality-row" id="pr-row-3">
+            <div class="prompt-failure-num">3</div>
+            <div class="prompt-row-body">
+              <div class="prompt-row-header-line">
+                <span class="prompt-row-heading">Circular Advice &amp; Voucher Scrapers (The Margin Trap)</span>
+                <span class="prompt-tag prompt-tag-red">Zero Incrementality</span>
+              </div>
+              <div class="prompt-visual-chips">
+                <span class="prompt-chip chip-scraper">honey.com</span>
+                <span class="prompt-chip chip-scraper">retailmenot.com</span>
+                <span class="prompt-chip chip-scraper">coupons.com</span>
+                <span class="prompt-chip chip-scraper">joinhoney.com</span>
+              </div>
+              <div class="prompt-metric-pills">
+                <span class="prompt-metric-pill metric-red">💸 Checkout Coupon Hijack</span>
+                <span class="prompt-metric-pill metric-red">💸 -100% CPA Margin Drain</span>
+                <span class="prompt-metric-pill metric-red">💸 0 New Customers Introduced</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="icebreaker-row" id="ib-row-3" style="display:none;">
-          <span class="icebreaker-q-num">3</span>
-          <span class="icebreaker-q-text">"Who actually recruited a top-performing partner from that search?"</span>
-          <span class="tally-pill tally-drop" id="ib-badge-3" style="display:none;">0% Every Hand Drops</span>
-        </div>
-
-        <div class="icebreaker-callout" id="ib-callout" style="display:none;">
-          💡 <strong>The Commercial Failure Mode:</strong> Default prompts search <em>brand-out</em>, surfacing coupon scrapers and existing partners. Autonomous skills search <em>consumer-in</em> where buying decisions actually happen.
+        <div class="prompt-reality-callout" id="pr-callout">
+          <div class="prompt-antidote-badge">💡 The Mechanical Antidote: Deterministic 5-File Skill Architecture</div>
+          <div class="prompt-antidote-pillars">
+            <div class="antidote-pillar">
+              <span class="pillar-title">1. Local Directives</span>
+              <span class="pillar-desc">5-file modular boundaries</span>
+            </div>
+            <div class="antidote-pillar">
+              <span class="pillar-title">2. Unbranded Stems</span>
+              <span class="pillar-desc">Intercept buyer intent</span>
+            </div>
+            <div class="antidote-pillar">
+              <span class="pillar-title">3. Multiplicative EV</span>
+              <span class="pillar-desc">Zero-knockout math</span>
+            </div>
+            <div class="antidote-pillar">
+              <span class="pillar-title">4. Negative Shield</span>
+              <span class="pillar-desc">Bans scrapers pre-search</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -364,13 +429,18 @@ function renderSlide(key) {
         <div class="slide-card stage-card" id="setup-card-1">
           <div class="slide-card-header">
             <span class="card-badge" style="background:#FEF2F2; color:#F5333F;">The Trap</span>
-            <h2 class="slide-card-title">The Brand-Out Search Ceiling</h2>
+            <h2 class="slide-card-title">Brand-Out Search Ceiling</h2>
           </div>
           <ul class="slide-card-bullets">
-            <li><span class="bullet-cross">✕</span> <span>Traditional discovery queries brand names, competitor coupon terms, or generic category directories.</span></li>
-            <li><span class="bullet-cross">✕</span> <span>Surfaces checkout coupon aggregators and browser toolbars demanding expensive placement fees.</span></li>
-            <li><span class="bullet-cross">✕</span> <span>Brands pay commission on buyers already in the checkout funnel, generating zero incremental sales.</span></li>
+            <li><span class="bullet-cross">✕</span> <span><strong>Keywords:</strong> Brand names, competitor coupons &amp; generic directories.</span></li>
+            <li><span class="bullet-cross">✕</span> <span><strong>Results:</strong> Coupon aggregators &amp; browser toolbars demanding fees.</span></li>
+            <li><span class="bullet-cross">✕</span> <span><strong>Commercial Flaw:</strong> Commission on existing checkout traffic; 0% incrementality.</span></li>
           </ul>
+          <div class="slide-tag-row">
+            <span class="slide-mini-tag tag-red">🛑 Zero Incremental Reach</span>
+            <span class="slide-mini-tag tag-red">🛑 Checkout Margin Drain</span>
+            <span class="slide-mini-tag tag-red">🛑 Expensive Retainer Traps</span>
+          </div>
         </div>
 
         <div class="slide-card stage-card" id="setup-card-2">
@@ -379,14 +449,18 @@ function renderSlide(key) {
             <h2 class="slide-card-title">Consumer-In Interception</h2>
           </div>
           <ul class="slide-card-bullets">
-            <li><span class="bullet-arrow">→</span> <span>High-intent buyers search to resolve uncertainty in the Messy Middle before selecting a merchant.</span></li>
-            <li><span class="bullet-arrow">→</span> <span>Targeting emotional need states and behavioural heuristics intercepts buyers during active research.</span></li>
-            <li><span class="bullet-arrow">→</span> <span>Deterministic rules discover high-margin editorial partners across Boots UK, Argos, loveholidays, or any brand.</span></li>
+            <li><span class="bullet-arrow">→</span> <span><strong>Keywords:</strong> Unbranded buyer problems &amp; emotional decision states.</span></li>
+            <li><span class="bullet-arrow">→</span> <span><strong>Results:</strong> Independent review desks, testing labs &amp; enthusiast creators.</span></li>
+            <li><span class="bullet-arrow">→</span> <span><strong>Commercial Win:</strong> Intercepts high-intent buyers in the Messy Middle before brand choice.</span></li>
           </ul>
+          <div class="slide-tag-row">
+            <span class="slide-mini-tag tag-green">🎯 100% Net-New Customers</span>
+            <span class="slide-mini-tag tag-green">🎯 High-Margin Editorial Traffic</span>
+            <span class="slide-mini-tag tag-green">🎯 Deterministic Quality Gates</span>
+          </div>
         </div>
       </div>
     `;
-    renderIcebreakerUI();
 
   } else if (key === 'brand') {
     container.innerHTML = `
@@ -405,10 +479,10 @@ function renderSlide(key) {
             <h2 class="slide-card-title">Defining Operational Margins</h2>
           </div>
           <ul class="slide-card-bullets">
-            <li><span class="bullet-check">✓</span> <span><strong>Focus Category Lock:</strong> Constrain the agent strictly to ${profile.category}. Broad queries default to mass media spam.</span></li>
-            <li><span class="bullet-check">✓</span> <span><strong>Commercial Model:</strong> ${profile.commercialModel} with target benchmark AOV of <strong>${profile.aov}</strong>.</span></li>
-            <li><span class="bullet-check">✓</span> <span><strong>Competitor Seed Baselines:</strong> Seed domains (${profile.competitors.join(', ')}) allow the agent to reverse-engineer referral pathways.</span></li>
-            <li><span class="bullet-check">✓</span> <span><strong>Incrementality Gate:</strong> Prioritise top-of-funnel creators who introduce new buyers over checkout coupon catchers.</span></li>
+            <li><span class="bullet-check">✓</span> <span><strong>Focus Category:</strong> <code>${profile.category}</code> (locks agent scope strictly).</span></li>
+            <li><span class="bullet-check">✓</span> <span><strong>Benchmark AOV:</strong> <strong>${profile.aov}</strong> (${profile.commercialModel} model).</span></li>
+            <li><span class="bullet-check">✓</span> <span><strong>Competitor Seeds:</strong> ${profile.competitors.join(', ')} (reverse-engineers pathways).</span></li>
+            <li><span class="bullet-check">✓</span> <span><strong>Incrementality Gate:</strong> Top-of-funnel creators over coupon catchers.</span></li>
           </ul>
           <div class="slide-tag-row">
             <span class="slide-mini-tag tag-blue">🎯 Focus: ${profile.name}</span>
@@ -423,10 +497,10 @@ function renderSlide(key) {
             <h2 class="slide-card-title">Hard Disqualification Gates</h2>
           </div>
           <ul class="slide-card-bullets">
-            <li><span class="bullet-cross">✕</span> <span><strong>Voucher Aggregators &amp; Toolbars:</strong> Explicitly ban coupon scrapers that erode margin without creating new demand.</span></li>
-            <li><span class="bullet-cross">✕</span> <span><strong>Territory &amp; Regulatory Compliance:</strong> Disqualify non-UK traffic sources; enforce strict ASA and trade regulations.</span></li>
-            <li><span class="bullet-cross">✕</span> <span><strong>Direct Retail Competitors:</strong> Immediate disqualification for direct commercial rivals (${profile.competitors[0]}).</span></li>
-            <li><span class="bullet-cross">✕</span> <span><strong>Brand Bidding:</strong> Prohibit publishers who bid on brand trademarks or redirect paid search traffic without editorial content.</span></li>
+            <li><span class="bullet-cross">✕</span> <span><strong>Voucher Aggregators &amp; Toolbars:</strong> Zero margin coupon hijackers.</span></li>
+            <li><span class="bullet-cross">✕</span> <span><strong>Direct Rivals:</strong> Instant disqualification for ${profile.competitors[0]}.</span></li>
+            <li><span class="bullet-cross">✕</span> <span><strong>Territory Gate:</strong> UK traffic only; strict ASA regulations.</span></li>
+            <li><span class="bullet-cross">✕</span> <span><strong>Brand Bidding:</strong> Prohibit trademark ad hijackers and direct redirects.</span></li>
           </ul>
           <div class="slide-tag-row">
             <span class="slide-mini-tag tag-red">⛔ No Voucher Aggregators</span>
@@ -449,8 +523,8 @@ function renderSlide(key) {
 
       <div class="slider-widget-container stage-card" id="math-slider-widget">
         <div class="slider-widget-header">
-          <span class="card-badge" style="background:#EBF4FC; color:#298DDA;">Interactive Calibration</span>
-          <h2 class="slider-widget-title">Geometric Mean Normalisation Dials (Sum Strictly = 1.00)</h2>
+          <span class="card-badge" style="background:#EBF4FC; color:#298DDA;">Deterministic Calibration</span>
+          <h2 class="slider-widget-title">Geometric Mean Normalisation Weights (Sum Strictly = 1.00)</h2>
         </div>
         
         <div class="formula-live-readout" id="formula-live-math">
@@ -463,7 +537,9 @@ function renderSlide(key) {
               <span>Relevance Weight (wR)</span>
               <span class="slider-val-tag" id="weight-val-r">${scoringWeights.r.toFixed(2)}</span>
             </div>
-            <input type="range" class="weight-slider" id="weight-slider-r" min="0.10" max="0.80" step="0.05" value="${scoringWeights.r.toFixed(2)}" oninput="window.handleWeightChange('r', this.value)">
+            <div class="weight-meter-bar">
+              <div class="weight-meter-fill" id="weight-fill-r" style="width: ${(scoringWeights.r * 100).toFixed(0)}%;"></div>
+            </div>
             <div class="slider-dial-desc">Category fit &amp; problem-first alignment</div>
           </div>
 
@@ -472,7 +548,9 @@ function renderSlide(key) {
               <span>Scale Weight (wS)</span>
               <span class="slider-val-tag" id="weight-val-s">${scoringWeights.s.toFixed(2)}</span>
             </div>
-            <input type="range" class="weight-slider" id="weight-slider-s" min="0.10" max="0.80" step="0.05" value="${scoringWeights.s.toFixed(2)}" oninput="window.handleWeightChange('s', this.value)">
+            <div class="weight-meter-bar">
+              <div class="weight-meter-fill" id="weight-fill-s" style="width: ${(scoringWeights.s * 100).toFixed(0)}%;"></div>
+            </div>
             <div class="slider-dial-desc">Organic traffic authority &amp; audience volume</div>
           </div>
 
@@ -481,7 +559,9 @@ function renderSlide(key) {
               <span>Commercial Fit (wC)</span>
               <span class="slider-val-tag" id="weight-val-c">${scoringWeights.c.toFixed(2)}</span>
             </div>
-            <input type="range" class="weight-slider" id="weight-slider-c" min="0.10" max="0.80" step="0.05" value="${scoringWeights.c.toFixed(2)}" oninput="window.handleWeightChange('c', this.value)">
+            <div class="weight-meter-bar">
+              <div class="weight-meter-fill" id="weight-fill-c" style="width: ${(scoringWeights.c * 100).toFixed(0)}%;"></div>
+            </div>
             <div class="slider-dial-desc">Affiliate readiness &amp; review structure</div>
           </div>
         </div>
@@ -582,21 +662,21 @@ function renderSlide(key) {
             <text x="270" y="240" font-size="10.5" font-weight="800" text-anchor="middle" fill="#0F172A" letter-spacing="1">PURCHASE</text>
           </svg>
 
-          <div id="discovery-macro-callouts" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; border-top:1px solid #E2E8F0; padding-top:10px; margin-top:2px;">
-            <div style="background:#FFF5F5; border:1px solid #FED7D7; border-radius:10px; padding:8px 12px; text-align:left;">
-              <div style="font-size:11.5px; font-weight:800; color:#C53030; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">
-                ⚠️ The Problem: The Confidence Gap
+          <div id="discovery-macro-callouts" style="display:grid; grid-template-columns:1fr 1fr; gap:24px; width:100%; border-top:1px solid #E2E8F0; padding-top:16px; margin-top:12px;">
+            <div class="macro-callout-card" style="background:rgba(254, 242, 242, 0.6); border:none; border-left:5px solid #F5333F; border-radius:0 12px 12px 0; padding:16px 20px; text-align:left;">
+              <div style="font-size: clamp(18px, 1.2cqw, 20px); font-weight:800; color:#DC2626; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">
+                ⚠️ The Confidence Gap
               </div>
-              <div style="font-size:11px; color:#4A5568; line-height:1.4;">
-                Shoppers loop continuously between exploration and evaluation. 1 in 3 abandon purchases due to choice overload. Brand-out queries miss uncommitted buyers.
+              <div style="font-size: clamp(18px, 1.2cqw, 20px); color:#1E293B; line-height:1.45;">
+                1 in 3 buyers abandon cart in exploration loops. Brand-out queries miss uncommitted traffic.
               </div>
             </div>
-            <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:10px; padding:8px 12px; text-align:left;">
-              <div style="font-size:11.5px; font-weight:800; color:#15803D; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px;">
-                🎯 The Opportunity: Consumer-In Interception
+            <div class="macro-callout-card" style="background:rgba(240, 253, 244, 0.6); border:none; border-left:5px solid #10B981; border-radius:0 12px 12px 0; padding:16px 20px; text-align:left;">
+              <div style="font-size: clamp(18px, 1.2cqw, 20px); font-weight:800; color:#059669; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">
+                🎯 Consumer-In Interception
               </div>
-              <div style="font-size:11px; color:#4A5568; line-height:1.4;">
-                Autonomous queries intercept buyers during active evaluation loops. Unbranded question stems surface specialist review desks and creator hubs that trigger purchase exit.
+              <div style="font-size: clamp(18px, 1.2cqw, 20px); color:#1E293B; line-height:1.45;">
+                Autonomous unbranded stems intercept buyers during active evaluation before retail selection.
               </div>
             </div>
           </div>
@@ -844,19 +924,28 @@ function renderSlide(key) {
             <span class="card-badge" style="background:#EBF4FC; color:#298DDA;">Deployment</span>
             <h2 class="slide-card-title">Single-Prompt Autonomous Orchestration</h2>
           </div>
-          <ul class="slide-card-bullets">
-            <li><span class="bullet-check">✓</span> <span><strong>Trigger Command:</strong> Execute skill <code>affiliate-partner-discovery</code> from <code>SKILL.md</code> using the <code>/references/</code> folder in Claude.</span></li>
-            <li><span class="bullet-check">✓</span> <span><strong>Context Ingestion:</strong> The model reads brand rules, normalises weights, pauses for existing exclusions, and initiates dual-engine search loops.</span></li>
-            <li><span class="bullet-check">✓</span> <span><strong>Exclusion Check:</strong> Interactive halt triggers immediately, requiring facilitator validation before web searches.</span></li>
+          
+          <div class="runtime-command-banner">
+            <div class="runtime-command-label">Runtime Trigger Command (run.md)</div>
+            <div class="runtime-command-code">
+              Execute skill <strong>affiliate-partner-discovery</strong> from <code>SKILL.md</code> using <code>/references/</code>.<br>
+              Start with Step 1 (Read the Rules and Stop).
+            </div>
+          </div>
+
+          <ul class="slide-card-bullets" style="margin-top:12px;">
+            <li><span class="bullet-check">✓</span> <span><strong>Deterministic Context Ingestion:</strong> The agent loads vertical parameters, locks AOV bounds, and ingests competitor baselines from local Markdown.</span></li>
+            <li><span class="bullet-check">✓</span> <span><strong>Mandatory Step 1 HALT Gate:</strong> Autonomous execution halts immediately, prompting the operator for domain exclusions before running web searches.</span></li>
+            <li><span class="bullet-check">✓</span> <span><strong>Dual-Engine Interception:</strong> Runs NeedScope query loops and behavioural heuristics, scoring candidates via geometric mean.</span></li>
           </ul>
         </div>
 
         <div class="slide-card stage-card" id="run-card-2">
           <div class="slide-card-header" style="justify-content:space-between;">
             <span class="card-badge" style="background:#ECFDF5; color:#10B981;">Commercial Output</span>
-            <button class="copy-chunk-btn" onclick="window.copyPresetCSV()">📋 Copy CRM CSV</button>
+            <span class="slide-mini-tag tag-green">✓ Multiplicative EV Verified</span>
           </div>
-          <h2 class="slide-card-title" style="margin-bottom:6px;">Audited Recruitment Ledger Preview (${profile.name})</h2>
+          <h2 class="slide-card-title" style="margin-bottom:6px;">Audited Recruitment Ledger (${profile.name})</h2>
           <table class="ledger-preview-table">
             <thead>
               <tr>
@@ -876,29 +965,29 @@ function renderSlide(key) {
         </div>
       </div>
 
-      <div id="run-finale-container" style="display:none; width:100%; flex-direction:column; gap:16px;">
+      <div id="run-finale-container" style="display:none; width:100%; flex-direction:column; gap:20px;">
         <div class="scorecard-grid">
           <div class="scorecard-box scorecard-traditional">
             <div class="scorecard-header">
               <span class="scorecard-title">Traditional Manual Search</span>
-              <span style="font-size:11px; font-weight:800; color:#DC2626; background:#FEE2E2; padding:3px 8px; border-radius:999px;">Status Quo</span>
+              <span class="scorecard-badge" style="color:#DC2626; background:#FEE2E2;">Status Quo</span>
             </div>
             <ul class="scorecard-steps">
               <li>⏱️ <strong>15–20 Hours / Month:</strong> Manual Google trawling, social scraping, and messy spreadsheets.</li>
-              <li>🔍 <strong>Brand-Out Search:</strong> Surfaces coupon toolbars and existing partners.</li>
-              <li>📉 <strong>Margin Dilution:</strong> Zero incremental reach, high recruitment fatigue.</li>
+              <li>🔍 <strong>Brand-Out Search:</strong> Surfaces coupon toolbars and existing mass-media retainers.</li>
+              <li>📉 <strong>Margin Dilution:</strong> Zero incremental reach, severe partner recruitment fatigue.</li>
             </ul>
           </div>
 
           <div class="scorecard-box scorecard-autonomous">
             <div class="scorecard-header">
               <span class="scorecard-title">Autonomous Skill Interception</span>
-              <span style="font-size:11px; font-weight:800; color:#059669; background:#D1FAE5; padding:3px 8px; border-radius:999px;">Production Standard</span>
+              <span class="scorecard-badge" style="color:#059669; background:#D1FAE5;">Production Standard</span>
             </div>
             <ul class="scorecard-steps">
               <li>⚡ <strong>&lt;90 Seconds Execution:</strong> Deterministic pipeline runs end-to-end with one trigger prompt.</li>
-              <li>🎯 <strong>Consumer-In Interception:</strong> NeedScope and 6 heuristics intercept uncommitted queries.</li>
-              <li>🚀 <strong>High-Margin Reach:</strong> Discovers specialist creators and review desks.</li>
+              <li>🎯 <strong>Consumer-In Interception:</strong> NeedScope and 6 heuristics intercept uncommitted buyers.</li>
+              <li>🚀 <strong>High-Margin Reach:</strong> Discovers specialist creators, educators, and review desks.</li>
             </ul>
           </div>
         </div>
@@ -907,22 +996,22 @@ function renderSlide(key) {
           <div class="next-step-pill">
             <span class="next-step-num">1</span>
             <div>
-              <div style="font-size:12.5px; font-weight:700;">1-Click CSV Export</div>
-              <div style="font-size:11px; color:#64748B;">Push vetted domains into impact.com recruitment tracking.</div>
+              <div class="next-step-heading">1-Click CSV Export</div>
+              <div class="next-step-desc">Export vetted partner domains directly into your recruitment CRM.</div>
             </div>
           </div>
           <div class="next-step-pill">
             <span class="next-step-num">2</span>
             <div>
-              <div style="font-size:12.5px; font-weight:700;">Load to Claude Projects</div>
-              <div style="font-size:11px; color:#64748B;">Persist partner-discovery/ as a permanent team asset.</div>
+              <div class="next-step-heading">Load to Claude Projects</div>
+              <div class="next-step-desc">Persist partner-discovery/ as a permanent organizational asset.</div>
             </div>
           </div>
           <div class="next-step-pill">
             <span class="next-step-num">3</span>
             <div>
-              <div style="font-size:12.5px; font-weight:700;">Weekly Vertical Sprints</div>
-              <div style="font-size:11px; color:#64748B;">Execute iterative partner recruitment across newly launched categories.</div>
+              <div class="next-step-heading">Weekly Vertical Sprints</div>
+              <div class="next-step-desc">Execute iterative recruitment across newly launched categories.</div>
             </div>
           </div>
         </div>
@@ -938,22 +1027,60 @@ export function applySlideStaging(key, stageIdx) {
   activeSlideStage = stageIdx;
 
   if (key === 'setup') {
-    const ibCard = document.getElementById('icebreaker-container');
+    const prCard = document.getElementById('prompt-reality-container');
+    const r1 = document.getElementById('pr-row-1');
+    const r2 = document.getElementById('pr-row-2');
+    const r3 = document.getElementById('pr-row-3');
+    const callout = document.getElementById('pr-callout');
     const grid2 = document.getElementById('setup-grids');
     const card1 = document.getElementById('setup-card-1');
     const card2 = document.getElementById('setup-card-2');
 
-    if (stageIdx === 0) {
-      if (ibCard) {
-        ibCard.style.display = 'flex';
-        ibCard.className = 'icebreaker-card stage-card focused';
-      }
+    if (stageIdx <= 3) {
       if (grid2) grid2.style.display = 'none';
+
+      if (stageIdx === 0) {
+        if (prCard) {
+          prCard.style.display = 'flex';
+          prCard.className = 'prompt-reality-card';
+        }
+        if (r1) r1.className = 'prompt-reality-row focused';
+        if (r2) r2.className = 'prompt-reality-row staged';
+        if (r3) r3.className = 'prompt-reality-row staged';
+        if (callout) callout.className = 'prompt-reality-callout staged';
+      } else if (stageIdx === 1) {
+        if (prCard) {
+          prCard.style.display = 'flex';
+          prCard.className = 'prompt-reality-card';
+        }
+        if (r1) r1.className = 'prompt-reality-row completed';
+        if (r2) r2.className = 'prompt-reality-row focused';
+        if (r3) r3.className = 'prompt-reality-row staged';
+        if (callout) callout.className = 'prompt-reality-callout staged';
+      } else if (stageIdx === 2) {
+        if (prCard) {
+          prCard.style.display = 'flex';
+          prCard.className = 'prompt-reality-card';
+        }
+        if (r1) r1.className = 'prompt-reality-row completed';
+        if (r2) r2.className = 'prompt-reality-row completed';
+        if (r3) r3.className = 'prompt-reality-row focused';
+        if (callout) callout.className = 'prompt-reality-callout staged';
+      } else if (stageIdx === 3) {
+        if (prCard) {
+          prCard.style.display = 'flex';
+          prCard.className = 'prompt-reality-card show-antidote';
+        }
+        if (r1) r1.className = 'prompt-reality-row completed';
+        if (r2) r2.className = 'prompt-reality-row completed';
+        if (r3) r3.className = 'prompt-reality-row completed';
+        if (callout) callout.className = 'prompt-reality-callout focused';
+      }
     } else {
-      if (ibCard) ibCard.style.display = 'none';
+      if (prCard) prCard.style.display = 'none';
       if (grid2) grid2.style.display = 'grid';
 
-      if (stageIdx === 1) {
+      if (stageIdx === 4) {
         if (card1) card1.className = 'slide-card stage-card focused';
         if (card2) card2.className = 'slide-card stage-card blurred';
       } else {
@@ -975,19 +1102,26 @@ export function applySlideStaging(key, stageIdx) {
 
   } else if (key === 'math') {
     const widget = document.getElementById('math-slider-widget');
+    const cardsGrid = document.getElementById('math-grid-cards');
     const card1 = document.getElementById('math-card-1');
     const card2 = document.getElementById('math-card-2');
 
     if (stageIdx === 0) {
-      if (widget) widget.className = 'slider-widget-container stage-card focused';
+      if (widget) {
+        widget.style.display = 'flex';
+        widget.className = 'slider-widget-container stage-card focused';
+      }
+      if (cardsGrid) cardsGrid.style.display = 'none';
       if (card1) card1.className = 'slide-card stage-card blurred';
       if (card2) card2.className = 'slide-card stage-card blurred';
     } else if (stageIdx === 1) {
-      if (widget) widget.className = 'slider-widget-container stage-card completed';
+      if (widget) widget.style.display = 'none';
+      if (cardsGrid) cardsGrid.style.display = 'grid';
       if (card1) card1.className = 'slide-card stage-card focused';
       if (card2) card2.className = 'slide-card stage-card blurred';
     } else {
-      if (widget) widget.className = 'slider-widget-container stage-card completed';
+      if (widget) widget.style.display = 'none';
+      if (cardsGrid) cardsGrid.style.display = 'grid';
       if (card1) card1.className = 'slide-card stage-card completed';
       if (card2) card2.className = 'slide-card stage-card focused';
     }
@@ -1056,6 +1190,9 @@ export function applySlideStaging(key, stageIdx) {
     const card1 = document.getElementById('skill-card-1');
     const card2 = document.getElementById('skill-card-2');
 
+    const pipeBar = document.getElementById('skill-pipeline-bar');
+    if (pipeBar) pipeBar.classList.toggle('compact-bar', stageIdx > 0);
+
     if (stageIdx === 0) {
       if (pipe1) pipe1.className = 'pipeline-step-card active-phase';
       if (pipe2) pipe2.className = 'pipeline-step-card locked';
@@ -1115,14 +1252,6 @@ export function setSlideStage(stageIdx) {
 }
 
 export function nextSlideStage() {
-  if (activeKey === 'setup' && activeSlideStage === 0) {
-    if (icebreakerStep < 3) {
-      icebreakerStep++;
-      renderIcebreakerUI();
-      return;
-    }
-  }
-
   const stages = slideStageTitles[activeKey] || [];
   if (activeSlideStage < stages.length - 1) {
     setSlideStage(activeSlideStage + 1);
@@ -1132,20 +1261,8 @@ export function nextSlideStage() {
 }
 
 export function prevSlideStage() {
-  if (activeKey === 'setup' && activeSlideStage === 0) {
-    if (icebreakerStep > 0) {
-      icebreakerStep--;
-      renderIcebreakerUI();
-      return;
-    }
-  }
-
   if (activeSlideStage > 0) {
     setSlideStage(activeSlideStage - 1);
-    if (activeKey === 'setup' && activeSlideStage === 0) {
-      icebreakerStep = 3;
-      renderIcebreakerUI();
-    }
   }
 }
 
@@ -1164,10 +1281,16 @@ export function renderCodeChunks() {
 
   thinkingLoop.start(false);
 
+  const isAll = (activeSectionIndex === 'all');
+  const activeIdx = typeof activeSectionIndex === 'number' ? activeSectionIndex : (isAll ? 'all' : 0);
+
+  const activeChunkObj = (typeof activeIdx === 'number' && chunks[activeIdx]) ? chunks[activeIdx] : null;
+  const currentPath = (activeChunkObj && activeChunkObj.pathOverride) ? activeChunkObj.pathOverride : curItem.path;
+
   const artifactFilename = document.getElementById('artifact-current-filename');
-  if (artifactFilename) artifactFilename.innerText = curItem.path;
+  if (artifactFilename) artifactFilename.innerText = currentPath;
   const artifactBannerTitle = document.getElementById('artifact-embed-title');
-  if (artifactBannerTitle) artifactBannerTitle.innerText = `Created Artifact: ${curItem.path}`;
+  if (artifactBannerTitle) artifactBannerTitle.innerText = `Created Artifact: ${currentPath}`;
 
   if (!chunks.length) {
     if (container) {
@@ -1176,9 +1299,6 @@ export function renderCodeChunks() {
     }
     return;
   }
-
-  const isAll = (activeSectionIndex === 'all');
-  const activeIdx = typeof activeSectionIndex === 'number' ? activeSectionIndex : (isAll ? 'all' : 0);
 
   const progressPill = document.getElementById('artifact-progress-pill');
   const embedTag = document.getElementById('artifact-embed-tag');
@@ -1384,7 +1504,7 @@ export function copyCurrentChunkCode() {
 export function copyPresetCSV() {
   const profile = brandProfiles[activePreset] || brandProfiles.boots;
   navigator.clipboard.writeText(profile.csv).then(() => {
-    alert(`Recruitment CSV for ${profile.name} copied to clipboard! Ready to paste into impact.com CRM.`);
+    alert(`Recruitment CSV for ${profile.name} copied to clipboard! Ready to import into your partner CRM.`);
   }).catch(err => {
     console.warn('Copy failed:', err);
   });
@@ -1406,27 +1526,30 @@ window.addEventListener('keydown', (e) => {
     return;
   }
 
+  if (e.key === 'Escape') {
+    if (typeof spatialZoom !== 'undefined' && spatialZoom.activeCard) {
+      e.preventDefault();
+      spatialZoom.collapse();
+      return;
+    }
+  }
+
+  if (e.key === 'z' || e.key === 'Z') {
+    if (typeof spatialZoom !== 'undefined') {
+      spatialZoom.toggleZoomOnActive();
+    }
+    return;
+  }
+
   if (e.key === 's' || e.key === 'S') {
     setViewMode('slide');
   } else if (e.key === 'c' || e.key === 'C') {
     setViewMode('code');
-  } else if (e.key === 'ArrowRight' || e.key === ' ') {
-    if (activeViewMode === 'slide') {
-      nextSlideStage();
-    } else {
-      const chunks = fileSections[activeKey] || [];
-      if (typeof activeSectionIndex === 'number' && activeSectionIndex < chunks.length - 1) {
-        setSection(activeSectionIndex + 1);
-      } else if (activeSectionIndex !== 'all') {
-        setSection('all');
-      } else {
-        const curStepIdx = stepKeys.indexOf(activeKey);
-        if (curStepIdx >= 0 && curStepIdx < stepKeys.length - 1) {
-          loadStep(stepKeys[curStepIdx + 1], true);
-        }
-      }
-    }
-  } else if (e.key === 'ArrowLeft') {
+  } else if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+    e.preventDefault();
+    advanceSlideOrChunk();
+  } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+    e.preventDefault();
     if (activeViewMode === 'slide') {
       prevSlideStage();
     } else {
@@ -1443,9 +1566,6 @@ window.addEventListener('keydown', (e) => {
     }
   }
 });
-
-// Spatial Zoom Engine Instance
-const spatialZoom = new SpatialZoomEngine(document.getElementById('workshop-viewport'));
 
 // Global Floating Dock & Telemetry Actions
 window.setWorkshopMode = (mode) => {
@@ -1486,6 +1606,18 @@ window.addEventListener('wheel', (e) => {
     e.preventDefault();
   }
 }, { passive: false });
+
+// Stage Clicker Support: Tapping/clicking anywhere on the presentation viewport advances the stage or chunk
+const workshopViewport = document.getElementById('workshop-viewport');
+if (workshopViewport) {
+  workshopViewport.addEventListener('click', (e) => {
+    // Ignore clicks on interactive widgets, buttons, inputs, sliders, and telemetry trays
+    if (e.target.closest('button, input, textarea, a, select, .slider-dial-box, .weight-meter-bar, .floating-dock, .console-floating-tray, .sync-status-box, .runtime-command-banner, #chunks-list')) {
+      return;
+    }
+    advanceSlideOrChunk();
+  });
+}
 
 // Initialise
 loadStep('setup', true);

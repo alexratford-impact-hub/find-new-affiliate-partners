@@ -15,7 +15,7 @@ export const curriculum = {
     filePill: "AI Blind Spot & Setup",
     time: "Kickoff: 00:00 - 00:08",
     headline: "Autonomous Affiliate Discovery Skills",
-    subheadline: "Build deterministic AI skills to discover high-intent partners across any commercial vertical.",
+    subheadline: "Replace low-incrementality coupon scrapers with unbranded NeedScope query loops and geometric mean EV scoring.",
     recapBullets: [
       "Icebreaker: From default prompt failure to deterministic skill architecture.",
       "Operating Shift: Consumers search to resolve uncertainty in the Messy Middle before brand selection.",
@@ -26,7 +26,7 @@ export const curriculum = {
       "Operating Shift: Consumers search to resolve uncertainty in the Messy Middle before brand selection.",
       "Workspace: Create partner-discovery/ folder, references/ subfolder, and verify unhidden extensions."
     ],
-    takeaway: "In the next 70 minutes, everyone in this room will build and run a production-ready autonomous discovery skill directly on their laptop.",
+    takeaway: "Deterministic skill architecture eliminates AI hallucination, creating an auditable partner recruitment pipeline that protects gross CPA margin.",
     content: `# Step 0: Make Your Workshop Folders
 partner-discovery/
 ├── SKILL.md
@@ -540,8 +540,11 @@ Start with Step 1 (Read the Rules and Stop).`
 
 export const slideStageTitles = {
   setup: [
-    "Audience Pulse • 4-Question Icebreaker",
-    "The Trap • The Brand-Out Search Ceiling",
+    "Audience Reality • Failure 1: Mass Media Retainers",
+    "Audience Reality • Failure 2: Actionability Void",
+    "Audience Reality • Failure 3: Margin Drain Trap",
+    "The Antidote • Deterministic Skill Architecture",
+    "The Paradigm • Brand-Out Search Ceiling",
     "The Paradigm • Consumer-In Interception"
   ],
   brand: [
@@ -584,17 +587,17 @@ export const speakerData = {
     title: "0. Kickoff & Setup (05:00 - 13:00)",
     window: "05:00 - 13:00",
     milestone: "Step 0: AI Blind Spot & Setup",
-    goal: "Overcome status quo bias; 4-question icebreaker & scaffolding",
+    goal: "Overcome status quo bias; grounded prompt simulation & scaffolding",
     sprintTarget: "3.5 mins",
     artifact: "Desktop directories & unhidden extensions",
     hcdc: {
       hook: {
         time: "05:00 - 07:00",
         duration: "90s",
-        tag: "The Operational Hook (Motivation)",
-        script: "Let's take a quick pulse of the room. Look at the display. Question 1: Who uses AI tools weekly in their everyday workflow? Hands up. Nearly the whole room raises their hand — about 90%. Question 2: Who has asked an AI tool to find affiliate partners or creators? About 60% of hands stay up. Question 3: Who actually recruited a top-performing partner from that search? Every single hand drops — 0%. Default prompts fail because they scrape search results brand-out. That surfaces voucher aggregators and coupon toolbars that already rank for your brand name plus 'discount'. Today we flip the architecture. Customers search to resolve uncertainty long before they select a retailer. We will build an autonomous skill on your machines that intercepts consumers where purchase decisions actually happen.",
-        speedScript: "1. Audience Pulse: ~90% use AI weekly, ~60% asked AI for partners, 0% recruited a winner.\n2. Brand-Out Trap: Default prompts scrape brand terms and surface coupon scrapers.\n3. Consumer-In Interception: High-intent buyers search to resolve uncertainty in the Messy Middle.\n4. Today: Build an autonomous skill on your laptop that intercepts high-margin purchase decisions.",
-        action: "Project Slide Mode using [S]. Advance through the 4-Question Icebreaker on keystroke [Space]. Tally audience hands as questions reveal, demonstrating that 0% recruit winners via default prompts."
+        tag: "The Operational Hook (Prompt Reality)",
+        script: "Let's ground in the reality of what happens when you actually ask an AI tool to recruit partners. Look at the display. You type the intuitive prompt: 'find me a list of prospect affiliate partners for Amazon' or your brand. What happens? First, it recommends Wirecutter, NerdWallet, and PCPartPicker — massive media conglomerates that already dominate and demand $50,000 upfront agency retainers. You don't need an AI to tell you The New York Times exists. Second, it gives you vague homework like 'parenting blogs' with zero URLs, zero domain data, and zero contact points. Third, it defaults to brand-out coupon scrapers that cannibalise organic checkout traffic. Conversational prompts fail because they lack constraints. Today we build a deterministic 5-file skill architecture that intercepts real consumer buying decisions.",
+        speedScript: "1. The Prompt Reality: Asking AI for partners yields $50k media giants and vague category fluff.\n2. Acute Failure Modes: Pre-existing retainer monopolies, zero domain URLs, and checkout coupon scrapers.\n3. The Paradigm Shift: Replace conversational prompts with a deterministic 5-file architecture.\n4. Press [C] when moving into Code Mode to scaffold the workspace.",
+        action: "Project Slide Mode using [S]. Walk through the 3 prompt failure modes. Highlight the commercial breakdown, then press [C] to transition to Code Mode and stream the workspace scaffold."
       },
       chunk: {
         time: "07:00 - 09:30",
@@ -909,7 +912,7 @@ export const speakerData = {
       {
         title: "Part 4: Steps 3 & 4: Table and CSV Export",
         say: "Configure Steps 3 and 4: Markdown results table showing formula breakdown, followed by a clean CSV block for CRM ingestion.",
-        speedSay: "1. Auditable Markdown table with full formula calculation.\n2. CSV export block (domain,date_added) for impact.com ingestion.",
+        speedSay: "1. Auditable Markdown table with full formula calculation.\n2. CSV export block (domain,date_added) for partner pipeline ingestion.",
         code: `## Step 3: Show the Results Table\n| Partner Name | Domain | R | S | C | Formula Calculation | Final EV | Search Angle |\n\n## Step 4: Export for Tracking\n\`\`\`csv\ndomain,date_added\n\`\`\``
       }
     ]
@@ -921,7 +924,7 @@ export const speakerData = {
     milestone: "Step 5: Live Execution & CRM Persistence",
     goal: "Implementation intentions; form CRM habits",
     sprintTarget: "3 mins",
-    artifact: "run.md & impact.com CSV",
+    artifact: "run.md & Recruitment CSV",
     hcdc: {
       hook: {
         time: "53:00 - 54:00",
@@ -954,8 +957,8 @@ export const speakerData = {
         isCommit: true,
         title: "The Commit & Commercial Finale",
         tag: "Commercial Payoff & Operational Next Steps",
-        script: "Look at your final Commercial Impact Scorecard on screen. You have shifted from 15–20 hours a month of manual Google searching that surfaces margin-diluting coupon toolbars, to under 90 seconds of autonomous execution that intercepts buyers during active evaluation. Your operational next steps are simple: 1) One-click CSV export directly into your impact.com recruitment tracking; 2) Load this directory into Claude Projects as a permanent team asset; 3) Run weekly vertical sprints to discover fresh creators whenever new product categories launch.",
-        speedScript: "1. The Payoff: 15-20 hours of manual scraping collapsed into <90 seconds of high-margin discovery.\n2. Next Step 1: 1-click CSV export into impact.com CRM tracking.\n3. Next Step 2: Persist partner-discovery/ in Claude Projects as a permanent asset.\n4. Next Step 3: Run weekly sprints for fresh category launches.",
+        script: "Look at your final Commercial Impact Scorecard on screen. You have shifted from 15–20 hours a month of manual Google searching that surfaces margin-diluting coupon toolbars, to under 90 seconds of autonomous execution that intercepts buyers during active evaluation. Your operational next steps are simple: 1) One-click CSV export directly into your partner CRM or recruitment tracker; 2) Load this directory into Claude Projects as a permanent team asset; 3) Run weekly vertical sprints to discover fresh creators whenever new product categories launch.",
+        speedScript: "1. The Payoff: 15-20 hours of manual scraping collapsed into <90 seconds of high-margin discovery.\n2. Next Step 1: 1-click CSV export into your partner CRM or outreach tracker.\n3. Next Step 2: Persist partner-discovery/ in Claude Projects as a permanent asset.\n4. Next Step 3: Run weekly sprints for fresh category launches.",
         action: "Have attendees copy their CSV block into a local file. Close the session on the final Commercial Impact Scorecard."
       }
     },

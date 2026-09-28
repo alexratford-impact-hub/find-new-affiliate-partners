@@ -25,54 +25,54 @@ colors:
 typography:
   fontFamily: "Font Awesome\\ 6 Pro"
   display:
-    fontSize: "70px"
+    fontSize: "70"
     fontWeight: "200"
   headline-lg:
-    fontSize: "42px"
+    fontSize: "42"
     fontWeight: "200"
   headline-md:
-    fontSize: "30px"
+    fontSize: "30"
     fontWeight: "200"
   title-lg:
-    fontSize: "22.4px"
+    fontSize: "22.4"
     fontWeight: "200"
   body-lg:
-    fontSize: "18px"
+    fontSize: "18"
     fontWeight: "200"
   body-md:
-    fontSize: "16px"
+    fontSize: "16"
     fontWeight: "200"
   label-md:
-    fontSize: "14px"
+    fontSize: "14"
     fontWeight: "200"
-    letterSpacing: ".097px"
+    letterSpacing: ".097"
   label-sm:
-    fontSize: "12px"
+    fontSize: "12"
     fontWeight: "200"
-    letterSpacing: ".097px"
+    letterSpacing: ".097"
   weights: [200, 300, 400, 500, 600, 700, 800, 900]
 spacing:
-  xs: "2px"
-  sm: "8px"
-  md: "16px"
-  lg: "40px"
-  xl: "60px"
+  xs: "2"
+  sm: "8"
+  md: "16"
+  lg: "40"
+  xl: "60"
 rounded:
-  sm: "1px"
-  md: "8px"
-  lg: "26px"
+  sm: "1"
+  md: "8"
+  lg: "26"
   pill: "50%"
 elevation:
-  sm: "0 1px 5px 0 rgba(0,0,0,.25)"
-  md: "0 0 4px rgba(0,0,0,.15)"
-  lg: ".5px 1.5px 20px 1px rgba(0,0,0,.1)"
+  sm: "0 1 5 0 rgba(0,0,0,.25)"
+  md: "0 0 4 rgba(0,0,0,.15)"
+  lg: ".5 1.5 20 1 rgba(0,0,0,.1)"
 layout:
-  containerMaxWidth: "770px"
+  containerMaxWidth: "770"
 components:
   card:
     background: "{colors.surface}"
-    border: "1px solid {colors.border}"
-    radius: "26px"
+    border: "1 solid {colors.border}"
+    radius: "26"
     boxShadow: "{elevation.md}"
   button-primary:
     background: "{colors.primary}"
@@ -177,39 +177,39 @@ Primary typeface: **Font Awesome\ 6 Pro** — stack: `Font Awesome\ 6 Pro`
 
 | Token | Size |
 |---|---|
-| display | 70px |
-| headline-lg | 42px |
-| headline-md | 30px |
-| title-lg | 22.4px |
-| body-lg | 18px |
-| body-md | 16px |
-| label-md | 14px |
-| label-sm | 12px |
+| display | 70 |
+| headline-lg | 42 |
+| headline-md | 30 |
+| title-lg | 22.4 |
+| body-lg | 18 |
+| body-md | 16 |
+| label-md | 14 |
+| label-sm | 12 |
 
 ### Font sizes (by frequency)
 
 | Size | Count |
 |---|---|
-| 18px | 17 |
-| 16px | 16 |
-| 24px | 11 |
-| 26px | 10 |
-| 14px | 8 |
-| 12px | 8 |
-| 32px | 7 |
-| 20px | 7 |
-| 22px | 7 |
-| 13px | 6 |
-| 10px | 5 |
-| 36px | 5 |
-| 55px | 4 |
-| 30px | 4 |
-| 42px | 1 |
-| 70px | 1 |
-| 60px | 1 |
+| 18 | 17 |
+| 16 | 16 |
+| 24 | 11 |
+| 26 | 10 |
+| 14 | 8 |
+| 12 | 8 |
+| 32 | 7 |
+| 20 | 7 |
+| 22 | 7 |
+| 13 | 6 |
+| 10 | 5 |
+| 36 | 5 |
+| 55 | 4 |
+| 30 | 4 |
+| 42 | 1 |
+| 70 | 1 |
+| 60 | 1 |
 | 1.4em | 1 |
-| 8px | 1 |
-| 48px | 1 |
+| 8 | 1 |
+| 48 | 1 |
 
 Weights in use: 200, 300, 400, 500, 600, 700, 800, 900
 
@@ -217,25 +217,25 @@ Weights in use: 200, 300, 400, 500, 600, 700, 800, 900
 
 | Value | Count |
 |---|---|
-| 34px | 10 |
-| 31px | 8 |
-| 26px | 8 |
-| 42px | 7 |
-| 18px | 7 |
-| 28px | 6 |
-| 30px | 6 |
-| 27px | 5 |
-| 24px | 5 |
-| 46px | 4 |
+| 34 | 10 |
+| 31 | 8 |
+| 26 | 8 |
+| 42 | 7 |
+| 18 | 7 |
+| 28 | 6 |
+| 30 | 6 |
+| 27 | 5 |
+| 24 | 5 |
+| 46 | 4 |
 
 ### Letter spacing (by frequency)
 
 | Value | Count |
 |---|---|
-| .097px | 4 |
+| .097 | 4 |
 | 0 | 1 |
-| .7px | 1 |
-| .5px | 1 |
+| .7 | 1 |
+| .5 | 1 |
 
 ## Spacing
 
@@ -243,32 +243,32 @@ Weights in use: 200, 300, 400, 500, 600, 700, 800, 900
 
 | Token | Value |
 |---|---|
-| xs | 2px |
-| sm | 8px |
-| md | 16px |
-| lg | 40px |
-| xl | 60px |
+| xs | 2 |
+| sm | 8 |
+| md | 16 |
+| lg | 40 |
+| xl | 60 |
 
 ### Raw values (by frequency)
 
 | Value | Count |
 |---|---|
-| 20px | 20 |
-| 10px | 20 |
-| 30px | 12 |
-| 100px | 8 |
-| 40px | 6 |
+| 20 | 20 |
+| 10 | 20 |
+| 30 | 12 |
+| 100 | 8 |
+| 40 | 6 |
 | 1em | 4 |
-| 8px | 4 |
-| 2px | 4 |
-| 9px | 4 |
-| 12px | 3 |
-| 15px | 3 |
-| 50px | 3 |
-| 60px | 2 |
-| 45px | 2 |
-| 7px | 2 |
-| 5px | 2 |
+| 8 | 4 |
+| 2 | 4 |
+| 9 | 4 |
+| 12 | 3 |
+| 15 | 3 |
+| 50 | 3 |
+| 60 | 2 |
+| 45 | 2 |
+| 7 | 2 |
+| 5 | 2 |
 
 ## Borders & Radius
 
@@ -276,25 +276,25 @@ Weights in use: 200, 300, 400, 500, 600, 700, 800, 900
 
 | Token | Value |
 |---|---|
-| sm | `1px` |
-| md | `8px` |
-| lg | `26px` |
+| sm | `1` |
+| md | `8` |
+| lg | `26` |
 | pill | `50%` |
 
 ### Raw values (resolved, by frequency)
 
 | Radius | Count |
 |---|---|
-| `8px` | 8 |
-| `100px` | 4 |
-| `26px` | 3 |
-| `4px` | 2 |
-| `20px` | 2 |
-| `0 50px 50px 0` | 2 |
-| `50px 0 0 50px` | 2 |
-| `3px` | 1 |
-| `1px` | 1 |
-| `2px` | 1 |
+| `8` | 8 |
+| `100` | 4 |
+| `26` | 3 |
+| `4` | 2 |
+| `20` | 2 |
+| `0 50 50 0` | 2 |
+| `50 0 0 50` | 2 |
+| `3` | 1 |
+| `1` | 1 |
+| `2` | 1 |
 | `50%` | 1 |
 
 ## Shadows
@@ -303,37 +303,37 @@ Weights in use: 200, 300, 400, 500, 600, 700, 800, 900
 
 | Token | Value |
 |---|---|
-| sm | `0 1px 5px 0 rgba(0,0,0,.25)` |
-| md | `0 0 4px rgba(0,0,0,.15)` |
-| lg | `.5px 1.5px 20px 1px rgba(0,0,0,.1)` |
+| sm | `0 1 5 0 rgba(0,0,0,.25)` |
+| md | `0 0 4 rgba(0,0,0,.15)` |
+| lg | `.5 1.5 20 1 rgba(0,0,0,.1)` |
 
 ### All detected shadows
 
-- `0 1px 5px 0 rgba(0,0,0,.25)`
+- `0 1 5 0 rgba(0,0,0,.25)`
 - `0 0 0 0 transparent`
-- `.5px 1.2px 11px 1px rgba(0,0,0,.1)`
-- `.5px 1.2px 9px 3px rgba(0,0,0,.12)`
-- `0 0 25px 50px #fff`
-- `0 1px 4px 0 #eaebed`
-- `.5px 1.5px 20px 1px rgba(0,0,0,.1)`
-- `0 0 6px rgba(0,0,0,.15)`
-- `0 0 4px rgba(0,0,0,.15)`
+- `.5 1.2 11 1 rgba(0,0,0,.1)`
+- `.5 1.2 9 3 rgba(0,0,0,.12)`
+- `0 0 25 50 #fff`
+- `0 1 4 0 #eaebed`
+- `.5 1.5 20 1 rgba(0,0,0,.1)`
+- `0 0 6 rgba(0,0,0,.15)`
+- `0 0 4 rgba(0,0,0,.15)`
 - `initial`
 
 ## Layout
 
-Container max-width: **770px**
+Container max-width: **770**
 
 ### Breakpoints
 
-- 660px
-- 770px
-- 920px
-- 960px
-- 990px
-- 991px
-- 992px
-- 1250px
+- 660
+- 770
+- 920
+- 960
+- 990
+- 991
+- 992
+- 1250
 
 ## Animation & Motion
 
@@ -374,8 +374,8 @@ Container max-width: **770px**
 @keyframes bannermove { 0%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-25%);transform:translateX(-25%)} }
 @keyframes img-slide { 0%,32.05%{-webkit-transform:translateX(0);transform:translateX(0)}33.33%,65.38%{-webkit-transform:translateX(-100%);transform:translateX(-100%)}66.67%,98.72%{-webkit-transform:translateX(-200%);transform:translateX(-200%)}to{-webkit-transform:translateX(-300%);transform:translateX(-300%)} }
 @keyframes placeholderAnimation { 0%{background-position:0 50%}50%{background-position:100% 50%}to{background-position:0 50%} }
-@keyframes soam-arrow-bounce { 0%{opacity:1;-webkit-transform:translateY(0);transform:translateY(0)}to{opacity:.5;-webkit-transform:translateY(-19px);transform:translateY(-19px)} }
-@keyframes soam-top-arrow-scale { 0%{stroke-width:2px;-webkit-transform:scale(1) translate(0);transform:scale(1) translate(0)}to{stroke-width:4px;-webkit-transform:scale(.6) translateY(5px);transform:scale(.6) translateY(5px)} }
+@keyframes soam-arrow-bounce { 0%{opacity:1;-webkit-transform:translateY(0);transform:translateY(0)}to{opacity:.5;-webkit-transform:translateY(-19);transform:translateY(-19)} }
+@keyframes soam-top-arrow-scale { 0%{stroke-width:2;-webkit-transform:scale(1) translate(0);transform:scale(1) translate(0)}to{stroke-width:4;-webkit-transform:scale(.6) translateY(5);transform:scale(.6) translateY(5)} }
 ```
 
 ### Animations
@@ -472,27 +472,27 @@ ease infinite`
   --color-surface-container-high: #F2F2F2;
   --color-surface-container-highest: #EAEBED;
   --font-sans: Font Awesome\ 6 Pro;
-  --font-size-display: 70px;
-  --font-size-headline-lg: 42px;
-  --font-size-headline-md: 30px;
-  --font-size-title-lg: 22.4px;
-  --font-size-body-lg: 18px;
-  --font-size-body-md: 16px;
-  --font-size-label-md: 14px;
-  --font-size-label-sm: 12px;
-  --radius-sm: 1px;
-  --radius-md: 8px;
-  --radius-lg: 26px;
+  --font-size-display: 70;
+  --font-size-headline-lg: 42;
+  --font-size-headline-md: 30;
+  --font-size-title-lg: 22.4;
+  --font-size-body-lg: 18;
+  --font-size-body-md: 16;
+  --font-size-label-md: 14;
+  --font-size-label-sm: 12;
+  --radius-sm: 1;
+  --radius-md: 8;
+  --radius-lg: 26;
   --radius-pill: 50%;
-  --shadow-sm: 0 1px 5px 0 rgba(0,0,0,.25);
-  --shadow-md: 0 0 4px rgba(0,0,0,.15);
-  --shadow-lg: .5px 1.5px 20px 1px rgba(0,0,0,.1);
-  --space-xs: 2px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 40px;
-  --space-xl: 60px;
-  --tracking-label: .097px;
-  --container-max: 770px;
+  --shadow-sm: 0 1 5 0 rgba(0,0,0,.25);
+  --shadow-md: 0 0 4 rgba(0,0,0,.15);
+  --shadow-lg: .5 1.5 20 1 rgba(0,0,0,.1);
+  --space-xs: 2;
+  --space-sm: 8;
+  --space-md: 16;
+  --space-lg: 40;
+  --space-xl: 60;
+  --tracking-label: .097;
+  --container-max: 770;
 }
 ```

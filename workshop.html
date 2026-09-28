@@ -7,7 +7,8 @@
   <title>Affilifest Brand Huddle | Partner Discovery Masterclass</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="./src/css/tokens.css">
   <link rel="stylesheet" href="./src/css/workshop.css">
 </head>
@@ -17,49 +18,17 @@
     <!-- Top Aurora Animated Accent Line -->
     <div class="aurora-bar"></div>
 
-    <!-- Floating Dynamic Live Status Capsule (Punch-hole aligned at top center) -->
-    <aside class="live-capsule" id="live-capsule" data-state="collapsed" aria-label="Active status pill">
+    <!-- Ambient Session Telemetry Pill (Non-interactive) -->
+    <aside class="live-capsule" id="live-capsule" aria-label="Active status pill">
       <div class="capsule-compact">
         <span class="status-indicator"></span>
         <span class="status-label" id="capsule-label">Live Sync: Active</span>
-      </div>
-      <div class="capsule-expanded-tray" aria-hidden="true" id="capsule-tray">
-        <div class="tray-content">
-          <div class="tray-header">
-            <span class="tray-title">Session Telemetry</span>
-            <span class="tray-badge" id="tray-mode-badge">Slide Mode</span>
-          </div>
-          <div class="tray-stats-row">
-            <div class="tray-stat-block">
-              <span class="tray-stat-val" id="tray-step-val">Step 0</span>
-              <span class="tray-stat-lbl">Active Stage</span>
-            </div>
-            <div class="tray-stat-block">
-              <span class="tray-stat-val" id="tray-preset-val">Boots UK</span>
-              <span class="tray-stat-lbl">Brand</span>
-            </div>
-            <div class="tray-stat-block">
-              <span class="tray-stat-val" id="tray-sync-val">Active</span>
-              <span class="tray-stat-lbl">Sync</span>
-            </div>
-          </div>
-          <div class="tray-action-row">
-            <button class="tray-btn" id="tray-btn-toggle-view" onclick="window.toggleSlideCodeMode()">Toggle View [S/C]</button>
-            <button class="tray-btn tray-btn-primary" onclick="window.advanceSlideOrChunk()">Next ➔</button>
-          </div>
-        </div>
       </div>
     </aside>
 
     <!-- Minimalist Projector Header -->
     <header>
       <div class="header-left">
-        <div class="brand-mark">
-          <img src="./design/Affilifest-2026-logo.png" alt="Affilifest" class="header-affilifest-logo">
-          <span class="header-affilifest-name">Affilifest</span>
-          <span class="header-badge-tag">Brand Huddle</span>
-        </div>
-        <div class="header-separator"></div>
         <div class="step-pill" id="step-counter-pill">Step 0 of 5</div>
         <div class="file-pill" id="file-path-pill">partner-discovery/</div>
       </div>
@@ -76,93 +45,72 @@
 
     <!-- Continuous 2.5D Canvas: Content bleeds beneath docks -->
     <main class="scene-canvas main-viewport" data-layer="canvas">
-    <!-- View 1: 16:9 Slide Presentation Area (Depth-of-Field Staged) -->
-    <div class="view-mode-container active" id="slide-view">
-      <div class="slide-content-area" id="slide-content-area">
-        <!-- Dynamically rendered slides via src/workshop-main.js -->
-      </div>
-    </div>
-
-    <!-- View 2: Split Engineering Code View -->
-    <div class="view-mode-container" id="code-view">
-      <div class="code-layout-split">
-        <!-- Left Pane: Chat Stream (25% Viewport Width) -->
-        <div class="claude-chat-pane" id="code-chat-stream">
-          <div class="claude-pane-header">
-            <span>Claude 3.5 Sonnet / Opus 5.5</span>
-            <span style="color:#10B981;">● Online</span>
-          </div>
-
-          <div class="claude-user-message">
-            <span class="user-message-header">Facilitator Prompt</span>
-            <p class="user-message-text" id="claude-user-prompt-text">
-              Initializing directory architecture for deterministic partner discovery skill...
-            </p>
-          </div>
-
-          <div class="claude-thinking-block">
-            <span class="thinking-block-title">
-              <span>Thinking Process</span>
-            </span>
-            <div class="thinking-text" id="claude-thinking-text">
-              <span class="thinking-stream-body">Synthesizing deterministic guardrails...</span>
-              <span class="thinking-pulse-cursor"></span>
-            </div>
-          </div>
-
-          <div class="artifact-embed-card">
-            <div>
-              <div class="artifact-embed-title" id="artifact-embed-title">Created Artifact: references/brand.md</div>
-              <div class="artifact-embed-desc" id="code-intro-count">3 progressive parts</div>
-            </div>
-            <span class="artifact-embed-tag" id="artifact-embed-tag">Part 1 of 3</span>
-          </div>
+      <!-- View 1: 16:9 Slide Presentation Area (Depth-of-Field Staged) -->
+      <div class="view-mode-container active" id="slide-view">
+        <div class="slide-content-area" id="slide-content-area">
+          <!-- Dynamically rendered slides via src/workshop-main.js -->
         </div>
+      </div>
 
-        <!-- Right Pane: Claude Artifact Code Viewer (75% Viewport Width) -->
-        <div class="claude-artifact-pane" id="code-artifact-window">
-          <div class="artifact-window-header">
-            <div class="artifact-window-title-group">
-              <span>📄</span>
-              <span class="artifact-window-filename" id="artifact-current-filename">references/brand.md</span>
-              <span class="artifact-type-badge">markdown</span>
+      <!-- View 2: Split Engineering Code View -->
+      <div class="view-mode-container" id="code-view">
+        <div class="code-layout-split">
+          <!-- Left Pane: Chat Stream (25% Viewport Width) -->
+          <div class="claude-chat-pane" id="code-chat-stream">
+            <div class="claude-pane-header">
+              <span>Claude 3.5 Sonnet / Opus 5.5</span>
+              <span style="color:#10B981;">● Online</span>
             </div>
-            <div class="artifact-window-controls">
-              <span class="artifact-step-pill" id="artifact-progress-pill">Part 1 of 3</span>
-              <button class="artifact-copy-btn" id="artifact-copy-btn" onclick="window.copyCurrentChunkCode()">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                </svg>
-                <span id="copy-btn-label">Copy Code</span>
-              </button>
+
+            <div class="claude-user-message">
+              <span class="user-message-header">Facilitator Prompt</span>
+              <p class="user-message-text" id="claude-user-prompt-text">
+                Initializing directory architecture for deterministic partner discovery skill...
+              </p>
+            </div>
+
+            <div class="claude-thinking-block">
+              <span class="thinking-block-title">
+                <span>Thinking Process</span>
+              </span>
+              <div class="thinking-text" id="claude-thinking-text">
+                <span class="thinking-stream-body">Synthesizing deterministic guardrails...</span>
+                <span class="thinking-pulse-cursor"></span>
+              </div>
+            </div>
+
+            <div class="artifact-embed-card">
+              <div>
+                <div class="artifact-embed-title" id="artifact-embed-title">Created Artifact: references/brand.md</div>
+                <div class="artifact-embed-desc" id="code-intro-count">3 progressive parts</div>
+              </div>
+              <span class="artifact-embed-tag" id="artifact-embed-tag">Part 1 of 3</span>
             </div>
           </div>
 
-          <div class="artifact-window-body">
-            <div class="chunks-list" id="chunks-list">
-              <!-- Dynamically populated code chunks with typewriter streaming -->
+          <!-- Right Pane: Claude Artifact Code Viewer (75% Viewport Width) -->
+          <div class="claude-artifact-pane" id="code-artifact-window">
+            <div class="artifact-window-header">
+              <div class="artifact-window-title-group">
+                <span>📄</span>
+                <span class="artifact-window-filename" id="artifact-current-filename">references/brand.md</span>
+                <span class="artifact-type-badge">markdown</span>
+              </div>
+              <div class="artifact-window-controls">
+                <span class="artifact-step-pill" id="artifact-progress-pill">Part 1 of 3</span>
+                <span class="artifact-type-badge">deterministic</span>
+              </div>
+            </div>
+
+            <div class="artifact-window-body">
+              <div class="chunks-list" id="chunks-list">
+                <!-- Dynamically populated code chunks with typewriter streaming -->
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </main>
-
-    <!-- Detached Global Floating Navigation Island -->
-    <nav class="floating-dock" aria-label="Global navigation" id="floating-dock">
-      <div class="dock-housing">
-        <div class="pill-group">
-          <button class="pill-node" id="dock-btn-slide" data-active="true" onclick="window.setWorkshopMode('slide')">📊 Slide</button>
-          <button class="pill-node" id="dock-btn-code" data-active="false" onclick="window.setWorkshopMode('code')">💻 Code</button>
-        </div>
-        <button class="action-circle-node" id="dock-action-circle" aria-label="Advance step or code chunk" onclick="window.advanceSlideOrChunk()" title="Next (Space / →)">
-          <svg class="action-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-      </div>
-    </nav>
 
     <!-- Persistent Co-Branded Presentation Footer (72px) -->
     <footer class="presentation-footer">

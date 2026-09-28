@@ -18,7 +18,7 @@ let isAutoOvertime = false;
 const stepCompletionState = {};
 
 const stepSlideStageCounts = {
-  setup: 3,
+  setup: 6,
   brand: 2,
   math: 3,
   discovery: 3,
@@ -481,10 +481,11 @@ window.addEventListener('keydown', (e) => {
     setFacilitatorMode('slide');
   } else if (e.key === 'c' || e.key === 'C') {
     setFacilitatorMode('code');
-  } else if (e.key === ' ' || e.key === 'ArrowRight') {
+  } else if (e.key === ' ' || e.key === 'ArrowRight' || e.key === 'PageDown') {
     e.preventDefault();
     facilitatorRevealNext();
-  } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+  } else if (e.key === 'ArrowLeft' || e.key === 'Backspace' || e.key === 'PageUp') {
+    e.preventDefault();
     prevSpeakerSection();
   } else if (e.key === ']') {
     nextSpeakerSection();

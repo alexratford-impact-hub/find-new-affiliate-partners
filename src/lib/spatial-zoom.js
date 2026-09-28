@@ -11,39 +11,65 @@ export class SpatialZoomEngine {
   }
 
   init() {
-    // Pointer down handler for computing exact touch origin coordinates
-    this.viewport.addEventListener('pointerdown', (e) => this.handlePointerDown(e));
-
-    // Keyboard listener: Escape collapses active expanded card
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.activeCard) {
+    // Viewport click delegations for close button and backdrop
+    this.viewport.addEventListener('click', (e) => {
+      if (e.target.closest('.focal-close-btn')) {
+        e.stopPropagation();
         this.collapse();
+        return;
+      }
+
+      if (e.target.closest('.card-zoom-btn')) {
+        e.stopPropagation();
+        const card = e.target.closest('.zoom-card, .stage-card, .chunk-card');
+        if (card) this.handlePointerDown(e, card);
+        return;
+      }
+
+      if (this.activeCard && !e.target.closest('[data-expanded="true"]')) {
+        e.stopPropagation();
+        this.collapse();
+        return;
       }
     });
 
-    // Clicking backdrop when in background plane collapses
-    this.viewport.addEventListener('click', (e) => {
-      if (this.activeCard && !e.target.closest('[data-expanded="true"]') && !e.target.closest('.floating-dock') && !e.target.closest('.live-capsule')) {
-        this.collapse();
+    // Double-click on any stage card zooms it into focal view
+    this.viewport.addEventListener('dblclick', (e) => {
+      const card = e.target.closest('.zoom-card, .stage-card, .chunk-card');
+      if (card && !e.target.closest('input, button, select, textarea, a, .no-zoom')) {
+        this.handlePointerDown(e, card);
       }
     });
 
     this.initLiveCapsule();
   }
 
-  handlePointerDown(e) {
-    // Ignore clicks on form inputs, sliders, and buttons inside cards so their controls work
-    if (e.target.closest('input, button, select, textarea, a, .no-zoom')) {
+  toggleZoomOnActive() {
+    if (this.activeCard) {
+      this.collapse();
       return;
     }
 
-    const card = e.target.closest('.zoom-card, .stage-card');
+    const focalTarget = document.querySelector('.stage-card.focused') ||
+      document.querySelector('.chunk-card.active') ||
+      document.querySelector('.prompt-reality-card') ||
+      document.querySelector('.stage-card');
+
+    if (focalTarget) {
+      this.triggerZoom(focalTarget);
+    }
+  }
+
+  handlePointerDown(e, targetCard) {
+    const card = targetCard || (e ? e.target.closest('.zoom-card, .stage-card, .chunk-card') : null);
     if (!card) return;
 
-    // 1. Calculate and bind exact touch origin coordinates
+    // Calculate dynamic transform origin based on where the interaction initiated
     const rect = card.getBoundingClientRect();
-    const originX = `${((e.clientX - rect.left) / rect.width) * 100}%`;
-    const originY = `${((e.clientY - rect.top) / rect.height) * 100}%`;
+    const clientX = e && e.clientX ? e.clientX : (rect.left + rect.width / 2);
+    const clientY = e && e.clientY ? e.clientY : (rect.top + rect.height / 2);
+    const originX = `${Math.max(0, Math.min(100, Math.round(((clientX - rect.left) / rect.width) * 100)))}%`;
+    const originY = `${Math.max(0, Math.min(100, Math.round(((clientY - rect.top) / rect.height) * 100)))}%`;
 
     card.style.setProperty('--origin-x', originX);
     card.style.setProperty('--origin-y', originY);
@@ -57,84 +83,54 @@ export class SpatialZoomEngine {
       return;
     }
 
-    // If another card is already active, collapse it first
+    // Collapse any previous expanded card
     if (this.activeCard && this.activeCard !== card) {
-      this.activeCard.removeAttribute('data-expanded');
+      this.collapse();
     }
 
-    // 2. Execute spatial expansion via View Transitions API
-    if (!document.startViewTransition) {
-      this.fallbackZoom(card);
-      return;
+    // Set hardware acceleration hints strictly during transition per Section 6
+    card.style.willChange = 'transform, opacity, box-shadow';
+
+    // Mount close badge inside card
+    let closeBtn = card.querySelector('.focal-close-btn');
+    if (!closeBtn) {
+      closeBtn = document.createElement('button');
+      closeBtn.className = 'focal-close-btn';
+      closeBtn.type = 'button';
+      closeBtn.innerHTML = '<span class="focal-close-key">ESC</span> Close View';
+      card.appendChild(closeBtn);
     }
 
-    card.style.viewTransitionName = 'active-spatial-target';
-    card.style.willChange = 'transform, opacity';
-    this.viewport.style.willChange = 'filter';
+    this.viewport.setAttribute('data-focal-active', 'true');
+    card.setAttribute('data-expanded', 'true');
+    this.activeCard = card;
 
-    const transition = document.startViewTransition(() => {
-      this.viewport.setAttribute('data-focal-plane', 'background');
-      card.setAttribute('data-expanded', 'true');
-      this.activeCard = card;
-    });
-
-    transition.finished.finally(() => {
-      card.style.viewTransitionName = '';
-      card.style.willChange = '';
-      this.viewport.style.willChange = '';
-    });
+    // Clear hardware acceleration hints after settling
+    setTimeout(() => {
+      if (card) card.style.willChange = '';
+    }, 450);
   }
 
   collapse() {
     if (!this.activeCard) return;
 
     const target = this.activeCard;
-    target.style.viewTransitionName = 'active-spatial-target';
     target.style.willChange = 'transform, opacity';
-    this.viewport.style.willChange = 'filter';
 
-    if (!document.startViewTransition) {
-      this.viewport.setAttribute('data-focal-plane', 'focus');
-      target.removeAttribute('data-expanded');
+    const closeBtn = target.querySelector('.focal-close-btn');
+    if (closeBtn) closeBtn.remove();
+
+    this.viewport.removeAttribute('data-focal-active');
+    target.removeAttribute('data-expanded');
+    this.activeCard = null;
+
+    setTimeout(() => {
       target.style.willChange = '';
-      this.viewport.style.willChange = '';
-      this.activeCard = null;
-      return;
-    }
-
-    const transition = document.startViewTransition(() => {
-      this.viewport.setAttribute('data-focal-plane', 'focus');
-      target.removeAttribute('data-expanded');
-      this.activeCard = null;
-    });
-
-    transition.finished.finally(() => {
-      document.querySelectorAll('.zoom-card, .stage-card').forEach((c) => {
-        c.style.viewTransitionName = '';
-        c.style.willChange = '';
-      });
-      this.viewport.style.willChange = '';
-    });
-  }
-
-  fallbackZoom(card) {
-    this.viewport.setAttribute('data-focal-plane', 'background');
-    card.setAttribute('data-expanded', 'true');
-    this.activeCard = card;
+    }, 350);
   }
 
   initLiveCapsule() {
-    const capsule = this.viewport.querySelector('.live-capsule') || document.querySelector('.live-capsule');
-    if (!capsule) return;
-
-    capsule.addEventListener('click', (e) => {
-      // Don't toggle if clicking buttons inside the expanded tray
-      if (e.target.closest('button, input, select')) return;
-
-      const currentState = capsule.getAttribute('data-state');
-      const nextState = currentState === 'collapsed' ? 'expanded' : 'collapsed';
-      capsule.setAttribute('data-state', nextState);
-    });
+    // Ambient telemetry status pill: read-only, updated via updateLiveCapsuleStatus
   }
 
   updateLiveCapsuleStatus(label, isLive = true) {
