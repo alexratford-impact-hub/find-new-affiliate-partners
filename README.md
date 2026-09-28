@@ -1,4 +1,4 @@
-# Autonomous Affiliate Partner Discovery Skill
+# Affiliate Partner Discovery Skill
 
 > Developed for the **[Affilifest Brand Huddle London](https://www.affilifest.com/brand-huddle-london)** workshop: *Find and Prioritise New Partners*  
 > Facilitator: **Alex Ratford** (Senior Publisher Development Strategist @ [impact.com](https://impact.com))
