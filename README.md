@@ -50,5 +50,5 @@ partner-discovery/
 
 $$\text{EV} = R^{w_R} \times S^{w_S} \times C^{w_C}$$
 
-- **Weights Auto-Normalize:** $w_i = \text{raw\_}w_i / \sum \text{raw\_}w$ (always sums to 1.0).
+- **Weights Auto-Normalize:** $$w_i = \text{raw\_}w_i / \sum \text{raw\_}w$$ (always sums to 1.0).
 - **Multiplicative Knockout:** If Commercial Fit is zero ($C=0$, such as public bodies, NHS, or dead links), the entire score collapses to **0.00**.
