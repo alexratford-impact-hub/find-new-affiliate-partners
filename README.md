@@ -1,7 +1,7 @@
 # Autonomous Affiliate Partner Discovery Skill
 
-> Developed for the **Affilifest Huddle London** workshop: *Find and Prioritise New Partners*  
-> Facilitator: **Alex Ratford** (Senior Publisher Development Strategist @ impact.com)
+> Developed for the **[Affilifest Brand Huddle London](https://www.affilifest.com/brand-huddle-london)** workshop: *Find and Prioritise New Partners*  
+> Facilitator: **Alex Ratford** (Senior Publisher Development Strategist @ [impact.com](https://impact.com))
 
 A deterministic, exclusion-proof AI Agent Skill that reverse-engineers consumer search journeys to surface high-converting, undiscovered affiliate partners across **any vertical** (Retail, SaaS, FinTech, Travel, Subscriptions).
 
