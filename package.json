@@ -4,6 +4,8 @@
   "description": "Affilifest Brand Huddle - Autonomous Partner Discovery Masterclass Display & Operator Engine",
   "scripts": {
     "dev": "serve .",
+    "build": "node scripts/build.js",
+    "deploy": "npm run build && npx wrangler deploy",
     "test": "playwright test",
     "test:1080p": "playwright test --project=1080p-fhd-slide --project=1080p-fhd-code",
     "test:4k": "playwright test --project=4k-uhd-slide --project=4k-uhd-code",
