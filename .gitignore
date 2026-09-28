@@ -2,6 +2,7 @@
 node_modules/
 .archive/
 design/
+.agents/
 
 # Backups and temporary files
 *.bak
