@@ -40,21 +40,21 @@
           <tbody>
             <tr>
               <td><span class="milestone-tag">00:00 - 05:00</span></td>
-              <td><strong>Room Settling &amp; AV Sync</strong></td>
-              <td>Seating, screen calibration, and BroadcastChannel sync check</td>
+              <td><strong>Step 0: Executive Agenda</strong></td>
+              <td>Engineering mindset, 3 core rules, and run of play</td>
               <td><span style="color:#94A3B8; font-weight:700;">-</span></td>
-              <td><code>Display &amp; Network Checks</code></td>
+              <td><code>masterclass-overview/</code></td>
             </tr>
             <tr>
               <td><span class="milestone-tag">05:00 - 13:00</span></td>
-              <td><strong>Step 0: AI Blind Spot &amp; Setup</strong></td>
-              <td>Overcome status quo bias; 4-question icebreaker &amp; scaffolding</td>
+              <td><strong>Kickoff &amp; Setup: AI Blind Spot</strong></td>
+              <td>Overcome status quo bias; grounded prompt simulation &amp; scaffolding</td>
               <td><span style="color:#F59E0B; font-weight:700;">3.5 mins</span></td>
-              <td><code>Desktop directories &amp; unhidden extensions</code></td>
+              <td><code>partner-discovery/ (Desktop directories &amp; unhidden extensions)</code></td>
             </tr>
             <tr>
               <td><span class="milestone-tag">13:00 - 22:00</span></td>
-              <td><strong>Step 1: Commercial Guardrails &amp; Shield</strong></td>
+              <td><strong>Step 1: Brand Configuration &amp; Shield</strong></td>
               <td>Loss aversion; eliminate low-intent voucher leakage</td>
               <td><span style="color:#F59E0B; font-weight:700;">4.0 mins</span></td>
               <td><code>references/brand.md</code></td>
@@ -85,7 +85,7 @@
               <td><strong>Step 5: Live Execution &amp; CRM Persistence</strong></td>
               <td>Implementation intentions; form CRM habits</td>
               <td><span style="color:#F59E0B; font-weight:700;">3.0 mins</span></td>
-              <td><code>run.md &amp; impact.com CSV</code></td>
+              <td><code>SKILL.md (Runtime) &amp; Candidate CSV</code></td>
             </tr>
             <tr>
               <td><span class="milestone-tag">60:00 - 70:00</span></td>
@@ -101,7 +101,9 @@
   </div>
 
   <!-- Laptop Top Control Bar -->
-  <div class="top-bar">
+  <div id="stage-viewport">
+    <div id="stage-canvas">
+      <div class="top-bar">
     <div class="brand-title">
       <span>Affilifest Masterclass</span>
       <span style="color:var(--color-accent); font-size:12px;">| Facilitator Console</span>
@@ -184,9 +186,17 @@
   <div class="console-grid">
     <!-- Steps Navigation on Laptop -->
     <div class="steps-pane">
-      <div class="step-card active" id="card-setup" onclick="window.broadcastStep('setup')">
+      <div class="step-card active" id="card-agenda" onclick="window.broadcastStep('agenda')">
         <div class="step-card-header">
-          <span class="step-num">0. Kickoff &amp; Setup</span>
+          <span class="step-num">0. Agenda &amp; Roadmap</span>
+          <span class="step-meta">00:00 - 05:00 &bull; 5m</span>
+        </div>
+        <span class="step-meta">Engineering Mindset &amp; Rules</span>
+      </div>
+
+      <div class="step-card" id="card-setup" onclick="window.broadcastStep('setup')">
+        <div class="step-card-header">
+          <span class="step-num">Kickoff &amp; Setup</span>
           <span class="step-meta">05:00 - 13:00 &bull; 3.5m</span>
         </div>
         <span class="step-meta">AI Blind Spot &amp; Scaffolding</span>
@@ -194,7 +204,7 @@
 
       <div class="step-card" id="card-brand" onclick="window.broadcastStep('brand')">
         <div class="step-card-header">
-          <span class="step-num">1. Commercial Guardrails</span>
+          <span class="step-num">Step 1. Brand Rules</span>
           <span class="step-meta">13:00 - 22:00 &bull; 4m</span>
         </div>
         <span class="step-meta">references/brand.md (Shield)</span>
@@ -202,7 +212,7 @@
 
       <div class="step-card" id="card-math" onclick="window.broadcastStep('math')">
         <div class="step-card-header">
-          <span class="step-num">2. Deterministic Scoring</span>
+          <span class="step-num">Step 2. EV Scoring</span>
           <span class="step-meta">22:00 - 31:00 &bull; 4m</span>
         </div>
         <span class="step-meta">references/estimated_value.md (EV)</span>
@@ -210,15 +220,15 @@
 
       <div class="step-card" id="card-discovery" onclick="window.broadcastStep('discovery')">
         <div class="step-card-header">
-          <span class="step-num">3. Dual-Engine Search</span>
+          <span class="step-num">Step 3. Dual-Engine Search</span>
           <span class="step-meta">31:00 - 45:00 &bull; 5m</span>
         </div>
-        <span class="step-meta">references/discovery.md</span>
+        <span class="step-meta">NeedScope &times; Messy Middle</span>
       </div>
 
       <div class="step-card" id="card-skill" onclick="window.broadcastStep('skill')">
         <div class="step-card-header">
-          <span class="step-num">4. Master Controller</span>
+          <span class="step-num">Step 4. Master Controller</span>
           <span class="step-meta">45:00 - 53:00 &bull; 4m</span>
         </div>
         <span class="step-meta">SKILL.md (HALT Gate)</span>
@@ -226,10 +236,10 @@
 
       <div class="step-card" id="card-run" onclick="window.broadcastStep('run')">
         <div class="step-card-header">
-          <span class="step-num">5. Live Run &amp; Commit</span>
+          <span class="step-num">Step 5. Deploy &amp; Verify</span>
           <span class="step-meta">53:00 - 60:00 &bull; 3m</span>
         </div>
-        <span class="step-meta">run.md &amp; impact.com CSV</span>
+        <span class="step-meta">SKILL.md (Runtime) &amp; Candidate CSV</span>
       </div>
     </div>
 
@@ -238,12 +248,12 @@
       <!-- Active Step Milestone Strip -->
       <div class="milestone-strip">
         <div style="display:flex; align-items:center; gap:10px;">
-          <span style="font-weight:800; font-size:13px; color:#FFFFFF;" id="active-step-title">0. Kickoff &amp; Setup (05:00 - 13:00)</span>
-          <span class="milestone-tag" id="milestone-window">05:00 - 13:00</span>
+          <span style="font-weight:800; font-size:13px; color:#FFFFFF;" id="active-step-title">0. Agenda &amp; Run of Play (00:00 - 05:00)</span>
+          <span class="milestone-tag" id="milestone-window">00:00 - 05:00</span>
         </div>
         <div style="display:flex; align-items:center; gap:12px;">
-          <span style="color:#CBD5E1;" id="milestone-goal"><strong>Goal:</strong> Overcome status quo bias; 4-question icebreaker</span>
-          <span class="milestone-artifact-pill" id="milestone-artifact">📦 Desktop directories &amp; unhidden extensions</span>
+          <span style="color:#CBD5E1;" id="milestone-goal"><strong>Goal:</strong> Establish engineering mindset; lock the 3 core directives and timetable</span>
+          <span class="milestone-artifact-pill" id="milestone-artifact">📦 masterclass-overview/</span>
         </div>
       </div>
 
@@ -252,7 +262,7 @@
         <button class="hcdc-tab active" id="tab-phase-hook" onclick="window.setHcdcPhase('hook')">
           <div class="hcdc-tab-top">
             <span class="hcdc-tab-title">🪝 The Hook</span>
-            <span class="hcdc-tab-duration" id="badge-phase-hook">90s</span>
+            <span class="hcdc-tab-duration" id="badge-phase-hook">120s</span>
           </div>
           <span class="hcdc-tab-sub">Motivation &bull; Failure Mode</span>
         </button>
@@ -260,7 +270,7 @@
         <button class="hcdc-tab" id="tab-phase-chunk" onclick="window.setHcdcPhase('chunk')">
           <div class="hcdc-tab-top">
             <span class="hcdc-tab-title">🧩 The Chunk</span>
-            <span class="hcdc-tab-duration" id="badge-phase-chunk">2.5m</span>
+            <span class="hcdc-tab-duration" id="badge-phase-chunk">120s</span>
           </div>
           <span class="hcdc-tab-sub">Capability &bull; Code Demo</span>
         </button>
@@ -268,7 +278,7 @@
         <button class="hcdc-tab" id="tab-phase-do" onclick="window.setHcdcPhase('do')">
           <div class="hcdc-tab-top">
             <span class="hcdc-tab-title">🛠️ The Do</span>
-            <span class="hcdc-tab-duration" id="badge-phase-do">3.5m Sprint</span>
+            <span class="hcdc-tab-duration" id="badge-phase-do">Active</span>
           </div>
           <span class="hcdc-tab-sub">Opportunity &bull; Build</span>
         </button>
@@ -289,7 +299,7 @@
           <span id="stage-action-phase-label" style="font-size:10px; color:#F59E0B;">THE HOOK</span>
         </div>
         <div class="stage-action-text" id="stage-action-text">
-          Project Slide Mode using [S]. Run the 4-Question Icebreaker, tallying hands as each question reveals on screen. Emphasise: Customers search to resolve uncertainty, not brand names.
+          Project Agenda in Slide Mode using key [S]. Direct attention to the schedule table on the stage canvas. Verify all attendee laptops remain closed.
         </div>
         <div class="stage-action-btn-row">
           <button class="stage-quick-btn" onclick="window.setFacilitatorMode('slide')">📊 Project Slide [S]</button>
@@ -311,7 +321,7 @@
 
         <div class="substep-header-row">
           <div class="substep-title-badge" id="substep-title-badge">
-            <span>Part 1: Root Directories</span>
+            <span>Part 1: The 4-File Architecture</span>
           </div>
           <div class="substep-sync-label" id="substep-sync-label">
             ● Projecting live to room
@@ -328,7 +338,7 @@
           <span id="say-mode-pill" style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; background:rgba(41,141,218,0.2); color:var(--color-accent);">STANDARD SCRIPT (45s)</span>
         </div>
         <div class="note-body" id="note-say">
-          "Let's take a quick pulse of the room. Look at the display. Question 1: Who uses AI tools weekly in their everyday workflow?..."
+          Welcome. Look at the timetable on the screen. Over the next 55 minutes, we are not learning how to write clever prompts. Prompt engineering is brittle; it produces inconsistent, hallucinated results that dump massive media conglomerates or coupon hijackers into your recruitment pipeline. Today, we are treating partner recruitment as an engineering problem. We are building an autonomous discovery skill structured across five modular Markdown files.
         </div>
       </div>
 
@@ -340,6 +350,8 @@
         </label>
       </div>
     </div>
+  </div>
+  </div>
   </div>
 
   <!-- Modular Entry Script -->

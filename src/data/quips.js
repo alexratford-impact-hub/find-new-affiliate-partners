@@ -99,7 +99,7 @@ export const wittyThinkingSentences = [
   "Simulating the cognitive load of a consumer stuck between two identical cordless vacuums.",
   "Testing whether the candidate domain can survive a compliance check without imploding.",
   "Translating human anxiety into actionable boolean search parameters. What is an emotional trigger?",
-  "Confirming that the publisher actually tests products instead of stealing bullet points from Amazon listings.",
+  "Confirming that the publisher actually tests products instead of stealing bullet points from marketplace listings.",
   "Validating the zero-knockout: math doesn't care about a publisher's social media follower count.",
   "Reminding the instructor that a 15% discount has the exact same psychological pull as five behavioral confidence cues.",
   "Checking if the candidate site has a working contact page or if they're getting 100,000 clicks to a parked domain."
@@ -107,13 +107,14 @@ export const wittyThinkingSentences = [
 
 export const claudeStepData = {
   setup: {
-    userPrompt: "find me a list of prospect affiliate partners for amazon"
+    userPrompt: "find me a list of prospect affiliate partners in our vertical"
   },
   brand: {
     userPrompt: "Synthesize references/brand.md for our target merchant. We need target parameters, competitor baselines, and uncompromising disqualification rules. Ensure the agent rejects low-intent coupon scrapers before doing any search."
   },
   math: {
-    userPrompt: "Draft references/estimated_value.md using the Expected Value formula: EV = (R^wR) * (S^wS) * (C^wC). Explain why additive scoring fails and how multiplicative zero-knockouts protect recruitment budgets."
+    userPrompt: "Draft references/estimated_value.md using the Expected Value formula: EV = (R^wR) * (S^wS) * (C^wC). Explain why additive scoring fails and how multiplicative zero-knockouts protect recruitment budgets.",
+    userPromptHtml: "Draft <code>references/estimated_value.md</code> using the Expected Value formula: <span class=\"latex-math-pill\">EV = R<sup>w<sub>R</sub></sup> &times; S<sup>w<sub>S</sub></sup> &times; C<sup>w<sub>C</sub></sup></span>. Explain why additive scoring fails and how multiplicative zero-knockouts protect recruitment budgets."
   },
   discovery: {
     userPrompt: "Construct references/discovery.md with two search loops: Loop 1 using Kantar NeedScope psychological drivers, and Loop 2 using Google Messy Middle cognitive biases. Why bypass brand keywords?"

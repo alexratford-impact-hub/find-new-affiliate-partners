@@ -5,6 +5,8 @@ public/
 .wrangler/
 design/
 .agents/
+playwright-report/
+./partner-research-skill/
 
 # Backups and temporary files
 *.bak
@@ -16,3 +18,6 @@ Thumbs.db
 # Tool-specific caches & local artifacts
 .playwright-mcp/
 .gemini/
+.impeccable/
+dist/
+test-results/

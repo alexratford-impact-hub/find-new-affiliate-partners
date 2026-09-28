@@ -37,10 +37,10 @@
   /* Fluid Typographic Tokens (1080p baseline to 4K/8K scales) */
   --font-sans: 'Sarabun', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
-  --font-size-headline: clamp(1.8rem, 2.3cqw, 4.5rem);
-  --font-size-subheadline: clamp(1rem, 1.15cqw, 2.2rem);
-  --font-size-card-title: clamp(1.15rem, 1.3cqw, 2.5rem);
-  --font-size-body: clamp(0.95rem, 1.05cqw, 1.75rem);
+  --font-size-headline: clamp(2.2rem, 2.7cqw, 6.5rem);
+  --font-size-subheadline: clamp(1.1rem, 1.25cqw, 2.5rem);
+  --font-size-card-title: clamp(1.2rem, 1.35cqw, 2.6rem);
+  --font-size-body: clamp(1.05rem, 1.15cqw, 2.2rem);
   --font-size-code-active: clamp(1.375rem, 1.35cqw, 2.875rem);
   --font-size-code-eased: clamp(1.0625rem, 1.05cqw, 2.125rem);
   --font-size-caption: clamp(0.85rem, 0.9cqw, 1.5rem);
@@ -55,8 +55,11 @@
   --space-xl: clamp(3rem, 3.6cqw, 7.5rem);
 
   /* Surface Geometry */
+  --radius-xs: 4px;
   --radius-sm: 6px;
+  --radius-card-sm: 8px;
   --radius-md: 10px;
+  --radius-card-md: 12px;
   --radius-lg: 16px;
   --radius-pill: 9999px;
   --radius-card: clamp(1.125rem, 1.35cqw, 2.75rem);

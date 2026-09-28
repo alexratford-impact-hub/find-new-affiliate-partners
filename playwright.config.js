@@ -28,15 +28,7 @@ export default defineConfig({
   projects: [
     /* 1080p Full HD Display (Standard Venue Projector) */
     {
-      name: '1080p-fhd-slide',
-      use: {
-        browserName: 'chromium',
-        viewport: { width: 1920, height: 1080 },
-        deviceScaleFactor: 1,
-      },
-    },
-    {
-      name: '1080p-fhd-code',
+      name: '1080p-fhd',
       use: {
         browserName: 'chromium',
         viewport: { width: 1920, height: 1080 },
@@ -46,15 +38,7 @@ export default defineConfig({
 
     /* 4K Ultra HD Display (Commercial 4K Panels) */
     {
-      name: '4k-uhd-slide',
-      use: {
-        browserName: 'chromium',
-        viewport: { width: 3840, height: 2160 },
-        deviceScaleFactor: 1,
-      },
-    },
-    {
-      name: '4k-uhd-code',
+      name: '4k-uhd',
       use: {
         browserName: 'chromium',
         viewport: { width: 3840, height: 2160 },
@@ -64,15 +48,7 @@ export default defineConfig({
 
     /* 8K Commercial Video Wall */
     {
-      name: '8k-wall-slide',
-      use: {
-        browserName: 'chromium',
-        viewport: { width: 7680, height: 4320 },
-        deviceScaleFactor: 1,
-      },
-    },
-    {
-      name: '8k-wall-code',
+      name: '8k-wall',
       use: {
         browserName: 'chromium',
         viewport: { width: 7680, height: 4320 },
@@ -82,7 +58,7 @@ export default defineConfig({
 
     /* Operator Console (notes.html) */
     {
-      name: 'notes-console-1080p',
+      name: 'notes-console',
       use: {
         browserName: 'chromium',
         viewport: { width: 1920, height: 1080 },
@@ -93,7 +69,7 @@ export default defineConfig({
 
   /* Run local web server if not already running */
   webServer: {
-    command: 'npx -y serve . -p 3000',
+    command: 'npx vite --port 3000',
     port: 3000,
     reuseExistingServer: true,
     timeout: 120 * 1000,

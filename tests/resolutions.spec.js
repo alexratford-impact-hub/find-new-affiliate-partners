@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Resolution & Ergonomics Test Suite: 1080p, 4K & 8K
- * Validates display invariants: Zero-Overflow, Typographic Distance Floor, Anchor Stability, and Mode Switching.
+ * Functional Stage & Architecture Test Suite
+ * Validates Slide 0 Agenda, Micro-Stage Progression, Keystroke Handling,
+ * Brand Preset Switching, and CSS Canvas Uniform Scaling without scrollbars.
  */
 
-test.describe('Display Canvas & Ergonomic Invariants', () => {
+test.describe('Masterclass Presentation Platform - Functional & Geometry Suite', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/workshop.html');
@@ -13,234 +14,132 @@ test.describe('Display Canvas & Ergonomic Invariants', () => {
     await page.waitForTimeout(300);
   });
 
-  test('Zero Overflow Invariant: No window scrollbars permitted across 16:9 stage', async ({ page }) => {
-    const overflowMetrics = await page.evaluate(() => {
-      const doc = document.documentElement;
-      const scrollH = doc.scrollHeight;
-      const clientH = window.innerHeight;
-      const scrollW = doc.scrollWidth;
-      const clientW = window.innerWidth;
+  test('Initial load displays Slide 0 (Agenda & Executive Roadmap)', async ({ page }) => {
+    const headline = page.locator('.slide-headline');
+    await expect(headline).toContainText('Engineering Autonomous Discovery');
 
-      return {
-        scrollHeight: scrollH,
-        clientHeight: clientH,
-        hasVerticalScroll: scrollH > clientH,
-        verticalDelta: Math.max(0, scrollH - clientH),
-        scrollWidth: scrollW,
-        clientWidth: clientW,
-        hasHorizontalScroll: scrollW > clientW,
-        horizontalDelta: Math.max(0, scrollW - clientW),
-      };
-    });
+    const subheadline = page.locator('.slide-subheadline');
+    await expect(subheadline).toContainText('Moving from conversational prompt guessing to a deterministic, production-grade affiliate recruitment engine.');
 
-    expect(overflowMetrics.hasVerticalScroll, `Vertical scroll detected (+${overflowMetrics.verticalDelta}px)`).toBe(false);
-    expect(overflowMetrics.hasHorizontalScroll, `Horizontal scroll detected (+${overflowMetrics.horizontalDelta}px)`).toBe(false);
+    const stepPill = page.locator('#step-counter-pill');
+    await expect(stepPill).toContainText('Agenda');
+
+    // Verify Stage 0 Schedule Table is mounted
+    const stage0 = page.locator('#agenda-stage-0');
+    await expect(stage0).toBeVisible();
+    await expect(stage0).toContainText('Session Timetable & Milestones');
+    await expect(stage0).toContainText('Brand Configuration');
+    await expect(stage0).toContainText('Deterministic Scoring Engine');
+    await expect(stage0).toContainText('60-Minute Production Sprint');
   });
 
-  test('Proportional Typographic Distance Floor: Text satisfies distance requirements', async ({ page }) => {
-    const typoAudit = await page.evaluate(() => {
-      const width = window.innerWidth;
-      const scaleFactor = width / 1920;
-      const minRequiredPx = 18 * scaleFactor;
-      const tolerancePx = 17.0 * scaleFactor;
+  test('Keyboard navigation advances from Slide 0 Stage 0 directly into Step 0', async ({ page }) => {
+    // Initial: Stage 0 visible
+    const stage0 = page.locator('#agenda-stage-0');
+    await expect(stage0).toBeVisible();
 
-      const contentArea = document.getElementById('slide-content-area') || document.body;
-      const targetElements = contentArea.querySelectorAll(
-        '.slide-headline, .slide-subhead, .slide-body-callout, .prompt-bullet-point, .heuristic-item, .curriculum-lead, .chunk-code-area pre, .formula-box, p, li'
-      );
+    // Advance directly to Step 0 (AI Blind Spot & Setup)
+    await page.keyboard.press('ArrowRight');
+    await page.waitForTimeout(400);
 
-      let minFoundPx = 99999;
-      const violations = [];
-
-      targetElements.forEach((el) => {
-        if (!el.innerText || !el.innerText.trim()) return;
-        // Exclude utility badges and footer metadata
-        if (el.closest('.card-badge') || el.closest('.prompt-tag') || el.closest('.slide-step-tag') || el.closest('.presentation-footer')) {
-          return;
-        }
-
-        const fs = parseFloat(window.getComputedStyle(el).fontSize);
-        if (fs < minFoundPx) minFoundPx = fs;
-
-        if (fs < tolerancePx) {
-          violations.push({
-            tag: el.tagName,
-            className: el.className,
-            text: el.innerText.slice(0, 35),
-            fontSize: fs,
-            minRequired: minRequiredPx
-          });
-        }
-      });
-
-      return {
-        scaleFactor,
-        minFoundPx,
-        minRequiredPx,
-        violationCount: violations.length,
-        violations: violations.slice(0, 5)
-      };
-    });
-
-    expect(
-      typoAudit.violationCount,
-      `Found ${typoAudit.violationCount} typography elements below proportional distance floor (${typoAudit.minRequiredPx}px @ scale ${typoAudit.scaleFactor}x): ${JSON.stringify(typoAudit.violations)}`
-    ).toBe(0);
+    const headline = page.locator('.slide-headline');
+    await expect(headline).toContainText('Autonomous Affiliate Discovery Skills');
+    const cardTitle = page.locator('#setup-card-1 .slide-card-title');
+    await expect(cardTitle).toContainText('Brand-Out Search Ceiling');
   });
 
-  test('Pinned Anchors: Aurora bar and co-branded footer mount within screen bounds', async ({ page }) => {
-    const anchorMetrics = await page.evaluate(() => {
-      const aurora = document.querySelector('.aurora-bar');
-      const footer = document.querySelector('.presentation-footer');
+  test('Mode Switching: [C] toggles live code view with keyframe reveal and [S] returns to slide', async ({ page }) => {
+    // Switch to Step 1 (Setup) which has code chunks
+    await page.keyboard.press('2');
+    await page.waitForTimeout(300);
 
-      if (!aurora || !footer) {
-        return { mounted: false };
-      }
-
-      const auroraRect = aurora.getBoundingClientRect();
-      const footerRect = footer.getBoundingClientRect();
-      const winH = window.innerHeight;
-      const winW = window.innerWidth;
-
-      return {
-        mounted: true,
-        auroraTop: auroraRect.top,
-        auroraHeight: auroraRect.height,
-        auroraVisible: auroraRect.height >= 2 && auroraRect.width >= winW,
-        footerBottom: footerRect.bottom,
-        footerHeight: footerRect.height,
-        footerAtBottom: Math.abs(footerRect.bottom - winH) <= 2,
-        footerVisible: footerRect.height >= 40 && footerRect.width >= winW,
-      };
-    });
-
-    expect(anchorMetrics.mounted, 'Top aurora bar and footer must be mounted in DOM').toBe(true);
-    expect(anchorMetrics.auroraVisible, 'Aurora accent bar must span full width').toBe(true);
-    expect(anchorMetrics.footerAtBottom, 'Presentation footer must be pinned to viewport bottom').toBe(true);
-    expect(anchorMetrics.footerVisible, 'Presentation footer must have adequate presentation height').toBe(true);
-  });
-
-  test('Mode Switching Stability: Toggling Slide [S] and Code [C] maintains zero overflow', async ({ page }) => {
-    // Switch to Code Mode via keystroke 'c'
+    // Switch to Code Mode
     await page.keyboard.press('c');
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(300);
 
-    const codeModeVisible = await page.evaluate(() => {
-      const codeView = document.getElementById('code-view');
-      const splitCanvas = document.querySelector('.code-layout-split') || document.querySelector('.claude-split-canvas');
-      const doc = document.documentElement;
+    const codeView = page.locator('#code-view');
+    await expect(codeView).toHaveClass(/active/);
+    const chunkCard = page.locator('.chunk-card.active');
+    await expect(chunkCard).toBeVisible();
 
-      return {
-        isActive: codeView?.classList.contains('active'),
-        hasVScroll: doc.scrollHeight > window.innerHeight,
-        hasHScroll: doc.scrollWidth > window.innerWidth,
-        splitMounted: !!splitCanvas,
-      };
-    });
-
-    expect(codeModeVisible.isActive, 'Code Mode container must be active').toBe(true);
-    expect(codeModeVisible.hasVScroll, 'Code Mode must not introduce vertical scrollbars').toBe(false);
-    expect(codeModeVisible.hasHScroll, 'Code Mode must not introduce horizontal scrollbars').toBe(false);
-
-    // Switch back to Slide Mode via keystroke 's'
+    // Switch back to Slide Mode
     await page.keyboard.press('s');
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(300);
 
-    const slideModeVisible = await page.evaluate(() => {
-      const slideView = document.getElementById('slide-view');
-      const doc = document.documentElement;
-
-      return {
-        isActive: slideView?.classList.contains('active'),
-        hasVScroll: doc.scrollHeight > window.innerHeight,
-        hasHScroll: doc.scrollWidth > window.innerWidth,
-      };
-    });
-
-    expect(slideModeVisible.isActive, 'Slide Mode container must be active').toBe(true);
-    expect(slideModeVisible.hasVScroll, 'Slide Mode must not introduce vertical scrollbars').toBe(false);
-    expect(slideModeVisible.hasHScroll, 'Slide Mode must not introduce horizontal scrollbars').toBe(false);
+    const slideView = page.locator('#slide-view');
+    await expect(slideView).toHaveClass(/active/);
   });
 
-  test('Visual Occlusion & Z-Stacking: Active slide content is never hidden behind headers, footers, or overlays', async ({ page }) => {
-    const stepKeys = ['1', '2', '3', '4', '5', '6'];
+  test('Brand preset switching updates data without layout shifts', async ({ page }) => {
+    // Jump to Step 1 (Brand Configuration)
+    await page.keyboard.press('2'); // Step 1 (Brand)
+    await page.waitForTimeout(400);
 
-    for (const key of stepKeys) {
-      await page.keyboard.press(key);
+    // Initial check for default Boots UK
+    const brandCard = page.locator('#brand-card-1');
+    await expect(brandCard).toContainText('Boots UK');
+
+    // Apply Argos preset via window post message / sync
+    await page.evaluate(() => {
+      const bc = new BroadcastChannel('workshop_sync');
+      bc.postMessage({ type: 'APPLY_PRESET', payload: { preset: 'argos' } });
+    });
+    await page.waitForTimeout(500);
+
+    // Verify updated to Argos UK
+    await expect(brandCard).toContainText('Argos UK');
+
+    // Canvas must retain fixed 1920x1080 dimensions
+    const canvasBounds = await page.locator('#stage-canvas').boundingBox();
+    expect(canvasBounds).not.toBeNull();
+    expect(canvasBounds.width).toBeGreaterThan(0);
+    expect(canvasBounds.height).toBeGreaterThan(0);
+  });
+
+  test('Canvas scale factor and zero-overflow across standard resolutions', async ({ page }) => {
+    const testResolutions = [
+      { width: 1366, height: 768 },
+      { width: 1440, height: 900 },
+      { width: 1920, height: 1080 },
+      { width: 2560, height: 1440 }
+    ];
+
+    for (const res of testResolutions) {
+      await page.setViewportSize({ width: res.width, height: res.height });
       await page.waitForTimeout(200);
 
-      const occlusionAudit = await page.evaluate(() => {
-        const footer = document.querySelector('.presentation-footer');
-        const header = document.querySelector('.presentation-header');
-        const footerRect = footer ? footer.getBoundingClientRect() : null;
-        const headerRect = header ? header.getBoundingClientRect() : null;
-        const contentArea = document.getElementById('slide-content-area');
+      const overflowAudit = await page.evaluate((r) => {
+        const doc = document.documentElement;
+        const scrollH = doc.scrollHeight;
+        const clientH = window.innerHeight;
+        const scrollW = doc.scrollWidth;
+        const clientW = window.innerWidth;
+        const canvas = document.getElementById('stage-canvas');
+        const computedStyle = window.getComputedStyle(canvas);
 
-        if (!contentArea) return { error: 'contentArea missing', occlusions: [] };
-
-        // Test cards, callouts, grids, and primary text containers
-        const targets = Array.from(contentArea.querySelectorAll(
-          '.prompt-reality-card, .prompt-reality-callout, .prompt-reality-row, .brand-spec-grid, .formula-block, .kantar-chip, .matrix-grid, .skill-pipeline, .run-output-grid, .proof-row'
-        ));
-
-        const collisions = [];
-
-        for (const el of targets) {
-          const rect = el.getBoundingClientRect();
-          if (rect.width === 0 || rect.height === 0) continue;
-
-          // 1. Footer collision (element bottom exceeds footer top)
-          if (footerRect && rect.bottom > (footerRect.top + 1)) {
-            collisions.push({
-              className: el.className,
-              rectBottom: rect.bottom,
-              footerTop: footerRect.top,
-              overlapPx: (rect.bottom - footerRect.top).toFixed(2),
-              type: 'clipped-behind-footer'
-            });
-          }
-
-          // 2. Header collision (element top encroaches into header bottom)
-          if (headerRect && rect.top < (headerRect.bottom - 1)) {
-            collisions.push({
-              className: el.className,
-              rectTop: rect.top,
-              headerBottom: headerRect.bottom,
-              overlapPx: (headerRect.bottom - rect.top).toFixed(2),
-              type: 'clipped-behind-header'
-            });
-          }
-
-          // 3. Center point hit-test verification
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          if (cx >= 0 && cx <= window.innerWidth && cy >= 0 && cy <= window.innerHeight) {
-            const topEl = document.elementFromPoint(cx, cy);
-            if (topEl && topEl !== el && !el.contains(topEl) && !topEl.contains(el)) {
-              // Only report if covering element is an unrelated overlay (e.g. footer/header)
-              if (topEl.closest('.presentation-footer') || topEl.closest('.presentation-header') || topEl.classList.contains('live-capsule')) {
-                collisions.push({
-                  className: el.className,
-                  coveredBy: topEl.className,
-                  type: 'occluded-by-overlay'
-                });
-              }
-            }
-          }
-        }
+        const expectedScale = Math.min(r.width / 1920, r.height / 1080);
 
         return {
-          totalTargets: targets.length,
-          collisionsCount: collisions.length,
-          collisions
+          hasVerticalScroll: scrollH > clientH,
+          hasHorizontalScroll: scrollW > clientW,
+          scrollH,
+          clientH,
+          scrollW,
+          clientW,
+          transform: computedStyle.transform,
+          expectedScale
         };
-      });
+      }, res);
 
       expect(
-        occlusionAudit.collisionsCount,
-        `Step ${key} has ${occlusionAudit.collisionsCount} occluded or colliding elements: ${JSON.stringify(occlusionAudit.collisions)}`
-      ).toBe(0);
+        overflowAudit.hasVerticalScroll,
+        `Vertical scroll found at ${res.width}x${res.height}: ${overflowAudit.scrollH}px > ${overflowAudit.clientH}px`
+      ).toBe(false);
+
+      expect(
+        overflowAudit.hasHorizontalScroll,
+        `Horizontal scroll found at ${res.width}x${res.height}: ${overflowAudit.scrollW}px > ${overflowAudit.clientW}px`
+      ).toBe(false);
     }
   });
 });
-

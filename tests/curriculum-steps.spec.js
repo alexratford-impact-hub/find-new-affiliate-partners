@@ -10,32 +10,36 @@ test.describe('Curriculum Steps & State Flow', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/workshop.html');
     await page.waitForLoadState('domcontentloaded');
+    await page.evaluate(() => window.focus());
     await page.waitForTimeout(300);
   });
 
   test('Step 0 (Kickoff): Renders 4-Question Icebreaker & 3 Prompt Failure Modes', async ({ page }) => {
     await page.keyboard.press('1'); // Step 0 key
-    await page.waitForTimeout(400);
+    await page.locator('#setup-card-1').waitFor({ state: 'attached', timeout: 5000 });
 
     const step0Data = await page.evaluate(() => {
       const stepPill = document.getElementById('step-counter-pill')?.innerText;
       const headline = document.querySelector('.slide-headline')?.innerText;
-      const failureRows = document.querySelectorAll('.prompt-reality-row');
-      const badgeTags = Array.from(document.querySelectorAll('.prompt-tag')).map(el => el.innerText.trim());
+      const card1Title = document.querySelector('#setup-card-1 .slide-card-title')?.innerText;
+      const card2Title = document.querySelector('#setup-card-2 .slide-card-title')?.innerText;
+      const card1Text = document.getElementById('setup-card-1')?.innerText || '';
 
       return {
         stepPill,
         headline,
-        failureRowCount: failureRows.length,
-        badgeTags,
+        card1Title,
+        card2Title,
+        hasRetainer: card1Text.includes('Retainer'),
+        hasVoucher: card1Text.includes('Voucher') || card1Text.includes('Scrapers'),
       };
     });
 
     expect(step0Data.stepPill.toUpperCase()).toContain('STEP 0');
-    expect(step0Data.failureRowCount).toBe(3);
-    expect(step0Data.badgeTags).toEqual(
-      expect.arrayContaining(['$20k–$50k Retainer Trap', 'Zero Actionable Data', 'Zero Incrementality'])
-    );
+    expect(step0Data.card1Title).toContain('Brand-Out Search Ceiling');
+    expect(step0Data.card2Title).toContain('Consumer-In Interception');
+    expect(step0Data.hasRetainer).toBe(true);
+    expect(step0Data.hasVoucher).toBe(true);
   });
 
   test('Step 1 (Brand): Renders Commercial Boundaries and Negative Shield', async ({ page }) => {
@@ -55,7 +59,7 @@ test.describe('Curriculum Steps & State Flow', () => {
       };
     });
 
-    expect(step1Data.stepPill).toContain('Step 1');
+    expect(step1Data.stepPill.toUpperCase()).toContain('STEP 1');
     expect(step1Data.hasNegativeShield).toBe(true);
   });
 
@@ -74,7 +78,7 @@ test.describe('Curriculum Steps & State Flow', () => {
       };
     });
 
-    expect(step2Data.stepPill).toContain('Step 2');
+    expect(step2Data.stepPill.toUpperCase()).toContain('STEP 2');
     expect(step2Data.hasZeroRule).toBe(true);
   });
 
@@ -92,7 +96,7 @@ test.describe('Curriculum Steps & State Flow', () => {
       };
     });
 
-    expect(step3Data.stepPill).toContain('Step 3');
+    expect(step3Data.stepPill.toUpperCase()).toContain('STEP 3');
     expect(step3Data.hasNeedScopeOrHeuristics).toBe(true);
   });
 
@@ -110,13 +114,13 @@ test.describe('Curriculum Steps & State Flow', () => {
       };
     });
 
-    expect(step4Data.stepPill).toContain('Step 4');
+    expect(step4Data.stepPill.toUpperCase()).toContain('STEP 4');
     expect(step4Data.hasHaltGate).toBe(true);
   });
 
   test('Step 5 (Run): Renders Final Execution Command and Auditable Ledger', async ({ page }) => {
     await page.keyboard.press('6'); // Step 5 key
-    await page.waitForTimeout(400);
+    await page.locator('#run-card-1').waitFor({ state: 'attached', timeout: 5000 });
 
     const step5Data = await page.evaluate(() => {
       const stepPill = document.getElementById('step-counter-pill')?.innerText;
@@ -128,13 +132,15 @@ test.describe('Curriculum Steps & State Flow', () => {
       };
     });
 
-    expect(step5Data.stepPill).toContain('Step 5');
+    expect(step5Data.stepPill.toUpperCase()).toContain('STEP 5');
     expect(step5Data.hasLedgerOrCandidates).toBe(true);
   });
 
   test('Code Mode Streaming: Chunks advance sequentially with pinned rationale footers', async ({ page }) => {
-    await page.keyboard.press('c'); // Switch to Code Mode
+    await page.keyboard.press('1'); // Navigate to Step 0 (Setup) which has code chunks
     await page.waitForTimeout(400);
+    await page.keyboard.press('c'); // Switch to Code Mode
+    await page.locator('.chunk-card.active').waitFor({ state: 'visible', timeout: 5000 });
 
     const chunkData = await page.evaluate(() => {
       const activeChunk = document.querySelector('.chunk-card.active');

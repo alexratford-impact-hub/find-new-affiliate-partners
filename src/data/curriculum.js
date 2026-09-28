@@ -30,7 +30,6 @@ export const curriculum = {
     content: `# Step 0: Make Your Workshop Folders
 partner-discovery/
 ├── SKILL.md
-├── run.md
 └── references/
     ├── brand.md
     ├── estimated_value.md
@@ -234,18 +233,18 @@ domain,date_added
 
   run: {
     stepNum: 5,
-    path: "run.md",
-    name: "Run and Export (run.md)",
-    filePill: "run.md",
+    path: "SKILL.md",
+    name: "Deploy & Verify (Autonomous Ledger)",
+    filePill: "Execution & Ledger",
     time: "Execution Phase: 00:52 - 01:00",
-    headline: "Deploy & Verify the Recruitment Skill (run.md)",
+    headline: "Deploy & Verify Autonomous Discovery",
     subheadline: "Executing the runtime prompt in Claude, ChatGPT, or Gemini, feeding exclusions, and exporting qualified partners.",
     recapBullets: [
       "Master controller SKILL.md assembled with Step 1 pause gate.",
       "Negative exclusion filter and deterministic EV mathematical pipeline connected."
     ],
     previewBullets: [
-      "Copying runtime execution trigger prompt into your AI assistant.",
+      "Executing autonomous partner discovery prompt into your AI assistant.",
       "Verifying that the model pauses and demands existing partner domains.",
       "Reviewing the qualified candidate leaderboard and exporting recruitment CSV."
     ],
@@ -271,25 +270,11 @@ partner-discovery/
 └── references/`
     },
     {
-      id: "files",
-      title: "2. Initialize the 5 Core Files",
-      summary: "Create blank text files with .md extensions inside the folders.",
-      why: "The controller and referenced modules must exist before running prompts.",
-      code: `# Step 0.2: Create the 5 Files
-partner-discovery/
-├── SKILL.md
-├── run.md
-└── references/
-    ├── brand.md
-    ├── estimated_value.md
-    └── discovery.md`
-    },
-    {
       id: "check",
-      title: "3. How to Verify & Unhide Extensions (.md)",
+      title: "2. Verify & Unhide Extensions (.md)",
       summary: "Unhide file extensions in Windows / macOS or run terminal check to ensure no hidden .txt files.",
       why: "Operating systems hide known extensions by default, quietly saving files as 'brand.md.txt'. AI agents and Claude Projects fail silently when reading mismatched filenames.",
-      code: `# Step 0.3: How to Verify & Fix Hidden File Extensions
+      code: `# Step 0.2: How to Verify & Fix Hidden File Extensions
 
 # --- WINDOWS (File Explorer) ---
 # 1. Open 'partner-discovery' folder in File Explorer.
@@ -305,6 +290,19 @@ partner-discovery/
 cd ~/Desktop/partner-discovery/references
 dir    # Windows: verify 'brand.md', NOT 'brand.md.txt'
 ls     # macOS/Linux: verify 'brand.md', NOT 'brand.md.txt'`
+    },
+    {
+      id: "files",
+      title: "3. Initialize the 4 Architecture Files",
+      summary: "Create blank text files with .md extensions inside the folders.",
+      why: "The controller and referenced modules must exist before running prompts.",
+      code: `# Step 0.3: Create the 4 Architecture Files
+partner-discovery/
+├── SKILL.md
+└── references/
+    ├── brand.md
+    ├── estimated_value.md
+    └── discovery.md`
     }
   ],
 
@@ -360,29 +358,37 @@ total_W = raw_wR + raw_wS + raw_wC
 - wC = raw_wC / total_W`
     },
     {
-      id: "rules",
-      title: "2. Scoring Anchors & Knockouts",
-      summary: "Establish rigid 0 to 5 scoring criteria for R, S, and C.",
-      why: "Anchors eliminate subjective AI ratings. Hard knockouts (score = 0) immediately zero out unqualified prospects.",
-      code: `# Scoring Rules (0 to 5)
-
-## Relevance (R): How well they match what you sell
+      id: "relevance",
+      title: "2. Relevance Anchors (R: 0 to 5)",
+      summary: "Define 0 to 5 anchors for category and product alignment.",
+      why: "Eliminates subjective guesswork. An off-vertical domain scores R = 0, instantly knocking it out.",
+      code: `## Relevance (R): How well they match what you sell
 - 5: Direct match. Most of their content is about your exact products.
 - 4: Strong authority. They regularly review your type of product.
 - 3: General lifestyle overlap. They mention your topic alongside other things.
 - 2: Weak overlap. Rare mentions or mixed audience.
 - 1: Almost no link. Single mention only.
-- 0: Wrong category. (Automatic knockout).
-
-## Scale (S): Website reach and visitors
+- 0: Wrong category. (Automatic knockout).`
+    },
+    {
+      id: "scale",
+      title: "3. Scale Anchors (S: 0 to 5)",
+      summary: "Define 0 to 5 anchors for organic authority and audience reach.",
+      why: "Prevents recruiting dormant, parked, or dead domains with zero search footprint.",
+      code: `## Scale (S): Website reach and visitors
 - 5: Massive national authority. Millions of visits every month.
 - 4: Large established site with strong Google search presence.
 - 3: Mid-sized specialist or community blog.
 - 2: Small niche blog with modest traffic.
 - 1: Brand new website or tiny traffic footprint.
-- 0: Dead link, parked domain, or inactive for 12+ months. (Automatic knockout).
-
-## Commercial Fit (C): Can they run affiliate links?
+- 0: Dead link, parked domain, or inactive for 12+ months. (Automatic knockout).`
+    },
+    {
+      id: "commercial",
+      title: "4. Commercial Fit Anchors (C: 0 to 5)",
+      summary: "Define 0 to 5 anchors for commercial intent and monetization.",
+      why: "Protects budget from non-profit / NHS sites or hard-paywall domains that cannot run affiliate links.",
+      code: `## Commercial Fit (C): Can they run affiliate links?
 - 5: Active affiliate publisher. Already writes buyer guides and reviews with affiliate links.
 - 4: Commerce-friendly. Runs sponsored posts and takes commercial partnerships.
 - 3: Editorial-first. Open to PR samples and free product testing.
@@ -392,7 +398,7 @@ total_W = raw_wR + raw_wS + raw_wC
     },
     {
       id: "formula",
-      title: "3. Deterministic Geometric Mean",
+      title: "5. Deterministic Geometric Mean",
       summary: "Compute EV = (R^wR) * (S^wS) * (C^wC).",
       why: "Multiplicative geometric mean ensures that if any metric is zero, the entire score collapses to 0.00.",
       code: `# Final Score Formula
@@ -539,37 +545,33 @@ Start with Step 1 (Read the Rules and Stop).`
 };
 
 export const slideStageTitles = {
+  agenda: [
+    "Run of Play • Session Timetable & Milestones"
+  ],
   setup: [
-    "Audience Reality • Failure 1: Mass Media Retainers",
-    "Audience Reality • Failure 2: Actionability Void",
-    "Audience Reality • Failure 3: Margin Drain Trap",
-    "The Antidote • Deterministic Skill Architecture",
-    "The Paradigm • Brand-Out Search Ceiling",
-    "The Paradigm • Consumer-In Interception"
+    "The Paradigm • Brand-Out Search Ceiling (The Trap)",
+    "The Paradigm • Consumer-In Interception (The Antidote)"
   ],
   brand: [
     "Commercial Guardrails • Operational Margins",
     "Negative Shield • Hard Disqualification Gates"
   ],
   math: [
-    "Interactive Calibration • Geometric Mean Arithmetic",
-    "Zero-Knockout Proof • Multiplicative Math vs Additive Flaw",
-    "Standardised 0 to 5 Anchors & Priority Tiers"
+    "Interactive Calibration • Normalisation Weights (wR, wS, wC)",
+    "The Zero Rule • Multiplicative Knockout vs Additive Flaw"
   ],
   discovery: [
-    "The Messy Middle • Lemniscate Decision Loop",
-    "Loop 1 Zoom-In • Kantar NeedScope 6-State Matrix",
-    "Loop 2 Zoom-In • 6 Behavioural Decision Heuristics"
+    "Loop 1: Expansive Foraging • Kantar NeedScope Matrix",
+    "Loop 2: Reductive Evaluation • 6 Decision Heuristics"
   ],
   skill: [
-    "4-Phase Deterministic Pipeline",
-    "Step 1 HALT Gate • Mandatory Human-in-the-Loop",
-    "Auditable Output Schema • Recruitment CSV Ledger"
+    "4-Phase Deterministic Pipeline & Architecture",
+    "Step 1 HALT Gate & Auditable Output Schema"
   ],
   run: [
-    "The Ignition Switch • Single-Prompt Runtime Command",
-    "Audited Recruitment Ledger & CSV Export",
-    "The Commercial Payoff & Operational Finale"
+    "Single-Prompt Autonomous Orchestration & Audited Ledger",
+    "Commercial Payoff • Status Quo vs Autonomous Scorecard",
+    "Masterclass Completion Ticklist & Enterprise Expansions"
   ]
 };
 
@@ -595,7 +597,7 @@ export const speakerData = {
         time: "05:00 - 07:00",
         duration: "90s",
         tag: "The Operational Hook (Prompt Reality)",
-        script: "Let's ground in the reality of what happens when you actually ask an AI tool to recruit partners. Look at the display. You type the intuitive prompt: 'find me a list of prospect affiliate partners for Amazon' or your brand. What happens? First, it recommends Wirecutter, NerdWallet, and PCPartPicker — massive media conglomerates that already dominate and demand $50,000 upfront agency retainers. You don't need an AI to tell you The New York Times exists. Second, it gives you vague homework like 'parenting blogs' with zero URLs, zero domain data, and zero contact points. Third, it defaults to brand-out coupon scrapers that cannibalise organic checkout traffic. Conversational prompts fail because they lack constraints. Today we build a deterministic 5-file skill architecture that intercepts real consumer buying decisions.",
+        script: "Let's ground in the reality of what happens when you actually ask an AI tool to recruit partners. Look at the display. You type the intuitive prompt: 'find me a list of prospect affiliate partners in our vertical'. What happens? First, it recommends massive national review portals and syndicated media conglomerates that already dominate and demand $50,000 upfront agency retainers. You don't need an AI to tell you national media syndicates exist. Second, it gives you vague homework like 'parenting blogs' with zero URLs, zero domain data, and zero contact points. Third, it defaults to brand-out coupon scrapers that cannibalise organic checkout traffic. Conversational prompts fail because they lack constraints. Today we build a deterministic 5-file skill architecture that intercepts real consumer buying decisions.",
         speedScript: "1. The Prompt Reality: Asking AI for partners yields $50k media giants and vague category fluff.\n2. Acute Failure Modes: Pre-existing retainer monopolies, zero domain URLs, and checkout coupon scrapers.\n3. The Paradigm Shift: Replace conversational prompts with a deterministic 5-file architecture.\n4. Press [C] when moving into Code Mode to scaffold the workspace.",
         action: "Project Slide Mode using [S]. Walk through the 3 prompt failure modes. Highlight the commercial breakdown, then press [C] to transition to Code Mode and stream the workspace scaffold."
       },
@@ -603,8 +605,8 @@ export const speakerData = {
         time: "07:00 - 09:30",
         duration: "2.5m",
         tag: "Code Demonstration (Capability)",
-        script: "Watch my screen. Switch to Code Mode with [C]. We do not dump prompts into a single chat window. We ground the model in five local Markdown files. Look at the directory tree: partner-discovery on Desktop, a references subfolder, then brand.md, estimated_value.md, and discovery.md. In the root, SKILL.md and run.md. This local file structure gives the model deterministic boundaries.",
-        speedScript: "1. Switch to Code Mode with [C].\n2. Never dump prompts into a bare chat window; ground Claude in five local Markdown files.\n3. Directory tree: partner-discovery/ on Desktop, references/ (brand.md, estimated_value.md, discovery.md), and root (SKILL.md, run.md).\n4. Local file architecture enforces deterministic execution boundaries.",
+        script: "Watch my screen. Switch to Code Mode with [C]. We do not dump prompts into a single chat window. We ground the model in four local Markdown files. Look at the directory tree: partner-discovery on Desktop, a references subfolder, then brand.md, estimated_value.md, and discovery.md. In the root, SKILL.md. This local file structure gives the model deterministic boundaries.",
+        speedScript: "1. Switch to Code Mode with [C].\n2. Never dump prompts into a bare chat window; ground Claude in four local Markdown files.\n3. Directory tree: partner-discovery/ on Desktop, references/ (brand.md, estimated_value.md, discovery.md), and root SKILL.md.\n4. Local file architecture enforces deterministic execution boundaries.",
         action: "Press [C] to switch the projector to Code Mode. Stream Step 0.1 and 0.2 at 35 characters per second."
       },
       do: {
@@ -612,9 +614,9 @@ export const speakerData = {
         duration: "2.5m",
         sprintSeconds: 210,
         tag: "Local Build Sprint (Opportunity)",
-        script: "Three and a half minutes on the clock. Open your laptop. Create partner-discovery on your Desktop. Add the references subfolder. Create the five blank Markdown files. Start now.",
-        speedScript: "1. 3.5 minutes on the clock. Open laptops.\n2. Create partner-discovery on Desktop with references/ subfolder.\n3. Initialise 5 empty Markdown files: brand.md, estimated_value.md, discovery.md, SKILL.md, run.md.\n4. Build now.",
-        action: "Trigger the 3.5-minute sprint timer in the console. Walk the room to check that everyone creates the five files."
+        script: "Three and a half minutes on the clock. Open your laptop. Create partner-discovery on your Desktop. Add the references subfolder. Create the four blank Markdown files. Start now.",
+        speedScript: "1. 3.5 minutes on the clock. Open laptops.\n2. Create partner-discovery on Desktop with references/ subfolder.\n3. Initialise 4 empty Markdown files: brand.md, estimated_value.md, discovery.md, and root SKILL.md.\n4. Build now.",
+        action: "Trigger the 3.5-minute sprint timer in the console. Walk the room to check that everyone creates the four files."
       },
       error: {
         time: "12:00 - 13:00",
@@ -627,7 +629,7 @@ export const speakerData = {
         action: "Project the extension verification commands on screen. Verify that attendees remove .txt before advancing to Step 1."
       }
     },
-    fullFileCode: `Desktop/partner-discovery/\n├── SKILL.md\n├── run.md\n└── references/\n    ├── brand.md\n    ├── estimated_value.md\n    └── discovery.md`,
+    fullFileCode: `Desktop/partner-discovery/\n├── SKILL.md\n└── references/\n    ├── brand.md\n    ├── estimated_value.md\n    └── discovery.md`,
     parts: [
       {
         title: "Part 1: Create Root Directories",
@@ -637,9 +639,9 @@ export const speakerData = {
       },
       {
         title: "Part 2: Initialise Core Files",
-        say: "Create the five Markdown files: SKILL.md and run.md in the root; brand.md, estimated_value.md, and discovery.md inside references/.",
-        speedSay: "1. Root: SKILL.md, run.md.\n2. references/: brand.md, estimated_value.md, discovery.md.",
-        code: `Desktop/partner-discovery/\n├── SKILL.md\n├── run.md\n└── references/\n    ├── brand.md\n    ├── estimated_value.md\n    └── discovery.md`
+        say: "Create the four Markdown files: SKILL.md in the root; brand.md, estimated_value.md, and discovery.md inside references/.",
+        speedSay: "1. Root: SKILL.md.\n2. references/: brand.md, estimated_value.md, discovery.md.",
+        code: `Desktop/partner-discovery/\n├── SKILL.md\n└── references/\n    ├── brand.md\n    ├── estimated_value.md\n    └── discovery.md`
       }
     ]
   },
@@ -698,8 +700,8 @@ export const speakerData = {
       },
       {
         title: "Part 2: Competitor Baselines",
-        say: "Add two direct competitor domains. For Boots Electrical, use Currys and LOOKFANTASTIC. Do not list marketplaces like Amazon or eBay.",
-        speedSay: "1. Add two direct competitor domains.\n2. Avoid marketplaces like Amazon.",
+        say: "Add two direct competitor domains. For our brand baseline, use direct rivals in the category. Do not list generalist marketplaces.",
+        speedSay: "1. Add two direct competitor domains.\n2. Avoid generalist marketplaces.",
         code: `# Competitor Baselines\n- currys.co.uk\n- lookfantastic.com`
       },
       {
@@ -924,31 +926,31 @@ export const speakerData = {
     milestone: "Step 5: Live Execution & CRM Persistence",
     goal: "Implementation intentions; form CRM habits",
     sprintTarget: "3 mins",
-    artifact: "run.md & Recruitment CSV",
+    artifact: "Candidate Ledger & Recruitment CSV",
     hcdc: {
       hook: {
         time: "53:00 - 54:00",
         duration: "60s",
         tag: "The Operational Hook (Motivation)",
-        script: "Now we deploy the skill. Notice how simple run.md is: two lines commanding the model to execute affiliate-partner-discovery and start at Step 1. In Stage 1, we inspect the live candidate ledger and verify the zero-knockout. In Stage 2, we review the Commercial Impact Scorecard: replacing 20 hours a month of manual brand-out scraping with under 90 seconds of autonomous consumer-in discovery.",
-        speedScript: "1. Runtime Trigger: 2 lines commanding the model to execute affiliate-partner-discovery starting at Step 1.\n2. Stage 1: Verified Candidate Ledger and 1-click CRM export.\n3. Stage 2: Commercial Impact Scorecard: 20 hours of manual work collapsed into <90 seconds of high-margin discovery.",
-        action: "Advance through Slide Mode with [Space]. Show the Runtime Trigger (Stage 0), Audited Recruitment Ledger (Stage 1), and Commercial Impact Scorecard & Next Steps (Stage 2)."
+        script: "Now we deploy the skill. Notice how simple the runtime trigger is: two lines commanding the model to execute affiliate-partner-discovery and start at Step 1. In Stage 1, we inspect the live candidate ledger and verify the zero-knockout. In Stage 2, we review the Masterclass Completion Ticklist and Enterprise Expansions: replacing 20 hours a month of manual brand-out scraping with under 90 seconds of autonomous consumer-in discovery.",
+        speedScript: "1. Runtime Trigger: 2 lines commanding the model to execute affiliate-partner-discovery starting at Step 1.\n2. Stage 1: Verified Candidate Ledger and 1-click CRM export.\n3. Stage 2: Masterclass Completion Ticklist & Enterprise Expansions.\n4. Commercial Payoff: 20 hours of manual work collapsed into <90 seconds of high-margin discovery.",
+        action: "Advance through Slide Mode with [Space]. Show the Runtime Trigger (Stage 0), Audited Recruitment Ledger (Stage 1), and Completion Ticklist & Expansions (Stage 2)."
       },
       chunk: {
         time: "54:00 - 55:00",
         duration: "60s",
         tag: "Code Demonstration (Capability)",
-        script: "Open run.md. Copy the two lines. Paste them into Claude, Gemini Enterprise, or ChatGPT. Watch the model read the references, calculate the weights, and halt to ask for your exclusion list.",
-        speedScript: "1. Open run.md and copy the trigger prompt.\n2. Paste into Claude, Gemini Enterprise, or ChatGPT.\n3. Watch model ingest rules and pause at Step 1.",
-        action: "Switch to Code Mode using [C]. Stream run.md on screen."
+        script: "Trigger execution. Paste the trigger prompt into Claude, Gemini Enterprise, or ChatGPT. Watch the model read the references, calculate the weights, and halt to ask for your exclusion list.",
+        speedScript: "1. Copy the runtime trigger prompt.\n2. Paste into Claude, Gemini Enterprise, or ChatGPT.\n3. Watch model ingest rules and pause at Step 1.",
+        action: "Switch to Code Mode using [C]. Stream trigger prompt on screen."
       },
       do: {
         time: "55:00 - 58:00",
         duration: "3m",
         sprintSeconds: 180,
         tag: "Local Build Sprint (Opportunity)",
-        script: "Three minutes on the clock. Paste the prompt from run.md into your AI workspace. Confirm the model halts at Step 1. Type 'NONE' or paste sample domains. Let it run and examine your scored candidate table. Go.",
-        speedScript: "1. 3 minutes on the clock.\n2. Paste prompt from run.md into AI workspace.\n3. Verify model halts at Step 1. Type NONE or paste sample domains.\n4. Review scored candidate table and CSV block.",
+        script: "Three minutes on the clock. Paste the prompt into your AI workspace. Confirm the model halts at Step 1. Type 'NONE' or paste sample domains. Let it run and examine your scored candidate table. Go.",
+        speedScript: "1. 3 minutes on the clock.\n2. Paste execution prompt into AI workspace.\n3. Verify model halts at Step 1. Type NONE or paste sample domains.\n4. Review scored candidate table and CSV block.",
         action: "Trigger the 3-minute sprint clock. Walk the room to check that every model stopped at Step 1 and produced the Markdown table."
       },
       error: {
@@ -957,17 +959,17 @@ export const speakerData = {
         isCommit: true,
         title: "The Commit & Commercial Finale",
         tag: "Commercial Payoff & Operational Next Steps",
-        script: "Look at your final Commercial Impact Scorecard on screen. You have shifted from 15–20 hours a month of manual Google searching that surfaces margin-diluting coupon toolbars, to under 90 seconds of autonomous execution that intercepts buyers during active evaluation. Your operational next steps are simple: 1) One-click CSV export directly into your partner CRM or recruitment tracker; 2) Load this directory into Claude Projects as a permanent team asset; 3) Run weekly vertical sprints to discover fresh creators whenever new product categories launch.",
+        script: "Look at your final Masterclass Completion Ticklist on screen. You have shifted from 15–20 hours a month of manual Google searching that surfaces margin-diluting coupon toolbars, to under 90 seconds of autonomous execution that intercepts buyers during active evaluation. Your operational next steps are simple: 1) One-click CSV export directly into your partner CRM or recruitment tracker; 2) Load this directory into Claude Projects as a permanent team asset; 3) Run weekly vertical sprints to discover fresh creators whenever new product categories launch.",
         speedScript: "1. The Payoff: 15-20 hours of manual scraping collapsed into <90 seconds of high-margin discovery.\n2. Next Step 1: 1-click CSV export into your partner CRM or outreach tracker.\n3. Next Step 2: Persist partner-discovery/ in Claude Projects as a permanent asset.\n4. Next Step 3: Run weekly sprints for fresh category launches.",
-        action: "Have attendees copy their CSV block into a local file. Close the session on the final Commercial Impact Scorecard."
+        action: "Have attendees copy their CSV block into a local file. Close the session on the final Completion Ticklist & Enterprise Expansions."
       }
     },
     fullFileCode: `# Execution Trigger\nExecute skill affiliate-partner-discovery from SKILL.md using the /references/ folder.\nStart with Step 1 (Read the Rules and Stop).`,
     parts: [
       {
         title: "Part 1: Runtime Trigger",
-        say: "Open run.md. This is your runtime prompt. Keep it short. It tells the model to execute SKILL.md and enforces the Step 1 pause.",
-        speedSay: "1. Copy trigger prompt from run.md.\n2. Paste into LLM interface directly.",
+        say: "Here is your runtime prompt. Keep it short. It tells the model to execute SKILL.md and enforces the Step 1 pause.",
+        speedSay: "1. Copy execution trigger prompt.\n2. Paste into LLM interface directly.",
         code: `# Execution Trigger\nExecute skill affiliate-partner-discovery from SKILL.md using the /references/ folder.\nStart with Step 1 (Read the Rules and Stop).`
       },
       {

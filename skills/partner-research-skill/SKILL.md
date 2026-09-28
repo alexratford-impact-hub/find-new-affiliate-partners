@@ -1,5 +1,5 @@
 ---
-name: affiliate-partner-discovery
+name: partner-research-skill
 description: Discovers, screens, and ranks prospective affiliate recruitment targets using deterministic Expected Value scoring and root-domain exclusion. Trigger when asked to "find new affiliate partners", "discover publishers", "recruit affiliate creators", "prioritise partner outreach", or "run partner recruitment sprint". Do NOT trigger for reporting on existing partner performance, tracking tag debugging, or voucher code lookup.
 ---
 
@@ -32,7 +32,7 @@ description: Discovers, screens, and ranks prospective affiliate recruitment tar
      - Score Scale ($S$) based on organic search presence.
      - Score Commercial Fit ($C$) based on affiliate monetization. If public sector / NHS / Gov / charity, score $C = 0$.
    - **Calculate EV:** Compute Expected Value using the multiplicative formula and knockout rules in `references/estimated_value.md`: $\text{EV} = R^{w_R} \times S^{w_S} \times C^{w_C}$. If any metric is 0, the final score collapses to $0.00$ (knockout).
-4. Continue screening until 5 distinct partners score $> 0.00$, or a maximum of 3 query cycles across `references/discovery.md`.
+35: 4. Continue screening until 5 distinct partners score $> 0.00$, or a maximum of 3 query cycles across `references/discovery.md`.
 5. If fewer than 5 qualify after 3 iterations, output all evaluated candidates, explicitly note which criteria caused knockouts ($R=0$, $S=0$, or $C=0$), and prompt the user to expand category query stems.
 6. Sort the top candidates from highest to lowest EV score.
 

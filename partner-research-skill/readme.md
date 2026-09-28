@@ -27,7 +27,8 @@ partner-discovery/
 └── references/
     ├── brand.md            # Brand parameters, vertical focus, competitor baselines & disqualifications
     ├── estimated_value.md  # EV scoring formula, auto-normalizing weights & zero-knockouts
-    └── discovery.md        # Dual-engine search queries (NeedScope x Messy Middle)
+    ├── discovery.md        # Dual-engine search queries (NeedScope x Messy Middle)
+    └── exclusions.md       # Root-domain negative ledger for Step 1 exclusion check
 ```
 
 ---
