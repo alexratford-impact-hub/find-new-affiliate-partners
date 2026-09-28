@@ -2658,17 +2658,30 @@ header {
 }
 
 .chunk-card.complete-mode .chunk-code-area pre {
-  font-size: clamp(12px, 0.95cqw, 14px) !important;
-  line-height: 1.45 !important;
+  font-size: var(--font-size-code-active) !important;
+  line-height: 1.5 !important;
   color: #1E293B;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
-#chunks-list[data-step-key="math"] .chunk-card.complete-mode .chunk-code-area pre,
-#chunks-list[data-step-key="discovery"] .chunk-card.complete-mode .chunk-code-area pre,
-#chunks-list[data-step-key="skill"] .chunk-card.complete-mode .chunk-code-area pre {
-  font-size: clamp(11.5px, 0.9cqw, 13.5px) !important;
-  line-height: 1.42 !important;
+/* 2-Column Layout for large files in chunk-all (zero-scroll 1080p fit) */
+.chunk-card.complete-mode.two-col-layout .chunk-code-area {
+  overflow: hidden !important;
+  height: 100% !important;
 }
+
+.chunk-card.complete-mode.two-col-layout .chunk-code-area pre {
+  column-count: 2;
+  column-gap: clamp(24px, 2.2cqw, 40px);
+  column-rule: 1px solid rgba(15, 23, 42, 0.1);
+  font-size: clamp(15px, 0.98cqw, 17.5px) !important;
+  line-height: 1.4 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  box-sizing: border-box;
+}
+
 
 /* 11. Masterclass Completion Ticklist & Enterprise Expansions */
 .ticklist-items-stack {

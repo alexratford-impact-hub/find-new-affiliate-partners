@@ -1520,61 +1520,65 @@ export function renderCodeChunks() {
   }
 
   const progressPill = document.getElementById('artifact-progress-pill');
-  const embedTag = document.getElementById('artifact-embed-tag');
   if (isAll) {
     if (introCount) introCount.innerText = `Assembled File (${chunks.length} parts)`;
     if (progressPill) progressPill.innerText = `Complete File (${chunks.length} parts)`;
-    if (embedTag) embedTag.innerText = `✓ File Assembled`;
   } else {
     const num = typeof activeIdx === 'number' ? activeIdx : 0;
     if (introCount) introCount.innerText = `Revealing chunk in the side-by-side artifact window`;
     if (progressPill) progressPill.innerText = `Part ${num + 1} of ${chunks.length}`;
-    if (embedTag) embedTag.innerText = `✓ Part ${num + 1} Assembled`;
   }
 
-  const visibleMax = isAll ? (chunks.length - 1) : activeIdx;
   let html = '';
 
-  for (let i = 0; i <= visibleMax; i++) {
-    const chunk = chunks[i];
-    if (!chunk) continue;
+  if (isAll) {
+    // When viewing the complete file, hide all other step elements and only show the full assembled file
+    const rawContent = dynamicBuffer[activeKey] || curItem.content || '';
+    const lineCount = rawContent.split('\n').length;
+    const isTwoCol = lineCount > 20;
+    const colClass = isTwoCol ? 'two-col-layout' : '';
 
-    const isCurrentActive = (!isAll && i === activeIdx);
-    const extraCardClass = isCurrentActive ? 'active' : 'completed';
-    const pillHtml = `<span class="chunk-num ${isCurrentActive ? 'chunk-badge-blue' : 'chunk-badge-green'}">PART ${i + 1} OF ${chunks.length}</span>`;
-
-    html += `
-      <div class="chunk-card ${extraCardClass}" id="chunk-item-${i}" data-chunk-index="${i}" style="display: ${isAll ? 'none' : 'block'};">
+    html = `
+      <div class="chunk-card complete-mode ${colClass}" id="chunk-all" style="display: flex; flex-direction: column; height: 100%; min-height: 0; flex: 1;">
         <div class="chunk-header">
           <div class="chunk-title-group">
-            ${pillHtml}
-            <span class="chunk-title">${chunk.title}</span>
+            <span class="chunk-num chunk-badge-green">Complete File</span>
+            <span class="chunk-title">${curItem.path}</span>
           </div>
         </div>
-        <div class="chunk-code-area">
-          <pre><code id="chunk-code-${i}">${escapeHtml(chunk.code)}</code></pre>
-        </div>
-        <div class="chunk-footer">
-          <strong>Tactical Rationale:</strong>
-          <span>${chunk.why}</span>
+        <div class="chunk-code-area" style="flex: 1; min-height: 0;">
+          <pre><code id="chunk-code-all">${escapeHtml(rawContent)}</code></pre>
         </div>
       </div>
     `;
-  }
+  } else {
+    for (let i = 0; i <= activeIdx; i++) {
+      const chunk = chunks[i];
+      if (!chunk) continue;
 
-  html += `
-    <div class="chunk-card complete-mode" id="chunk-all" style="display: ${isAll ? 'flex' : 'none'}; flex-direction: column; height: 100%; min-height: 0;">
-      <div class="chunk-header">
-        <div class="chunk-title-group">
-          <span class="chunk-num">Complete File</span>
-          <span class="chunk-title">${curItem.path}</span>
+      const isCurrentActive = (i === activeIdx);
+      const extraCardClass = isCurrentActive ? 'active' : 'completed';
+      const pillHtml = `<span class="chunk-num ${isCurrentActive ? 'chunk-badge-blue' : 'chunk-badge-green'}">PART ${i + 1} OF ${chunks.length}</span>`;
+
+      html += `
+        <div class="chunk-card ${extraCardClass}" id="chunk-item-${i}" data-chunk-index="${i}">
+          <div class="chunk-header">
+            <div class="chunk-title-group">
+              ${pillHtml}
+              <span class="chunk-title">${chunk.title}</span>
+            </div>
+          </div>
+          <div class="chunk-code-area">
+            <pre><code id="chunk-code-${i}">${escapeHtml(chunk.code)}</code></pre>
+          </div>
+          <div class="chunk-footer">
+            <strong>Tactical Rationale:</strong>
+            <span>${chunk.why}</span>
+          </div>
         </div>
-      </div>
-      <div class="chunk-code-area" style="flex: 1; min-height: 0; overflow-y: auto;">
-        <pre><code>${escapeHtml(dynamicBuffer[activeKey] || curItem.content)}</code></pre>
-      </div>
-    </div>
-  `;
+      `;
+    }
+  }
 
   if (container) {
     container.setAttribute('data-step-key', activeKey);
