@@ -1,5 +1,7 @@
 # Dependencies
 node_modules/
+.archive/
+design/
 
 # Backups and temporary files
 *.bak

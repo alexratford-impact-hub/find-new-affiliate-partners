@@ -1875,8 +1875,8 @@ header {
   background-size: 200vw 100%;
   background-attachment: fixed;
   animation: auroraShift 20s ease infinite;
-  -webkit-mask: url('../../design/Affilifest-2026-logo.png') no-repeat center / contain;
-  mask: url('../../design/Affilifest-2026-logo.png') no-repeat center / contain;
+  -webkit-mask: url('../graphics/Affilifest-2026-logo.png') no-repeat center / contain;
+  mask: url('../graphics/Affilifest-2026-logo.png') no-repeat center / contain;
   display: inline-block;
 }
 
