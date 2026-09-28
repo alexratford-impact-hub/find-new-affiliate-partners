@@ -28,7 +28,7 @@ total_W = raw_wR + raw_wS + raw_wC
 - 0: Inaccessible domain, parked URL, or dead link. (Automatic knockout: EV = 0.00).
 
 ## Commercial Fit (C): Can they run affiliate links?
-- 5: Active affiliate publisher. Already writes buyer guides and reviews with affiliate monetization links and clear regulatory disclosures.
+- 5: Active affiliate publisher. Already writes buyer guides and reviews with affiliate monetization links and clear advertiser or sponsored content contact information, and are members of at least one major affiliate network.
 - 4: Commerce-friendly. Runs sponsored editorial and accepts performance commercial partnerships.
 - 3: Editorial-first. Open to PR samples, product gifting, and free testing.
 - 2: Difficult. Only accepts expensive fixed upfront tenancy fees.
