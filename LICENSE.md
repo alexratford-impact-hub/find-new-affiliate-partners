@@ -6,7 +6,7 @@ FSL-1.1-MIT
 
 ## Notice
 
-Copyright 2026 alexratford-impact-hub
+Copyright 2026
 
 ## Terms and Conditions
 
