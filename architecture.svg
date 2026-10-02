@@ -1,293 +1,288 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="100%" height="100%">
   <defs>
-    <!-- Background Gradient -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#070a12"/>
-      <stop offset="50%" stop-color="#0b0f19"/>
-      <stop offset="100%" stop-color="#080d1a"/>
+      <stop offset="0%" stop-color="#080c16"/>
+      <stop offset="50%" stop-color="#0e1526"/>
+      <stop offset="100%" stop-color="#090d18"/>
     </linearGradient>
 
-    <!-- Card Background Gradient -->
     <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#141c2e" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#0f1523" stop-opacity="0.95"/>
+      <stop offset="0%" stop-color="#141c2e" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0d1422" stop-opacity="0.98"/>
     </linearGradient>
 
-    <!-- Brand / NeedScope Blue Gradient -->
     <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#298DDA"/>
       <stop offset="100%" stop-color="#60A5FA"/>
     </linearGradient>
 
-    <!-- Messy Middle Amber Gradient -->
     <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#D97706"/>
       <stop offset="100%" stop-color="#F59E0B"/>
     </linearGradient>
 
-    <!-- Validated Green Gradient -->
     <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#059669"/>
       <stop offset="100%" stop-color="#10B981"/>
     </linearGradient>
 
-    <!-- Disqualification Red Gradient -->
-    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#DC2626"/>
-      <stop offset="100%" stop-color="#F5333F"/>
-    </linearGradient>
-
-    <!-- Drop Shadows -->
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
-    </filter>
-    <filter id="glowBlue" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="8" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.5"/>
     </filter>
 
     <style>
       .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
       .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
       .title { font-weight: 800; letter-spacing: -0.02em; }
-      .badge-text { font-weight: 700; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
-      .card-title { font-weight: 700; font-size: 15px; }
-      .body-text { font-weight: 400; font-size: 12.5px; fill: #94A3B8; }
-      .accent-text { font-weight: 600; font-size: 12px; }
+      .badge-text { font-weight: 700; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+      .card-title { font-weight: 700; font-size: 14.5px; }
+      .body-text { font-weight: 400; font-size: 12px; fill: #94A3B8; }
+      .accent-blue { font-weight: 600; font-size: 11.5px; fill: #38BDF8; }
+      .accent-green { font-weight: 600; font-size: 11.5px; fill: #34D399; }
+      .query-stem { font-family: ui-monospace, Consolas, monospace; font-size: 10px; fill: #64748B; }
     </style>
   </defs>
 
-  <!-- Deep Canvas Background -->
-  <rect width="1200" height="680" fill="url(#bgGrad)"/>
+  <!-- Background Canvas -->
+  <rect width="1200" height="700" fill="url(#bgGrad)"/>
 
-  <!-- Subtle Ambient Grid Overlay -->
-  <g opacity="0.07" stroke="#94A3B8" stroke-width="1">
-    <line x1="0" y1="80" x2="1200" y2="80"/>
-    <line x1="0" y1="200" x2="1200" y2="200"/>
-    <line x1="0" y1="320" x2="1200" y2="320"/>
-    <line x1="0" y1="440" x2="1200" y2="440"/>
-    <line x1="0" y1="560" x2="1200" y2="560"/>
-    <line x1="100" y1="0" x2="100" y2="680"/>
-    <line x1="400" y1="0" x2="400" y2="680"/>
-    <line x1="800" y1="0" x2="800" y2="680"/>
-    <line x1="1100" y1="0" x2="1100" y2="680"/>
+  <!-- Ambient Grid Lines -->
+  <g opacity="0.06" stroke="#94A3B8" stroke-width="1">
+    <line x1="0" y1="90" x2="1200" y2="90"/>
+    <line x1="0" y1="480" x2="1200" y2="480"/>
+    <line x1="60" y1="0" x2="60" y2="700"/>
+    <line x1="420" y1="0" x2="420" y2="700"/>
+    <line x1="780" y1="0" x2="780" y2="700"/>
+    <line x1="1140" y1="0" x2="1140" y2="700"/>
   </g>
 
-  <!-- Header Section -->
-  <g transform="translate(60, 48)">
-    <rect x="0" y="0" width="170" height="24" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-    <circle cx="12" cy="12" r="4" fill="#10B981"/>
-    <text x="24" y="16" class="font-sans badge-text" fill="#E2E8F0">AUTONOMOUS ARCHITECTURE</text>
+  <!-- Presentation Header (Direct from Workshop Slide) -->
+  <g transform="translate(60, 36)">
+    <rect x="0" y="0" width="220" height="22" rx="11" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <circle cx="12" cy="11" r="3.5" fill="#38BDF8"/>
+    <text x="24" y="15" class="font-sans badge-text" fill="#93C5FD">AFFILIFEST MASTERCLASS • STEP 3</text>
 
-    <text x="0" y="52" class="font-sans title" font-size="26" fill="#F8FAFC">
-      Deterministic Partner Discovery Engine
+    <text x="0" y="46" class="font-sans title" font-size="24" fill="#F8FAFC">
+      The Messy Middle: Dual-Engine Consumer Decision Architecture
     </text>
-    <text x="0" y="74" class="font-sans" font-size="13.5" fill="#94A3B8">
-      Dual-Engine Search (Kantar NeedScope × Google Messy Middle) → Mandatory Pause Gate → Multiplicative Zero Knockout
+    <text x="0" y="66" class="font-sans" font-size="13" fill="#94A3B8">
+      How unbranded behavioral queries resolve buyer confidence gaps to surface high-converting affiliate creators
     </text>
   </g>
 
-  <!-- Flow Connector Paths -->
-  <!-- Col 1 to Col 2 -->
-  <path d="M 370 240 L 430 240" stroke="#298DDA" stroke-width="2" stroke-dasharray="4 4" fill="none" opacity="0.8"/>
-  <polygon points="432,240 424,236 424,244" fill="#298DDA"/>
-
-  <path d="M 370 470 L 430 470" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4 4" fill="none" opacity="0.8"/>
-  <polygon points="432,470 424,466 424,474" fill="#F59E0B"/>
-
-  <!-- Col 2 to Col 3 -->
-  <path d="M 770 360 L 830 360" stroke="#10B981" stroke-width="2.5" fill="none"/>
-  <polygon points="834,360 824,355 824,365" fill="#10B981"/>
-
   <!-- ========================================================= -->
-  <!-- COLUMN 1: DUAL-ENGINE SEARCH (CONSUMER-IN)               -->
+  <!-- LEFT WING: KANTAR NEEDSCOPE (LOOP 1)                      -->
   <!-- ========================================================= -->
-  
-  <!-- Column 1 Header Tag -->
-  <text x="60" y="145" class="font-sans badge-text" fill="#64748B">STAGE 1 • REVERSE-ENGINEERED SEARCH</text>
+  <g transform="translate(60, 120)" filter="url(#shadow)">
+    <rect width="330" height="340" rx="12" fill="url(#cardGrad)" stroke="#298DDA" stroke-width="1.2"/>
+    <rect x="0" y="0" width="330" height="4" rx="2" fill="url(#blueGrad)"/>
 
-  <!-- Card 1A: Loop 1 NeedScope -->
-  <g transform="translate(60, 160)" filter="url(#shadow)">
-    <rect width="310" height="210" rx="12" fill="url(#cardGrad)" stroke="#298DDA" stroke-width="1.5"/>
-    <rect x="0" y="0" width="310" height="4" rx="2" fill="url(#blueGrad)"/>
+    <g transform="translate(18, 16)">
+      <rect x="0" y="0" width="150" height="18" rx="9" fill="#0c2340" stroke="#298DDA" stroke-width="0.8"/>
+      <text x="8" y="13" class="font-sans badge-text" fill="#60A5FA">LOOP 1 • EXPANSIVE FORAGING</text>
+      <text x="0" y="38" class="font-sans card-title" fill="#F8FAFC">Kantar NeedScope Matrix</text>
+      <text x="0" y="54" class="font-sans body-text">6 emotional needs driving unbranded search:</text>
 
-    <rect x="18" y="18" width="86" height="20" rx="10" fill="#1e3a5f" stroke="#298DDA" stroke-width="0.8"/>
-    <text x="26" y="32" class="font-sans badge-text" fill="#93C5FD">LOOP 1</text>
-    <text x="112" y="33" class="font-sans card-title" fill="#F8FAFC">Kantar NeedScope</text>
-    <text x="18" y="58" class="font-sans body-text">Unbranded expansive search queries before</text>
-    <text x="18" y="74" class="font-sans body-text">the consumer knows your brand name:</text>
+      <!-- 6 Need States Cards -->
+      <g transform="translate(0, 68)">
+        <!-- 1. Educate -->
+        <rect x="0" y="0" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="16" class="font-sans accent-blue">💡 Educate Me • Orientation</text>
+        <text x="10" y="28" class="query-stem">"what is the difference between [CAT_A] and [CAT_B]"</text>
 
-    <!-- 6 Need States Grid -->
-    <g transform="translate(18, 92)">
-      <rect x="0" y="0" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="10" y="18" class="font-sans accent-text" fill="#38BDF8">💡 Educate Me</text>
+        <!-- 2. Help -->
+        <rect x="0" y="38" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="54" class="font-sans accent-blue">🤝 Help Me • Actionable Guidance</text>
+        <text x="10" y="66" class="query-stem">"how do I choose between [SUB_CAT] for [CONTEXT]"</text>
 
-      <rect x="140" y="0" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="150" y="18" class="font-sans accent-text" fill="#38BDF8">🤝 Help Me</text>
+        <!-- 3. Reassure -->
+        <rect x="0" y="76" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="92" class="font-sans accent-blue">🛡️ Reassure Me • Risk Reduction</text>
+        <text x="10" y="104" class="query-stem">"how can I tell if [CAT] is good quality"</text>
 
-      <rect x="0" y="34" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="10" y="52" class="font-sans accent-text" fill="#38BDF8">🛡️ Reassure Me</text>
+        <!-- 4. Impress -->
+        <rect x="0" y="114" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="130" class="font-sans accent-blue">✨ Impress Me • Social Standing</text>
+        <text x="10" y="142" class="query-stem">"who makes the best [SUB_CAT] for [AUDIENCE]"</text>
 
-      <rect x="140" y="34" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="150" y="52" class="font-sans accent-text" fill="#38BDF8">✨ Impress Me</text>
+        <!-- 5. Thrill -->
+        <rect x="0" y="152" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="168" class="font-sans accent-blue">⚡ Thrill Me • Excitement</text>
+        <text x="10" y="180" class="query-stem">"what are the top new [SUB_CAT] trends 2026"</text>
 
-      <rect x="0" y="68" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="10" y="86" class="font-sans accent-text" fill="#38BDF8">⚡ Thrill Me</text>
-
-      <rect x="140" y="68" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="150" y="86" class="font-sans accent-text" fill="#38BDF8">🎁 Surprise Me</text>
-    </g>
-  </g>
-
-  <!-- Card 1B: Loop 2 Messy Middle -->
-  <g transform="translate(60, 390)" filter="url(#shadow)">
-    <rect width="310" height="210" rx="12" fill="url(#cardGrad)" stroke="#F59E0B" stroke-width="1.5"/>
-    <rect x="0" y="0" width="310" height="4" rx="2" fill="url(#amberGrad)"/>
-
-    <rect x="18" y="18" width="86" height="20" rx="10" fill="#451a03" stroke="#F59E0B" stroke-width="0.8"/>
-    <text x="26" y="32" class="font-sans badge-text" fill="#FCD34D">LOOP 2</text>
-    <text x="112" y="33" class="font-sans card-title" fill="#F8FAFC">Google Messy Middle</text>
-    <text x="18" y="58" class="font-sans body-text">Reductive comparison queries testing 6</text>
-    <text x="18" y="74" class="font-sans body-text">behavioral shortcuts to close confidence gaps:</text>
-
-    <!-- 6 Heuristics Grid -->
-    <g transform="translate(18, 92)">
-      <rect x="0" y="0" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="10" y="18" class="font-sans accent-text" fill="#FBBF24">👥 Social Proof</text>
-
-      <rect x="140" y="0" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="150" y="18" class="font-sans accent-text" fill="#FBBF24">🎓 Authority Bias</text>
-
-      <rect x="0" y="34" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="10" y="52" class="font-sans accent-text" fill="#FBBF24">🔍 Heuristics</text>
-
-      <rect x="140" y="34" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="150" y="52" class="font-sans accent-text" fill="#FBBF24">🏷️ Power of Free</text>
-
-      <rect x="0" y="68" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="10" y="86" class="font-sans accent-text" fill="#FBBF24">⏳ Scarcity Bias</text>
-
-      <rect x="140" y="68" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="150" y="86" class="font-sans accent-text" fill="#FBBF24">⚡ Power of Now</text>
+        <!-- 6. Surprise -->
+        <rect x="0" y="190" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="206" class="font-sans accent-blue">🎁 Surprise Me • Novelty</text>
+        <text x="10" y="218" class="query-stem">"what is the best way to [UNCONVENTIONAL_USE] [CAT]"</text>
+      </g>
     </g>
   </g>
 
   <!-- ========================================================= -->
-  <!-- COLUMN 2: DETERMINISTIC FILTERING & SCORING             -->
+  <!-- CENTER: GOOGLE MESSY MIDDLE LEMNISCATE (INFINITY LOOP)   -->
   <!-- ========================================================= -->
+  <g transform="translate(420, 120)" filter="url(#shadow)">
+    <rect width="360" height="340" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2"/>
 
-  <!-- Column 2 Header Tag -->
-  <text x="440" y="145" class="font-sans badge-text" fill="#64748B">STAGE 2 • HALT GATE & EV FORMULA</text>
-
-  <!-- Card 2A: Step 1 HALT Gate -->
-  <g transform="translate(440, 160)" filter="url(#shadow)">
-    <rect width="330" height="175" rx="12" fill="url(#cardGrad)" stroke="#F5333F" stroke-width="1.5"/>
-    <rect x="0" y="0" width="330" height="4" rx="2" fill="url(#redGrad)"/>
-
-    <rect x="18" y="18" width="130" height="20" rx="10" fill="#450a0a" stroke="#F5333F" stroke-width="0.8"/>
-    <text x="26" y="32" class="font-sans badge-text" fill="#FCA5A5">STEP 1 PAUSE GATE</text>
-    <text x="18" y="58" class="font-sans card-title" fill="#F8FAFC">Existing Partner Shield</text>
-    <text x="18" y="76" class="font-sans body-text">Halts the AI model before executing any searches.</text>
-    <text x="18" y="92" class="font-sans body-text">Demands partner exclusion list to protect margin.</text>
-
-    <!-- Disqualification Pill List -->
-    <g transform="translate(18, 108)">
-      <rect x="0" y="0" width="294" height="24" rx="4" fill="#18111b" stroke="#7f1d1d" stroke-width="0.8"/>
-      <text x="8" y="16" class="font-sans accent-text" font-size="11" fill="#F87171">🚫 Knockout: Voucher scrapers &amp; coupon plugins</text>
-
-      <rect x="0" y="28" width="294" height="24" rx="4" fill="#18111b" stroke="#7f1d1d" stroke-width="0.8"/>
-      <text x="8" y="44" class="font-sans accent-text" font-size="11" fill="#F87171">🚫 Knockout: Non-UK traffic &amp; direct brand rivals</text>
+    <g transform="translate(18, 16)">
+      <rect x="0" y="0" width="145" height="18" rx="9" fill="#0f172a" stroke="#38BDF8" stroke-width="0.8"/>
+      <text x="8" y="13" class="font-sans badge-text" fill="#38BDF8">MACRO DECISION ENGINE</text>
+      <text x="0" y="38" class="font-sans card-title" fill="#F8FAFC">Google "Messy Middle" Loop</text>
     </g>
+
+    <!-- Embedded Lemniscate Vector (Exact geometry from workshop slide) -->
+    <g transform="translate(15, 35)">
+      <!-- Exposure Boundary Circle -->
+      <circle cx="165" cy="140" r="125" fill="none" stroke="#1e293b" stroke-width="1.2" stroke-dasharray="4,4" />
+      <text x="165" y="26" font-size="9" font-weight="800" text-anchor="middle" fill="#64748B" letter-spacing="2">EXPOSURE</text>
+
+      <!-- Triggers Vector -->
+      <path d="M 165,30 L 165,140" fill="none" stroke="#F5333F" stroke-width="2.2" />
+      <circle cx="165" cy="30" r="4" fill="#F5333F" />
+      <text x="165" y="18" font-size="9.5" font-weight="800" text-anchor="middle" fill="#F87171" letter-spacing="1.5">TRIGGERS</text>
+
+      <!-- Infinite Background Track -->
+      <path d="M 165,140 C 135,80 60,70 40,140 C 20,210 115,220 165,140 C 215,60 295,70 310,140 C 325,210 230,220 165,140 Z" 
+            fill="none" stroke="#0f172a" stroke-width="14" />
+
+      <!-- Loop 1: Exploration (Amber) -->
+      <path d="M 165,140 C 135,80 60,70 40,140 C 20,210 115,220 165,140" 
+            fill="none" stroke="#F59E0B" stroke-width="5" stroke-linecap="round" />
+      <text x="95" y="130" font-size="12" font-weight="800" text-anchor="middle" fill="#F8FAFC">Exploration</text>
+      <rect x="42" y="142" width="106" height="18" rx="9" fill="#451A03" stroke="#F59E0B" stroke-width="1" />
+      <text x="95" y="154" font-size="7.5" font-weight="800" text-anchor="middle" fill="#FCD34D" letter-spacing="0.5">LOOP 1: NEEDSCOPE</text>
+
+      <!-- Loop 2: Evaluation (Emerald) -->
+      <path d="M 165,140 C 215,60 295,70 310,140 C 325,210 230,220 165,140" 
+            fill="none" stroke="#10B981" stroke-width="5" stroke-linecap="round" />
+      <text x="240" y="130" font-size="12" font-weight="800" text-anchor="middle" fill="#F8FAFC">Evaluation</text>
+      <rect x="187" y="142" width="106" height="18" rx="9" fill="#064E3B" stroke="#10B981" stroke-width="1" />
+      <text x="240" y="154" font-size="7.5" font-weight="800" text-anchor="middle" fill="#6EE7B7" letter-spacing="0.5">LOOP 2: HEURISTICS</text>
+
+      <!-- Purchase Exit Vector -->
+      <path d="M 165,140 L 165,245" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="3,3" />
+      <circle cx="165" cy="245" r="9" fill="none" stroke="#38BDF8" stroke-dasharray="3,3" />
+      <circle cx="165" cy="245" r="3" fill="#38BDF8" />
+      <text x="165" y="268" font-size="9.5" font-weight="800" text-anchor="middle" fill="#38BDF8" letter-spacing="1">PURCHASE</text>
+    </g>
+
+    <text x="180" y="325" font-size="11" text-anchor="middle" fill="#64748B" class="font-sans">
+      Consumers forage and compare until confidence triggers checkout
+    </text>
   </g>
 
-  <!-- Card 2B: Expected Value Geometric Formula -->
-  <g transform="translate(440, 355)" filter="url(#shadow)">
-    <rect width="330" height="245" rx="12" fill="url(#cardGrad)" stroke="#10B981" stroke-width="1.5"/>
+  <!-- ========================================================= -->
+  <!-- RIGHT WING: GOOGLE MESSY MIDDLE HEURISTICS (LOOP 2)       -->
+  <!-- ========================================================= -->
+  <g transform="translate(810, 120)" filter="url(#shadow)">
+    <rect width="330" height="340" rx="12" fill="url(#cardGrad)" stroke="#10B981" stroke-width="1.2"/>
     <rect x="0" y="0" width="330" height="4" rx="2" fill="url(#greenGrad)"/>
 
-    <rect x="18" y="18" width="125" height="20" rx="10" fill="#064e3b" stroke="#10B981" stroke-width="0.8"/>
-    <text x="26" y="32" class="font-sans badge-text" fill="#6EE7B7">DETERMINISTIC EV</text>
-    <text x="18" y="58" class="font-sans card-title" fill="#F8FAFC">Multiplicative Scoring Engine</text>
+    <g transform="translate(18, 16)">
+      <rect x="0" y="0" width="160" height="18" rx="9" fill="#063223" stroke="#10B981" stroke-width="0.8"/>
+      <text x="8" y="13" class="font-sans badge-text" fill="#34D399">LOOP 2 • REDUCTIVE EVALUATION</text>
+      <text x="0" y="38" class="font-sans card-title" fill="#F8FAFC">6 Decision Heuristics</text>
+      <text x="0" y="54" class="font-sans body-text">Cognitive shortcuts prompting checkout:</text>
 
-    <!-- Formula Box -->
-    <g transform="translate(18, 70)">
-      <rect x="0" y="0" width="294" height="40" rx="8" fill="#061f17" stroke="#10B981" stroke-width="1.2"/>
-      <text x="147" y="26" text-anchor="middle" class="font-mono" font-weight="700" font-size="14" fill="#34D399">
-        EV = (R^wR) × (S^wS) × (C^wC)
-      </text>
-    </g>
+      <!-- 6 Heuristics Cards -->
+      <g transform="translate(0, 68)">
+        <!-- 1. Social Proof -->
+        <rect x="0" y="0" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="16" class="font-sans accent-green">👥 Social Proof • Consensus</text>
+        <text x="10" y="28" class="query-stem">"what's the best rated [CAT] reviews reddit"</text>
 
-    <!-- Normalized Weights -->
-    <text x="18" y="130" class="font-mono" font-size="11" fill="#94A3B8">Weights: wR = 0.40  |  wS = 0.30  |  wC = 0.30</text>
-    <text x="18" y="146" class="font-mono" font-size="11" fill="#64748B">Auto-normalized: sum(w) = 1.00</text>
+        <!-- 2. Authority -->
+        <rect x="0" y="38" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="54" class="font-sans accent-green">🎓 Authority Bias • Expertise</text>
+        <text x="10" y="66" class="query-stem">"who is the top recommended [CAT] [AUTHORITY]"</text>
 
-    <!-- Zero Knockout Callout -->
-    <g transform="translate(18, 160)">
-      <rect x="0" y="0" width="294" height="66" rx="6" fill="#181313" stroke="#DC2626" stroke-width="1"/>
-      <text x="12" y="20" class="font-sans title" font-size="12" fill="#EF4444">THE MULTIPLICATIVE ZERO RULE</text>
-      <text x="12" y="38" class="font-sans body-text" font-size="11.5">If C = 0 (Gov, NHS, charity, non-profit):</text>
-      <text x="12" y="54" class="font-mono" font-size="12" font-weight="700" fill="#FCA5A5">EV = 5^0.4 × 5^0.3 × 0^0.3 = 0.00 (COLLAPSE)</text>
+        <!-- 3. Heuristics -->
+        <rect x="0" y="76" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="92" class="font-sans accent-green">🔍 Category Heuristics • Benchmarks</text>
+        <text x="10" y="104" class="query-stem">"who has the best [HEURISTIC] [CAT]"</text>
+
+        <!-- 4. Free -->
+        <rect x="0" y="114" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="130" class="font-sans accent-green">🏷️ Power of Free • Value Addition</text>
+        <text x="10" y="142" class="query-stem">"how can I get free trial delivery [BRAND]"</text>
+
+        <!-- 5. Scarcity -->
+        <rect x="0" y="152" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="168" class="font-sans accent-green">⏳ Scarcity Bias • Urgency</text>
+        <text x="10" y="180" class="query-stem">"[SUB_CAT] restock alert release date"</text>
+
+        <!-- 6. Now -->
+        <rect x="0" y="190" width="294" height="34" rx="5" fill="#0b1324" stroke="#1e293b" stroke-width="0.8"/>
+        <text x="10" y="206" class="font-sans accent-green">⚡ Power of Now • Immediacy</text>
+        <text x="10" y="218" class="query-stem">"who can deliver [SUB_CAT] tomorrow [GEO]"</text>
+      </g>
     </g>
   </g>
 
   <!-- ========================================================= -->
-  <!-- COLUMN 3: AUDITABLE OUTPUT & CRM LEDGER                  -->
+  <!-- BOTTOM STRIP: DETERMINISTIC GATE & MULTIPLICATIVE ZERO    -->
   <!-- ========================================================= -->
+  <g transform="translate(60, 480)" filter="url(#shadow)">
+    <rect width="1080" height="175" rx="12" fill="url(#cardGrad)" stroke="#1e293b" stroke-width="1.2"/>
 
-  <!-- Column 3 Header Tag -->
-  <text x="840" y="145" class="font-sans badge-text" fill="#64748B">STAGE 3 • AUDITABLE CRM PIPELINE</text>
+    <!-- Left Box: Step 1 HALT Gate -->
+    <g transform="translate(24, 20)">
+      <rect x="0" y="0" width="130" height="20" rx="10" fill="#450a0a" stroke="#F5333F" stroke-width="0.8"/>
+      <text x="10" y="14" class="font-sans badge-text" fill="#FCA5A5">STEP 1 PAUSE GATE</text>
+      <text x="0" y="44" class="font-sans card-title" fill="#F8FAFC">Partner Exclusion Shield</text>
+      <text x="0" y="64" class="font-sans body-text">Halts search; demands active partner domains.</text>
 
-  <!-- Card 3A: Audited Breakdown Table -->
-  <g transform="translate(840, 160)" filter="url(#shadow)">
-    <rect width="300" height="210" rx="12" fill="url(#cardGrad)" stroke="#38BDF8" stroke-width="1.5"/>
-    <rect x="0" y="0" width="300" height="4" rx="2" fill="url(#blueGrad)"/>
-
-    <rect x="18" y="18" width="105" height="20" rx="10" fill="#1e293b" stroke="#38BDF8" stroke-width="0.8"/>
-    <text x="26" y="32" class="font-sans badge-text" fill="#7DD3FC">OUTPUT 1</text>
-    <text x="18" y="58" class="font-sans card-title" fill="#F8FAFC">Audited Ranking Table</text>
-    <text x="18" y="76" class="font-sans body-text">Mandatory math column prevents</text>
-    <text x="18" y="92" class="font-sans body-text">subjective LLM score inflation:</text>
-
-    <!-- Mini Table Graphic -->
-    <g transform="translate(18, 108)">
-      <rect x="0" y="0" width="264" height="22" rx="3" fill="#1e293b"/>
-      <text x="8" y="15" class="font-mono" font-size="9.5" fill="#94A3B8">PARTNER   R  S  C  MATH       SCORE</text>
+      <rect x="0" y="78" width="300" height="24" rx="4" fill="#180f14" stroke="#7f1d1d" stroke-width="0.8"/>
+      <text x="8" y="94" class="font-sans" font-size="11" fill="#F87171">🚫 Knockout: Voucher scrapers &amp; coupon extensions</text>
       
-      <rect x="0" y="26" width="264" height="24" rx="3" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="8" y="42" class="font-mono" font-size="9.5" fill="#34D399">reviewhub 5  4  5  5^.4*4^.3  4.68</text>
+      <rect x="0" y="106" width="300" height="24" rx="4" fill="#180f14" stroke="#7f1d1d" stroke-width="0.8"/>
+      <text x="8" y="122" class="font-sans" font-size="11" fill="#F87171">🚫 Knockout: Non-target territory &amp; direct rivals</text>
+    </g>
 
-      <rect x="0" y="54" width="264" height="24" rx="3" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
-      <text x="8" y="70" class="font-mono" font-size="9.5" fill="#34D399">testedlab 4  4  4  4^1.0      4.00</text>
+    <!-- Center Line -->
+    <line x1="360" y1="20" x2="360" y2="155" stroke="#1e293b" stroke-width="1"/>
+
+    <!-- Middle Box: Deterministic EV Formula -->
+    <g transform="translate(385, 20)">
+      <rect x="0" y="0" width="130" height="20" rx="10" fill="#064e3b" stroke="#10B981" stroke-width="0.8"/>
+      <text x="10" y="14" class="font-sans badge-text" fill="#6EE7B7">SCORING ENGINE</text>
+      <text x="0" y="44" class="font-sans card-title" fill="#F8FAFC">Expected Value Arithmetic</text>
+
+      <!-- Formula Container -->
+      <rect x="0" y="58" width="310" height="34" rx="6" fill="#061d15" stroke="#10B981" stroke-width="1"/>
+      <text x="155" y="80" text-anchor="middle" class="font-mono" font-size="13" font-weight="700" fill="#34D399">
+        EV = (R^0.4) × (S^0.3) × (C^0.3)
+      </text>
+
+      <rect x="0" y="98" width="310" height="32" rx="6" fill="#181111" stroke="#DC2626" stroke-width="0.8"/>
+      <text x="10" y="112" class="font-sans" font-size="10.5" font-weight="700" fill="#EF4444">THE MULTIPLICATIVE ZERO RULE:</text>
+      <text x="10" y="124" class="font-mono" font-size="9.5" fill="#FCA5A5">Gov/NHS/Charity: C=0 → EV = 5^.4 × 5^.3 × 0^.3 = 0.00</text>
+    </g>
+
+    <!-- Center Line 2 -->
+    <line x1="720" y1="20" x2="720" y2="155" stroke="#1e293b" stroke-width="1"/>
+
+    <!-- Right Box: Auditable CRM Ledger Output -->
+    <g transform="translate(745, 20)">
+      <rect x="0" y="0" width="120" height="20" rx="10" fill="#0c2340" stroke="#38BDF8" stroke-width="0.8"/>
+      <text x="10" y="14" class="font-sans badge-text" fill="#7DD3FC">OUTPUT LEDGER</text>
+      <text x="0" y="44" class="font-sans card-title" fill="#F8FAFC">Recruitment Pipeline</text>
+
+      <!-- Table & CSV preview -->
+      <rect x="0" y="58" width="310" height="72" rx="6" fill="#05140f" stroke="#064e3b" stroke-width="0.8"/>
+      <text x="10" y="74" class="font-mono" font-size="9.5" fill="#6EE7B7">domain,date_added,score,status</text>
+      <text x="10" y="90" class="font-mono" font-size="9.5" fill="#A7F3D0">independent-test-lab.co.uk,02/10,4.68,new</text>
+      <text x="10" y="106" class="font-mono" font-size="9.5" fill="#A7F3D0">enthusiast-review-desk.com,02/10,4.24,new</text>
+      <text x="10" y="122" class="font-mono" font-size="9.5" fill="#A7F3D0">specialist-buying-guide.uk,02/10,3.95,new</text>
     </g>
   </g>
 
-  <!-- Card 3B: CRM-Ready CSV Block -->
-  <g transform="translate(840, 390)" filter="url(#shadow)">
-    <rect width="300" height="210" rx="12" fill="url(#cardGrad)" stroke="#10B981" stroke-width="1.5"/>
-    <rect x="0" y="0" width="300" height="4" rx="2" fill="url(#greenGrad)"/>
-
-    <rect x="18" y="18" width="105" height="20" rx="10" fill="#064e3b" stroke="#10B981" stroke-width="0.8"/>
-    <text x="26" y="32" class="font-sans badge-text" fill="#6EE7B7">OUTPUT 2</text>
-    <text x="18" y="58" class="font-sans card-title" fill="#F8FAFC">Recruitment CSV Export</text>
-    <text x="18" y="76" class="font-sans body-text">Direct copy-paste into CRM outreach</text>
-    <text x="18" y="92" class="font-sans body-text">pipelines (HubSpot, Salesforce, impact):</text>
-
-    <!-- Code Block Preview -->
-    <g transform="translate(18, 108)">
-      <rect x="0" y="0" width="264" height="78" rx="6" fill="#05140f" stroke="#064e3b" stroke-width="1"/>
-      <text x="10" y="20" class="font-mono" font-size="10.5" fill="#6EE7B7">domain,date_added,score,status</text>
-      <text x="10" y="38" class="font-mono" font-size="10" fill="#A7F3D0">independent-lab.co.uk,02/10,4.68,new</text>
-      <text x="10" y="54" class="font-mono" font-size="10" fill="#A7F3D0">enthusiast-desk.com,02/10,4.24,new</text>
-      <text x="10" y="70" class="font-mono" font-size="10" fill="#A7F3D0">specialist-guide.uk,02/10,3.95,new</text>
-    </g>
-  </g>
-
-  <!-- Bottom Brand Footer -->
-  <g transform="translate(60, 630)">
-    <text x="0" y="16" class="font-sans" font-size="11.5" fill="#475569">
-      Affilifest Brand Huddle London • Facilitator: Alex Ratford (impact.com) • FSL-1.1-MIT Licensed
+  <!-- Bottom Watermark -->
+  <g transform="translate(60, 680)">
+    <text x="0" y="0" class="font-sans" font-size="11" fill="#475569">
+      Affilifest Brand Huddle London • Alex Ratford (impact.com) • FSL-1.1-MIT License
     </text>
-    <text x="1080" y="16" text-anchor="end" class="font-mono" font-size="11.5" fill="#475569">
+    <text x="1080" y="0" text-anchor="end" class="font-mono" font-size="11" fill="#475569">
       find-new-affiliate-partners
     </text>
   </g>

@@ -37,34 +37,14 @@ Results pass through a root-domain exclusion filter and a deterministic scoring 
 
 ---
 
-## Repository Layout
+## What is in this Repository
 
-```text
-find-new-affiliate-partners/
-├── starter-kit/                  # Modular template to build your own skill
-│   ├── SKILL.md                  # Controller with Step 1 HALT gate
-│   ├── run.md                    # Single-line launch prompt
-│   └── references/
-│       ├── brand.md              # Brand vertical, target AOV, competitors, disqualifications
-│       ├── estimated_value.md    # Normalized scoring weights, anchors, and zero-knockout
-│       ├── discovery.md          # 12 NeedScope and Messy Middle search queries
-│       └── exclusions.md         # Active partner domains to omit
-│
-├── example-skill/                # Working reference for fictitious brand Apex Retail UK
-│   ├── SKILL.md
-│   ├── run.md
-│   ├── readme.md
-│   └── references/
-│       ├── brand.md              # Apex Retail UK with mock competitor domains
-│       ├── estimated_value.md
-│       ├── discovery.md
-│       └── exclusions.md         # Sample excluded domains
-│
-├── workshop-slides.pdf           # Complete 40-page masterclass presentation deck
-├── architecture.svg              # High-resolution system architecture visual
-├── LICENSE.md                    # Functional Source License (FSL-1.1-MIT)
-└── README.md                     # Workshop documentation and setup guide
-```
+| Component | Purpose |
+| :--- | :--- |
+| **[`starter-kit/`](starter-kit/)** | Clean template to copy and configure for your own brand (`SKILL.md`, `run.md`, and 4 files in `references/`). |
+| **[`example-skill/`](example-skill/)** | Complete working reference skill using fictitious brand `Apex Retail UK` and mock competitor baselines. |
+| **[`workshop-slides.pdf`](workshop-slides.pdf)** | Complete 40-page masterclass presentation covering the search frameworks, EV arithmetic, and code streams. |
+| **[`LICENSE.md`](LICENSE.md)** | Functional Source License (FSL-1.1-MIT). |
 
 ---
 
@@ -90,18 +70,13 @@ Follow these 6 steps to adapt the starter kit for your brand. Each step correspo
 
 ### Step 0: Set Up the Workspace and Check File Extensions
 
-Create a dedicated folder on your computer named `partner-discovery` with a `references` subfolder:
-
-```text
-partner-discovery/
-├── SKILL.md
-├── run.md
-└── references/
-    ├── brand.md
-    ├── estimated_value.md
-    ├── discovery.md
-    └── exclusions.md
-```
+Create a folder on your computer named `partner-discovery` with the following 6 files:
+* `SKILL.md` (root controller)
+* `run.md` (trigger prompt)
+* `references/brand.md` (commercial boundaries and negative shield)
+* `references/estimated_value.md` (scoring rules and knockout formula)
+* `references/discovery.md` (12 NeedScope and Messy Middle search queries)
+* `references/exclusions.md` (existing partner domain exclusions)
 
 Operating systems often hide file extensions by default. If your operating system appends `.txt` to your files (saving them as `brand.md.txt`), AI agents cannot locate the file paths listed in `SKILL.md`.
 
