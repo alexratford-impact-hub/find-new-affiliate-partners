@@ -8,6 +8,7 @@
 # Competitor Baselines
 - competitor-a.example.co.uk
 - competitor-b.example.co.uk
+- alexratford.co.uk
 
 # Disqualifications
 - Exclude voucher-code aggregator directories, coupon browser extensions, and cash-back scraping portals.

@@ -1,12 +1,12 @@
 {
-  "name": "affilifest-masterclass",
+  "name": "find-new-affiliate-partners",
   "version": "1.0.0",
-  "description": "Affilifest Brand Huddle - Autonomous Partner Discovery Masterclass Display & Operator Engine",
+  "description": "Deterministic AI agent skill for discovering high-converting affiliate partners using Kantar NeedScope, Google Messy Middle, and Expected Value scoring.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && npx wrangler deploy",
+    "pdf": "node scripts/generate-pdf.js",
     "test": "playwright test",
     "test:1080p": "playwright test --project=1080p-fhd-slide --project=1080p-fhd-code",
     "test:4k": "playwright test --project=4k-uhd-slide --project=4k-uhd-code",

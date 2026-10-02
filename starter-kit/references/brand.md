@@ -1,9 +1,9 @@
 # Target Parameters
 - Brand: [Your Brand Name]
-- Focus Category: [Your Category / Vertical]
+- Focus Category: [Your Category / Vertical, e.g. Specialty Coffee, CRM Software, Running Footwear]
 - Commercial Model: CPA
-- Target AOV: £[AOV]
-- Target Territory: [Territory]
+- Target AOV: £[Target AOV, e.g. 45]
+- Target Territory: [Target Territory, e.g. UK / US / Global]
 
 # Competitor Baselines
 - [competitor1.com]

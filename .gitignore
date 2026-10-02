@@ -6,7 +6,6 @@ public/
 design/
 .agents/
 playwright-report/
-./partner-research-skill/
 
 # Backups and temporary files
 *.bak
