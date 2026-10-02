@@ -70,13 +70,16 @@ Follow these 6 steps to adapt the starter kit for your brand. Each step correspo
 
 ### Step 0: Set Up the Workspace and Check File Extensions
 
-Create a folder on your computer named `partner-discovery` with the following 6 files:
-* `SKILL.md` (root controller)
-* `run.md` (trigger prompt)
-* `references/brand.md` (commercial boundaries and negative shield)
-* `references/estimated_value.md` (scoring rules and knockout formula)
-* `references/discovery.md` (12 NeedScope and Messy Middle search queries)
-* `references/exclusions.md` (existing partner domain exclusions)
+Copy the files from [`starter-kit/`](starter-kit/) into a folder on your computer named `partner-discovery`. The skill consists of 6 files:
+
+| File | Role | Action Required |
+| :--- | :--- | :--- |
+| `SKILL.md` | Root skill controller | None (ready to run) |
+| `run.md` | Agent trigger prompt | Copy prompt into agent chat |
+| `references/brand.md` | Commercial boundary & negative shield | **Required:** Add your brand, category, AOV, and 2 competitors |
+| `references/discovery.md` | 12 search query vectors | **Optional:** Adapt category placeholders for your vertical |
+| `references/estimated_value.md` | EV scoring formula & knockout rules | **Optional:** Adjust weights if needed |
+| `references/exclusions.md` | Root domain deduplication filter | **Required:** Add your existing partner domains |
 
 Operating systems often hide file extensions by default. If your operating system appends `.txt` to your files (saving them as `brand.md.txt`), AI agents cannot locate the file paths listed in `SKILL.md`.
 
