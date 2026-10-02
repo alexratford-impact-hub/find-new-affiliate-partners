@@ -1,0 +1,294 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070a12"/>
+      <stop offset="50%" stop-color="#0b0f19"/>
+      <stop offset="100%" stop-color="#080d1a"/>
+    </linearGradient>
+
+    <!-- Card Background Gradient -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#141c2e" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0f1523" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Brand / NeedScope Blue Gradient -->
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#298DDA"/>
+      <stop offset="100%" stop-color="#60A5FA"/>
+    </linearGradient>
+
+    <!-- Messy Middle Amber Gradient -->
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+
+    <!-- Validated Green Gradient -->
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+
+    <!-- Disqualification Red Gradient -->
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#DC2626"/>
+      <stop offset="100%" stop-color="#F5333F"/>
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="glowBlue" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <style>
+      .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+      .title { font-weight: 800; letter-spacing: -0.02em; }
+      .badge-text { font-weight: 700; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+      .card-title { font-weight: 700; font-size: 15px; }
+      .body-text { font-weight: 400; font-size: 12.5px; fill: #94A3B8; }
+      .accent-text { font-weight: 600; font-size: 12px; }
+    </style>
+  </defs>
+
+  <!-- Deep Canvas Background -->
+  <rect width="1200" height="680" fill="url(#bgGrad)"/>
+
+  <!-- Subtle Ambient Grid Overlay -->
+  <g opacity="0.07" stroke="#94A3B8" stroke-width="1">
+    <line x1="0" y1="80" x2="1200" y2="80"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="320" x2="1200" y2="320"/>
+    <line x1="0" y1="440" x2="1200" y2="440"/>
+    <line x1="0" y1="560" x2="1200" y2="560"/>
+    <line x1="100" y1="0" x2="100" y2="680"/>
+    <line x1="400" y1="0" x2="400" y2="680"/>
+    <line x1="800" y1="0" x2="800" y2="680"/>
+    <line x1="1100" y1="0" x2="1100" y2="680"/>
+  </g>
+
+  <!-- Header Section -->
+  <g transform="translate(60, 48)">
+    <rect x="0" y="0" width="170" height="24" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <circle cx="12" cy="12" r="4" fill="#10B981"/>
+    <text x="24" y="16" class="font-sans badge-text" fill="#E2E8F0">AUTONOMOUS ARCHITECTURE</text>
+
+    <text x="0" y="52" class="font-sans title" font-size="26" fill="#F8FAFC">
+      Deterministic Partner Discovery Engine
+    </text>
+    <text x="0" y="74" class="font-sans" font-size="13.5" fill="#94A3B8">
+      Dual-Engine Search (Kantar NeedScope × Google Messy Middle) → Mandatory Pause Gate → Multiplicative Zero Knockout
+    </text>
+  </g>
+
+  <!-- Flow Connector Paths -->
+  <!-- Col 1 to Col 2 -->
+  <path d="M 370 240 L 430 240" stroke="#298DDA" stroke-width="2" stroke-dasharray="4 4" fill="none" opacity="0.8"/>
+  <polygon points="432,240 424,236 424,244" fill="#298DDA"/>
+
+  <path d="M 370 470 L 430 470" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4 4" fill="none" opacity="0.8"/>
+  <polygon points="432,470 424,466 424,474" fill="#F59E0B"/>
+
+  <!-- Col 2 to Col 3 -->
+  <path d="M 770 360 L 830 360" stroke="#10B981" stroke-width="2.5" fill="none"/>
+  <polygon points="834,360 824,355 824,365" fill="#10B981"/>
+
+  <!-- ========================================================= -->
+  <!-- COLUMN 1: DUAL-ENGINE SEARCH (CONSUMER-IN)               -->
+  <!-- ========================================================= -->
+  
+  <!-- Column 1 Header Tag -->
+  <text x="60" y="145" class="font-sans badge-text" fill="#64748B">STAGE 1 • REVERSE-ENGINEERED SEARCH</text>
+
+  <!-- Card 1A: Loop 1 NeedScope -->
+  <g transform="translate(60, 160)" filter="url(#shadow)">
+    <rect width="310" height="210" rx="12" fill="url(#cardGrad)" stroke="#298DDA" stroke-width="1.5"/>
+    <rect x="0" y="0" width="310" height="4" rx="2" fill="url(#blueGrad)"/>
+
+    <rect x="18" y="18" width="86" height="20" rx="10" fill="#1e3a5f" stroke="#298DDA" stroke-width="0.8"/>
+    <text x="26" y="32" class="font-sans badge-text" fill="#93C5FD">LOOP 1</text>
+    <text x="112" y="33" class="font-sans card-title" fill="#F8FAFC">Kantar NeedScope</text>
+    <text x="18" y="58" class="font-sans body-text">Unbranded expansive search queries before</text>
+    <text x="18" y="74" class="font-sans body-text">the consumer knows your brand name:</text>
+
+    <!-- 6 Need States Grid -->
+    <g transform="translate(18, 92)">
+      <rect x="0" y="0" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="10" y="18" class="font-sans accent-text" fill="#38BDF8">💡 Educate Me</text>
+
+      <rect x="140" y="0" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="150" y="18" class="font-sans accent-text" fill="#38BDF8">🤝 Help Me</text>
+
+      <rect x="0" y="34" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="10" y="52" class="font-sans accent-text" fill="#38BDF8">🛡️ Reassure Me</text>
+
+      <rect x="140" y="34" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="150" y="52" class="font-sans accent-text" fill="#38BDF8">✨ Impress Me</text>
+
+      <rect x="0" y="68" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="10" y="86" class="font-sans accent-text" fill="#38BDF8">⚡ Thrill Me</text>
+
+      <rect x="140" y="68" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="150" y="86" class="font-sans accent-text" fill="#38BDF8">🎁 Surprise Me</text>
+    </g>
+  </g>
+
+  <!-- Card 1B: Loop 2 Messy Middle -->
+  <g transform="translate(60, 390)" filter="url(#shadow)">
+    <rect width="310" height="210" rx="12" fill="url(#cardGrad)" stroke="#F59E0B" stroke-width="1.5"/>
+    <rect x="0" y="0" width="310" height="4" rx="2" fill="url(#amberGrad)"/>
+
+    <rect x="18" y="18" width="86" height="20" rx="10" fill="#451a03" stroke="#F59E0B" stroke-width="0.8"/>
+    <text x="26" y="32" class="font-sans badge-text" fill="#FCD34D">LOOP 2</text>
+    <text x="112" y="33" class="font-sans card-title" fill="#F8FAFC">Google Messy Middle</text>
+    <text x="18" y="58" class="font-sans body-text">Reductive comparison queries testing 6</text>
+    <text x="18" y="74" class="font-sans body-text">behavioral shortcuts to close confidence gaps:</text>
+
+    <!-- 6 Heuristics Grid -->
+    <g transform="translate(18, 92)">
+      <rect x="0" y="0" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="10" y="18" class="font-sans accent-text" fill="#FBBF24">👥 Social Proof</text>
+
+      <rect x="140" y="0" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="150" y="18" class="font-sans accent-text" fill="#FBBF24">🎓 Authority Bias</text>
+
+      <rect x="0" y="34" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="10" y="52" class="font-sans accent-text" fill="#FBBF24">🔍 Heuristics</text>
+
+      <rect x="140" y="34" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="150" y="52" class="font-sans accent-text" fill="#FBBF24">🏷️ Power of Free</text>
+
+      <rect x="0" y="68" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="10" y="86" class="font-sans accent-text" fill="#FBBF24">⏳ Scarcity Bias</text>
+
+      <rect x="140" y="68" width="130" height="28" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="150" y="86" class="font-sans accent-text" fill="#FBBF24">⚡ Power of Now</text>
+    </g>
+  </g>
+
+  <!-- ========================================================= -->
+  <!-- COLUMN 2: DETERMINISTIC FILTERING & SCORING             -->
+  <!-- ========================================================= -->
+
+  <!-- Column 2 Header Tag -->
+  <text x="440" y="145" class="font-sans badge-text" fill="#64748B">STAGE 2 • HALT GATE & EV FORMULA</text>
+
+  <!-- Card 2A: Step 1 HALT Gate -->
+  <g transform="translate(440, 160)" filter="url(#shadow)">
+    <rect width="330" height="175" rx="12" fill="url(#cardGrad)" stroke="#F5333F" stroke-width="1.5"/>
+    <rect x="0" y="0" width="330" height="4" rx="2" fill="url(#redGrad)"/>
+
+    <rect x="18" y="18" width="130" height="20" rx="10" fill="#450a0a" stroke="#F5333F" stroke-width="0.8"/>
+    <text x="26" y="32" class="font-sans badge-text" fill="#FCA5A5">STEP 1 PAUSE GATE</text>
+    <text x="18" y="58" class="font-sans card-title" fill="#F8FAFC">Existing Partner Shield</text>
+    <text x="18" y="76" class="font-sans body-text">Halts the AI model before executing any searches.</text>
+    <text x="18" y="92" class="font-sans body-text">Demands partner exclusion list to protect margin.</text>
+
+    <!-- Disqualification Pill List -->
+    <g transform="translate(18, 108)">
+      <rect x="0" y="0" width="294" height="24" rx="4" fill="#18111b" stroke="#7f1d1d" stroke-width="0.8"/>
+      <text x="8" y="16" class="font-sans accent-text" font-size="11" fill="#F87171">🚫 Knockout: Voucher scrapers &amp; coupon plugins</text>
+
+      <rect x="0" y="28" width="294" height="24" rx="4" fill="#18111b" stroke="#7f1d1d" stroke-width="0.8"/>
+      <text x="8" y="44" class="font-sans accent-text" font-size="11" fill="#F87171">🚫 Knockout: Non-UK traffic &amp; direct brand rivals</text>
+    </g>
+  </g>
+
+  <!-- Card 2B: Expected Value Geometric Formula -->
+  <g transform="translate(440, 355)" filter="url(#shadow)">
+    <rect width="330" height="245" rx="12" fill="url(#cardGrad)" stroke="#10B981" stroke-width="1.5"/>
+    <rect x="0" y="0" width="330" height="4" rx="2" fill="url(#greenGrad)"/>
+
+    <rect x="18" y="18" width="125" height="20" rx="10" fill="#064e3b" stroke="#10B981" stroke-width="0.8"/>
+    <text x="26" y="32" class="font-sans badge-text" fill="#6EE7B7">DETERMINISTIC EV</text>
+    <text x="18" y="58" class="font-sans card-title" fill="#F8FAFC">Multiplicative Scoring Engine</text>
+
+    <!-- Formula Box -->
+    <g transform="translate(18, 70)">
+      <rect x="0" y="0" width="294" height="40" rx="8" fill="#061f17" stroke="#10B981" stroke-width="1.2"/>
+      <text x="147" y="26" text-anchor="middle" class="font-mono" font-weight="700" font-size="14" fill="#34D399">
+        EV = (R^wR) × (S^wS) × (C^wC)
+      </text>
+    </g>
+
+    <!-- Normalized Weights -->
+    <text x="18" y="130" class="font-mono" font-size="11" fill="#94A3B8">Weights: wR = 0.40  |  wS = 0.30  |  wC = 0.30</text>
+    <text x="18" y="146" class="font-mono" font-size="11" fill="#64748B">Auto-normalized: sum(w) = 1.00</text>
+
+    <!-- Zero Knockout Callout -->
+    <g transform="translate(18, 160)">
+      <rect x="0" y="0" width="294" height="66" rx="6" fill="#181313" stroke="#DC2626" stroke-width="1"/>
+      <text x="12" y="20" class="font-sans title" font-size="12" fill="#EF4444">THE MULTIPLICATIVE ZERO RULE</text>
+      <text x="12" y="38" class="font-sans body-text" font-size="11.5">If C = 0 (Gov, NHS, charity, non-profit):</text>
+      <text x="12" y="54" class="font-mono" font-size="12" font-weight="700" fill="#FCA5A5">EV = 5^0.4 × 5^0.3 × 0^0.3 = 0.00 (COLLAPSE)</text>
+    </g>
+  </g>
+
+  <!-- ========================================================= -->
+  <!-- COLUMN 3: AUDITABLE OUTPUT & CRM LEDGER                  -->
+  <!-- ========================================================= -->
+
+  <!-- Column 3 Header Tag -->
+  <text x="840" y="145" class="font-sans badge-text" fill="#64748B">STAGE 3 • AUDITABLE CRM PIPELINE</text>
+
+  <!-- Card 3A: Audited Breakdown Table -->
+  <g transform="translate(840, 160)" filter="url(#shadow)">
+    <rect width="300" height="210" rx="12" fill="url(#cardGrad)" stroke="#38BDF8" stroke-width="1.5"/>
+    <rect x="0" y="0" width="300" height="4" rx="2" fill="url(#blueGrad)"/>
+
+    <rect x="18" y="18" width="105" height="20" rx="10" fill="#1e293b" stroke="#38BDF8" stroke-width="0.8"/>
+    <text x="26" y="32" class="font-sans badge-text" fill="#7DD3FC">OUTPUT 1</text>
+    <text x="18" y="58" class="font-sans card-title" fill="#F8FAFC">Audited Ranking Table</text>
+    <text x="18" y="76" class="font-sans body-text">Mandatory math column prevents</text>
+    <text x="18" y="92" class="font-sans body-text">subjective LLM score inflation:</text>
+
+    <!-- Mini Table Graphic -->
+    <g transform="translate(18, 108)">
+      <rect x="0" y="0" width="264" height="22" rx="3" fill="#1e293b"/>
+      <text x="8" y="15" class="font-mono" font-size="9.5" fill="#94A3B8">PARTNER   R  S  C  MATH       SCORE</text>
+      
+      <rect x="0" y="26" width="264" height="24" rx="3" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="8" y="42" class="font-mono" font-size="9.5" fill="#34D399">reviewhub 5  4  5  5^.4*4^.3  4.68</text>
+
+      <rect x="0" y="54" width="264" height="24" rx="3" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="8" y="70" class="font-mono" font-size="9.5" fill="#34D399">testedlab 4  4  4  4^1.0      4.00</text>
+    </g>
+  </g>
+
+  <!-- Card 3B: CRM-Ready CSV Block -->
+  <g transform="translate(840, 390)" filter="url(#shadow)">
+    <rect width="300" height="210" rx="12" fill="url(#cardGrad)" stroke="#10B981" stroke-width="1.5"/>
+    <rect x="0" y="0" width="300" height="4" rx="2" fill="url(#greenGrad)"/>
+
+    <rect x="18" y="18" width="105" height="20" rx="10" fill="#064e3b" stroke="#10B981" stroke-width="0.8"/>
+    <text x="26" y="32" class="font-sans badge-text" fill="#6EE7B7">OUTPUT 2</text>
+    <text x="18" y="58" class="font-sans card-title" fill="#F8FAFC">Recruitment CSV Export</text>
+    <text x="18" y="76" class="font-sans body-text">Direct copy-paste into CRM outreach</text>
+    <text x="18" y="92" class="font-sans body-text">pipelines (HubSpot, Salesforce, impact):</text>
+
+    <!-- Code Block Preview -->
+    <g transform="translate(18, 108)">
+      <rect x="0" y="0" width="264" height="78" rx="6" fill="#05140f" stroke="#064e3b" stroke-width="1"/>
+      <text x="10" y="20" class="font-mono" font-size="10.5" fill="#6EE7B7">domain,date_added,score,status</text>
+      <text x="10" y="38" class="font-mono" font-size="10" fill="#A7F3D0">independent-lab.co.uk,02/10,4.68,new</text>
+      <text x="10" y="54" class="font-mono" font-size="10" fill="#A7F3D0">enthusiast-desk.com,02/10,4.24,new</text>
+      <text x="10" y="70" class="font-mono" font-size="10" fill="#A7F3D0">specialist-guide.uk,02/10,3.95,new</text>
+    </g>
+  </g>
+
+  <!-- Bottom Brand Footer -->
+  <g transform="translate(60, 630)">
+    <text x="0" y="16" class="font-sans" font-size="11.5" fill="#475569">
+      Affilifest Brand Huddle London • Facilitator: Alex Ratford (impact.com) • FSL-1.1-MIT Licensed
+    </text>
+    <text x="1080" y="16" text-anchor="end" class="font-mono" font-size="11.5" fill="#475569">
+      find-new-affiliate-partners
+    </text>
+  </g>
+</svg>

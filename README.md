@@ -10,6 +10,10 @@ You also get `workshop-slides.pdf`, a 40-page slide deck covering the underlying
 
 ---
 
+![Deterministic Partner Discovery Architecture](architecture.svg)
+
+---
+
 ## Why Default AI Prompts Fail
 
 Conversational prompts such as `"find top affiliate partners for my brand"` search brand-out. Large language models respond with the most visible public websites: coupon directories, cashback aggregators, mass media broadsheets, and publishers you already work with. These sources offer little incremental value and erode affiliate program margins.
@@ -20,6 +24,16 @@ This skill searches consumer-in by mapping the two stages of consumer purchase d
 2. **Loop 2: Google Messy Middle (Cognitive Exit):** Evaluation queries matching 6 behavioral shortcuts (*Social Proof, Authority Bias, Category Heuristics, Power of Free, Scarcity, Power of Now*) to surface independent testing labs, specialist reviewers, and comparison engines.
 
 Results pass through a root-domain exclusion filter and a deterministic scoring formula. If any candidate lacks commercial fit (such as government portals, non-profits, or charities), a mathematical knockout drops their score to zero immediately.
+
+| Dimension | Default Prompt Guessing | Deterministic Skill Architecture |
+| :--- | :--- | :--- |
+| **Search Direction** | Brand-out (asks model to recall familiar partners) | Consumer-in (replicates unbranded buyer journeys) |
+| **Recruited Targets** | Voucher scrapers, coupon extensions, broadsheets | Independent testing desks, enthusiast blogs, specialist hubs |
+| **Program Margin** | Diluted (paying commissions on existing buyers) | Protected (intercepting high-intent unbranded shoppers) |
+| **Partner Deduplication** | None (frequently re-pitches contracted partners) | Mandatory Step 1 HALT Gate (enforces exclusion list) |
+| **Scoring Consistency** | Subjective text summaries | Geometric Expected Value: $\text{EV} = R^{0.4} \times S^{0.3} \times C^{0.3}$ |
+| **Knockout Mechanism** | None (recommends charities, NHS, or dead links) | Multiplicative Zero Rule ($C = 0 \implies \text{EV} = 0.00$) |
+| **Pipeline Output** | Unstructured bullet points | Audited Markdown table + CRM-ready CSV export |
 
 ---
 
@@ -47,6 +61,7 @@ find-new-affiliate-partners/
 │       └── exclusions.md         # Sample excluded domains
 │
 ├── workshop-slides.pdf           # Complete 40-page masterclass presentation deck
+├── architecture.svg              # High-resolution system architecture visual
 ├── LICENSE.md                    # Functional Source License (FSL-1.1-MIT)
 └── README.md                     # Workshop documentation and setup guide
 ```
