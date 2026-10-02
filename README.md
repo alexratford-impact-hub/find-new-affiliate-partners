@@ -27,7 +27,7 @@ Results pass through a root-domain exclusion filter and a deterministic scoring 
 
 ```text
 find-new-affiliate-partners/
-├── starter-kit/                  # Clean template to build your own skill
+├── starter-kit/                  # Modular template to build your own skill
 │   ├── SKILL.md                  # Controller with Step 1 HALT gate
 │   ├── run.md                    # Single-line launch prompt
 │   └── references/
@@ -39,18 +39,16 @@ find-new-affiliate-partners/
 ├── example-skill/                # Working reference for fictitious brand Apex Retail UK
 │   ├── SKILL.md
 │   ├── run.md
+│   ├── readme.md
 │   └── references/
 │       ├── brand.md              # Apex Retail UK with mock competitor domains
 │       ├── estimated_value.md
 │       ├── discovery.md
 │       └── exclusions.md         # Sample excluded domains
 │
-├── screenshots/                  # 40 high-resolution stage and code slides
-├── scripts/
-│   └── generate-pdf.js           # Playwright script to compile screenshots into PDF
 ├── workshop-slides.pdf           # Complete 40-page masterclass presentation deck
-├── workshop.html                 # Interactive local presentation runner
-└── package.json                  # Scripts and dependencies
+├── LICENSE.md                    # MIT License
+└── README.md                     # Workshop documentation and setup guide
 ```
 
 ---
@@ -258,22 +256,11 @@ This folder contains a ready-to-run skill for **Apex Retail UK**, a fictitious r
 
 ---
 
-## Workshop Slides and Presentation Engine
+## Workshop Presentation Slides
 
-This repository includes the complete masterclass materials:
+This repository includes the complete masterclass slide deck:
 
-* **Downloadable presentation deck:** [`workshop-slides.pdf`](workshop-slides.pdf) is a 40-page landscape PDF generated from full-resolution screenshots of every slide and code view.
-* **Slide screenshots:** All individual PNG files are preserved in [`screenshots/`](screenshots/) with sequential numbering.
-* **Interactive local runner:** To view the animated 16:9 presentation console locally:
-  ```bash
-  npm install
-  npm run dev
-  ```
-  Open `http://localhost:5173/workshop.html` in your browser. Use number keys `1` to `6` to switch stages, `C` to enter split code mode, and `S` to return to slide view.
-* **Regenerate PDF:** To recompile `workshop-slides.pdf` from the screenshot assets:
-  ```bash
-  npm run pdf
-  ```
+* **Downloadable presentation deck:** [`workshop-slides.pdf`](workshop-slides.pdf) is a 40-page landscape PDF covering every stage, framework model (Kantar NeedScope, Google Messy Middle, Expected Value arithmetic), and code-streaming view from the workshop.
 
 ---
 
