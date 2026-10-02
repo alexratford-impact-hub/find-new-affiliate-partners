@@ -47,7 +47,7 @@ find-new-affiliate-partners/
 │       └── exclusions.md         # Sample excluded domains
 │
 ├── workshop-slides.pdf           # Complete 40-page masterclass presentation deck
-├── LICENSE.md                    # MIT License
+├── LICENSE.md                    # Functional Source License (FSL-1.1-MIT)
 └── README.md                     # Workshop documentation and setup guide
 ```
 
@@ -266,4 +266,4 @@ This repository includes the complete masterclass slide deck:
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for details.
+This project is licensed under the Functional Source License, Version 1.1, MIT Future License (FSL-1.1-MIT). It permits internal use, research, and non-commercial education, while restricting competing commercial software or services. See [LICENSE.md](LICENSE.md) for full terms.
